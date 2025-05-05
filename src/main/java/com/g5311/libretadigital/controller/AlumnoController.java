@@ -3,6 +3,8 @@ package com.g5311.libretadigital.controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.g5311.libretadigital.model.Alumno;
+import com.g5311.libretadigital.model.dto.AlumnoDto;
+import com.g5311.libretadigital.model.dto.AlumnoDto;
 import com.g5311.libretadigital.service.AlumnoService;
 
 import java.util.List;
@@ -23,7 +25,7 @@ public class AlumnoController {
     }
 
     @PostMapping
-    public Alumno createAlumno(@RequestBody Alumno alumno) {
+    public Alumno createAlumno(@RequestBody AlumnoDto alumno) {
         return alumnoService.saveAlumno(alumno);
     }
 }

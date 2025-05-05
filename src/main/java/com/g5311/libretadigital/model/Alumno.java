@@ -1,42 +1,28 @@
 package com.g5311.libretadigital.model;
 
+import com.g5311.libretadigital.model.dto.AlumnoDto;
+
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 @Entity
-public class Alumno {
+@DiscriminatorValue("ALUMNO")
+public class Alumno extends Persona {
+    private Integer añoInscripto;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String nombre;
-    private String apellido;
-
-    // Getters y Setters
-    public Long getId() {
-        return id;
+    public Integer getAñoInscripto() {
+        return añoInscripto;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAñoInscripto(Integer añoInscripto) {
+        this.añoInscripto = añoInscripto;
     }
 
-    public String getNombre() {
-        return nombre;
+    public static Alumno fromDto(AlumnoDto dto) {
+        Alumno alumno = new Alumno();
+        alumno.cargarDatosBase(dto);
+        alumno.setAñoInscripto(dto.getAñoInscripto());
+        return alumno;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
 }
