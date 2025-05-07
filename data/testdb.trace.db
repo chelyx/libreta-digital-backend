@@ -1,0 +1,9 @@
+2025-05-06 22:25:49.829170-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PERSONA" not found (this database is empty); SQL statement:
+INSERT INTO persona (id, nombre, apellido, mail, legajo, type) VALUES ('1e4d2b9c-0a1b-4e14-9af7-11e8b5d5e921', 'Juan', 'Perez', 'juan.perez@mail.com', 'a92bbec7-53e5-4b37-9f71-cd29e3b16222', 'ALUMNO') [42104-224]
+2025-05-06 22:26:12.285663-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PERSONA" not found (this database is empty); SQL statement:
+INSERT INTO persona (id, nombre, apellido, mail, legajo, type) VALUES ('1e4d2b9c-0a1b-4e14-9af7-11e8b5d5e921', 'Juan', 'Perez', 'juan.perez@mail.com', 'a92bbec7-53e5-4b37-9f71-cd29e3b16222', 'ALUMNO') [42104-224]
+2025-05-06 22:26:48.158448-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PERSONA" not found (this database is empty); SQL statement:
+DELETE FROM persona [42104-224]

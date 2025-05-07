@@ -1,10 +1,10 @@
 package com.g5311.libretadigital.model.dto;
 
-public class AlumnoDto extends PersonaDto {
-    String legajo;
+public class ProfesorDto extends PersonaDto {
+    public String materia;
 
     // Constructor vacío (requerido por JPA)
-    public AlumnoDto() {
+    public ProfesorDto() {
     }
 
 }

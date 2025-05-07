@@ -1,5 +1,9 @@
 package com.g5311.libretadigital.model;
 
+import java.util.UUID;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import com.g5311.libretadigital.model.dto.PersonaDto;
 
 import jakarta.persistence.*;
@@ -10,20 +14,24 @@ import jakarta.persistence.*;
 public abstract class Persona {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     private String nombre;
     private String apellido;
     private String mail;
-    private Long legajo;
+
+    @Column(name = "type", insertable = false, updatable = false)
+    private String type;
 
     // Getters y setters
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -51,18 +59,9 @@ public abstract class Persona {
         this.mail = mail;
     }
 
-    public Long getLegajo() {
-        return legajo;
-    }
-
-    public void setLegajo(Long legajo) {
-        this.legajo = legajo;
-    }
-
     protected void cargarDatosBase(PersonaDto dto) {
-        this.nombre = dto.getNombre();
-        this.apellido = dto.getApellido();
-        this.mail = dto.getEmail();
-        this.legajo = dto.getLegajo();
+        this.nombre = dto.nombre;
+        this.apellido = dto.apellido;
+        this.mail = dto.email;
     }
 }
