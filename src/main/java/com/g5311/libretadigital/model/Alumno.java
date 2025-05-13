@@ -1,11 +1,12 @@
 package com.g5311.libretadigital.model;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import com.g5311.libretadigital.model.dto.AlumnoDto;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 @Entity
 @DiscriminatorValue("ALUMNO")
@@ -16,6 +17,14 @@ public class Alumno extends Persona {
     }
 
     private String legajo;
+
+    @ManyToMany
+    @JoinTable(
+            name = "alumno_aula",
+            joinColumns = @JoinColumn(name = "alumno_id"),
+            inverseJoinColumns = @JoinColumn(name = "aula_id")
+    )
+    private Set<Aula> aulas = new HashSet<>();
 
     public String getLegajo() {
         return legajo;
