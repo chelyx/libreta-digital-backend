@@ -18,13 +18,6 @@ public class Alumno extends Persona {
 
     private String legajo;
 
-    @ManyToMany
-    @JoinTable(
-            name = "alumno_aula",
-            joinColumns = @JoinColumn(name = "alumno_id"),
-            inverseJoinColumns = @JoinColumn(name = "aula_id")
-    )
-    private Set<Aula> aulas = new HashSet<>();
 
     public String getLegajo() {
         return legajo;

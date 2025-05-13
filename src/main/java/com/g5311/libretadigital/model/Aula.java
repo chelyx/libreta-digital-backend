@@ -20,8 +20,6 @@ public class Aula {
     @JoinColumn(name = "materia_id")
     private Materia materia;
 
-    @ManyToMany(mappedBy = "aulas")
-    private Set<Alumno> alumnos = new HashSet<>();
     private int anio;
 
     private String codigo;
