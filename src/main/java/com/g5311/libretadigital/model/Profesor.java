@@ -1,8 +1,5 @@
 package com.g5311.libretadigital.model;
 
-import java.util.UUID;
-
-import com.g5311.libretadigital.model.dto.AlumnoDto;
 import com.g5311.libretadigital.model.dto.ProfesorDto;
 
 import jakarta.persistence.DiscriminatorValue;

@@ -13,13 +13,15 @@ public class Nota {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    private String fecha; //por ahora lo dejo asi por el tema de los tipos de dato en la base
+    private String fecha; // por ahora lo dejo asi por el tema de los tipos de dato en la base
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "alumno_id")
     private Alumno alumno;
 
-    private int profesorID;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profesor_id")
+    private Profesor profesor;
 
     private int materiaID;
 
@@ -29,17 +31,13 @@ public class Nota {
     public Nota() {
     }
 
-
-    public Nota(String fecha, Alumno alumnoID, int profesorID, int materiaID, int valor) {
+    public Nota(String fecha, Alumno alumnoID, Profesor profesorID, int materiaID, int valor) {
         this.fecha = fecha;
         this.alumno = alumnoID;
-        this.profesorID = profesorID;
+        this.profesor = profesorID;
         this.materiaID = materiaID;
         this.valor = valor;
     }
-
-
-
 
     public UUID getId() {
         return id;
@@ -57,15 +55,12 @@ public class Nota {
         this.fecha = fecha;
     }
 
-
-
-
-    public int getProfesorID() {
-        return profesorID;
+    public Profesor getProfesor() {
+        return profesor;
     }
 
-    public void setProfesorID(int profesorID) {
-        this.profesorID = profesorID;
+    public void setProfesorID(Profesor profesorID) {
+        this.profesor = profesorID;
     }
 
     public int getMateriaID() {

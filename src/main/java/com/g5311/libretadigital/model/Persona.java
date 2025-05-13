@@ -56,7 +56,7 @@ public abstract class Persona {
     }
 
     public void setMail(String mail) {
-        this.email = email;
+        this.email = mail;
     }
 
     protected void cargarDatosBase(PersonaDto dto) {
