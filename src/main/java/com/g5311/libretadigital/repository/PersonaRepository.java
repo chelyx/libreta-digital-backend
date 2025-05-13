@@ -1,6 +1,7 @@
 package com.g5311.libretadigital.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,6 @@ import com.g5311.libretadigital.model.Persona;
 public interface PersonaRepository extends JpaRepository<Persona, UUID> {
 
     List<Persona> findByType(String type);
+    Persona findByEmail(String email);
+
 }

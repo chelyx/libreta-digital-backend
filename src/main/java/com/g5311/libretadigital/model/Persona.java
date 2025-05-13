@@ -21,7 +21,7 @@ public abstract class Persona {
 
     private String nombre;
     private String apellido;
-    private String mail;
+    private String email;
 
     @Column(name = "type", insertable = false, updatable = false)
     private String type;
@@ -52,16 +52,16 @@ public abstract class Persona {
     }
 
     public String getMail() {
-        return mail;
+        return email;
     }
 
     public void setMail(String mail) {
-        this.mail = mail;
+        this.email = email;
     }
 
     protected void cargarDatosBase(PersonaDto dto) {
         this.nombre = dto.nombre;
         this.apellido = dto.apellido;
-        this.mail = dto.email;
+        this.email = dto.email;
     }
 }

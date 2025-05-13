@@ -3,6 +3,8 @@ package com.g5311.libretadigital.config;
 import java.util.List;
 import java.util.UUID;
 
+import com.g5311.libretadigital.model.Nota;
+import com.g5311.libretadigital.repository.NotaRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -18,16 +20,22 @@ public class DataInitializer implements CommandLineRunner {
     private final PersonaRepository personaRepository;
     private final MateriaRepository materiaRepository;
 
-    public DataInitializer(PersonaRepository personaRepository, MateriaRepository materiaRepository) {
+    private final NotaRepository notaRepository;
+
+    public DataInitializer(PersonaRepository personaRepository, MateriaRepository materiaRepository, NotaRepository notaRepository) {
         this.personaRepository = personaRepository;
         this.materiaRepository = materiaRepository;
+        this.notaRepository = notaRepository;
     }
 
     @Override
     public void run(String... args) {
-        // Limpiar tablas
+
+        //Limpiar
         personaRepository.deleteAll();
         materiaRepository.deleteAll();
+        materiaRepository.deleteAll();
+
 
         // Insertar ALUMNOS
         personaRepository.saveAll(List.of(
@@ -97,5 +105,10 @@ public class DataInitializer implements CommandLineRunner {
 
                         "Diseño de Sistemas",
                         "K3042")));
+
+        Alumno juan = (Alumno) personaRepository.findByEmail("juan.perez@mail.com");
+
+        //Insertar NOTAS
+        notaRepository.saveAll(List.of(new Nota("13052025", juan, 1, 1, 9)));
     }
 }
