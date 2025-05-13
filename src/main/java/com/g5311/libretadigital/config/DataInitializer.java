@@ -97,10 +97,12 @@ public class DataInitializer implements CommandLineRunner {
                                                 "Proyecto Final")));
 
                 // Insertar MATERIAS
+
+                Materia pdep =new Materia(
+                        "Paradigmas de Programacion",
+                        "K2040");
                 materiaRepository.saveAll(List.of(
-                                new Materia(
-                                                "Paradigmas de Programacion",
-                                                "K2040"),
+                                pdep,
                                 new Materia(
                                                 "Estructura de Datos",
                                                 "K2041"),
@@ -110,7 +112,7 @@ public class DataInitializer implements CommandLineRunner {
                                                 "K3042")));
 
                 // Insertar NOTAS
-                notaRepository.save(new Nota("13052025", juan, carlos, 1, 9));
+                notaRepository.save(new Nota("13052025", juan, carlos, pdep, 9));
 
         }
 }
