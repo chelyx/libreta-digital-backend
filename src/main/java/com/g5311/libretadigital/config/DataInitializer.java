@@ -17,14 +17,16 @@ public class DataInitializer implements CommandLineRunner {
 
         private final AulaRepository aulaRepository;
         private final AsistenciaRepository asistenciaRepository;
+        private final AlumnoAulaRepository alumnoAulaRepository;
 
         public DataInitializer(PersonaRepository personaRepository, MateriaRepository materiaRepository,
-                               NotaRepository notaRepository, AulaRepository aulaRepository, AsistenciaRepository asistenciaRepository) {
+                               NotaRepository notaRepository, AulaRepository aulaRepository, AsistenciaRepository asistenciaRepository, AlumnoAulaRepository alumnoAulaRepository) {
                 this.personaRepository = personaRepository;
                 this.materiaRepository = materiaRepository;
                 this.notaRepository = notaRepository;
                 this.aulaRepository = aulaRepository;
                 this.asistenciaRepository = asistenciaRepository;
+                this.alumnoAulaRepository = alumnoAulaRepository;
         }
 
         @Override
@@ -118,12 +120,12 @@ public class DataInitializer implements CommandLineRunner {
                 aulaRepository.saveAll(List.of(aula));
                 // INSERTAR ALUMNO AULA
 
-                /*AlumnoAula relacion = new AlumnoAula();
+                AlumnoAula relacion = new AlumnoAula();
                 relacion.setAlumno(juan);
                 relacion.setAula(aula);
-                relacion = alumnoAulaRepository.save(relacion);
+                alumnoAulaRepository.save(relacion);
                 // INSERTAR ASISTENCIA
-             /   asistenciaRepository.save(new Asistencia("15042025","AUSENTE",))*/
+             /*  asistenciaRepository.save(new Asistencia("15042025","AUSENTE",))*/
 
 
         }
