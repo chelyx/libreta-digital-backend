@@ -1,7 +1,6 @@
 package com.g5311.libretadigital.config;
 
 import java.util.List;
-import java.util.UUID;
 
 import com.g5311.libretadigital.model.Nota;
 import com.g5311.libretadigital.repository.NotaRepository;
@@ -98,9 +97,9 @@ public class DataInitializer implements CommandLineRunner {
 
                 // Insertar MATERIAS
 
-                Materia pdep =new Materia(
-                        "Paradigmas de Programacion",
-                        "K2040");
+                Materia pdep = new Materia(
+                                "Paradigmas de Programacion",
+                                "K2040");
                 materiaRepository.saveAll(List.of(
                                 pdep,
                                 new Materia(
