@@ -124,8 +124,18 @@ public class DataInitializer implements CommandLineRunner {
                 relacion.setAlumno(juan);
                 relacion.setAula(aula);
                 alumnoAulaRepository.save(relacion);
-                // INSERTAR ASISTENCIA
-             /*  asistenciaRepository.save(new Asistencia("15042025","AUSENTE",))*/
+
+                 // INSERTAR ASISTENCIA
+                Asistencia asistencia = new Asistencia();
+                asistencia.setFecha("15042025");
+                asistencia.setEstado("PRESENTE");
+
+                // Relación ManyToMany desde AlumnoAula
+                relacion.getAsistencias().add(asistencia);
+                asistencia.getAlumnoAulas().add(relacion);
+
+                asistenciaRepository.save(asistencia);
+                alumnoAulaRepository.save(relacion);
 
 
         }
