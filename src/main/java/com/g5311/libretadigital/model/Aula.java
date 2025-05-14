@@ -30,8 +30,7 @@ public class Aula {
     @JoinColumn(name = "profesor_id")
     private Profesor profesor;
 
-    public Aula(UUID id, Materia materia, int anio, String codigo, String cuatri, Profesor profesor) {
-        this.id = id;
+    public Aula(Materia materia, int anio, String codigo, String cuatri, Profesor profesor) {
         this.materia = materia;
         this.anio = anio;
         this.codigo = codigo;

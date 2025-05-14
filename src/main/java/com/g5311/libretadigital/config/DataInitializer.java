@@ -1,18 +1,11 @@
 package com.g5311.libretadigital.config;
 
 import java.util.List;
-import java.util.UUID;
 
-import com.g5311.libretadigital.model.Nota;
-import com.g5311.libretadigital.repository.NotaRepository;
+import com.g5311.libretadigital.model.*;
+import com.g5311.libretadigital.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import com.g5311.libretadigital.model.Alumno;
-import com.g5311.libretadigital.model.Materia;
-import com.g5311.libretadigital.model.Profesor;
-import com.g5311.libretadigital.repository.MateriaRepository;
-import com.g5311.libretadigital.repository.PersonaRepository;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -22,11 +15,16 @@ public class DataInitializer implements CommandLineRunner {
 
         private final NotaRepository notaRepository;
 
+        private final AulaRepository aulaRepository;
+        private final AsistenciaRepository asistenciaRepository;
+
         public DataInitializer(PersonaRepository personaRepository, MateriaRepository materiaRepository,
-                        NotaRepository notaRepository) {
+                               NotaRepository notaRepository, AulaRepository aulaRepository, AsistenciaRepository asistenciaRepository) {
                 this.personaRepository = personaRepository;
                 this.materiaRepository = materiaRepository;
                 this.notaRepository = notaRepository;
+                this.aulaRepository = aulaRepository;
+                this.asistenciaRepository = asistenciaRepository;
         }
 
         @Override
@@ -113,6 +111,20 @@ public class DataInitializer implements CommandLineRunner {
 
                 // Insertar NOTAS
                 notaRepository.save(new Nota("13052025", juan, carlos, pdep, 9));
+
+                // INSERTAR AULA
+
+                Aula aula = new Aula(pdep,2025,"K2025","1C",carlos);
+                aulaRepository.saveAll(List.of(aula));
+                // INSERTAR ALUMNO AULA
+
+                /*AlumnoAula relacion = new AlumnoAula();
+                relacion.setAlumno(juan);
+                relacion.setAula(aula);
+                relacion = alumnoAulaRepository.save(relacion);
+                // INSERTAR ASISTENCIA
+             /   asistenciaRepository.save(new Asistencia("15042025","AUSENTE",))*/
+
 
         }
 }
