@@ -96,9 +96,9 @@ public class DataInitializer implements CommandLineRunner {
 
                 // Insertar MATERIAS
 
-                Materia pdep =new Materia(
-                        "Paradigmas de Programacion",
-                        "K2040");
+                Materia pdep = new Materia(
+                                "Paradigmas de Programacion",
+                                "K2040");
                 materiaRepository.saveAll(List.of(
                                 pdep,
                                 new Materia(

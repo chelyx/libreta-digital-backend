@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.g5311.libretadigital.exception.ResourceNotFoundException;
+import com.g5311.libretadigital.model.Asistencia;
+import com.g5311.libretadigital.model.Aula;
 import com.g5311.libretadigital.model.Materia;
 import com.g5311.libretadigital.model.Persona;
 import com.g5311.libretadigital.model.Profesor;
@@ -43,4 +45,5 @@ public class GeneralService {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Materia asignada correctamente a " + profesor.getNombre() + " " + profesor.getApellido());
     }
+
 }
