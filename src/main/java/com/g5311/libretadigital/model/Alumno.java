@@ -40,7 +40,7 @@ public class Alumno extends Persona {
         this.setNombre(nombre);
         this.setApellido(apellido);
         this.setMail(mail);
-        this.legajo = legajo;
+        this.setLegajo(legajo);
     }
 
 }

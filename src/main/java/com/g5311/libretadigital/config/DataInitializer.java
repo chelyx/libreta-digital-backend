@@ -137,6 +137,5 @@ public class DataInitializer implements CommandLineRunner {
                 asistenciaRepository.save(asistencia);
                 alumnoAulaRepository.save(relacion);
 
-
         }
 }

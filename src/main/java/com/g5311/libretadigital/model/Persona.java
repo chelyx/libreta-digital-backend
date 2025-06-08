@@ -64,4 +64,20 @@ public abstract class Persona {
         this.apellido = dto.apellido;
         this.email = dto.email;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }
