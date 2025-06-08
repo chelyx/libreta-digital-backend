@@ -3,8 +3,7 @@ package com.g5311.libretadigital.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.HashSet;
-import java.util.Set;
+
 import java.util.UUID;
 
 @Entity

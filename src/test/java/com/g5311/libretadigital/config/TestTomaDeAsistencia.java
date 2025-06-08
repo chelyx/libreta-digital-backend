@@ -3,14 +3,12 @@ package com.g5311.libretadigital.config;
 import com.g5311.libretadigital.model.Alumno;
 import com.g5311.libretadigital.model.AlumnoAula;
 import com.g5311.libretadigital.model.Aula;
-import com.g5311.libretadigital.model.dto.AlumnoDto;
 import com.g5311.libretadigital.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

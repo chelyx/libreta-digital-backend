@@ -1,7 +1,5 @@
 package com.g5311.libretadigital.model;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import com.g5311.libretadigital.model.dto.AlumnoDto;
