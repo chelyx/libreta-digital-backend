@@ -1,8 +1,6 @@
 package com.g5311.libretadigital.model;
 
-
 import jakarta.persistence.*;
-
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,13 +23,8 @@ public class AlumnoAula {
     private Aula aula;
 
     @ManyToMany
-    @JoinTable(
-            name = "alumnoaula_asistencia",
-            joinColumns = @JoinColumn(name = "alumnoaula_id"),
-            inverseJoinColumns = @JoinColumn(name = "asistencia_id")
-    )
+    @JoinTable(name = "alumnoaula_asistencia", joinColumns = @JoinColumn(name = "alumnoaula_id"), inverseJoinColumns = @JoinColumn(name = "asistencia_id"))
     private Set<Asistencia> asistencias = new HashSet<>();
-
 
     public AlumnoAula(Alumno alumno, Aula aula, Set<Asistencia> asistencias) {
         this.alumno = alumno;

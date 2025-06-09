@@ -20,7 +20,8 @@ public class DataInitializer implements CommandLineRunner {
         private final AlumnoAulaRepository alumnoAulaRepository;
 
         public DataInitializer(PersonaRepository personaRepository, MateriaRepository materiaRepository,
-                               NotaRepository notaRepository, AulaRepository aulaRepository, AsistenciaRepository asistenciaRepository, AlumnoAulaRepository alumnoAulaRepository) {
+                        NotaRepository notaRepository, AulaRepository aulaRepository,
+                        AsistenciaRepository asistenciaRepository, AlumnoAulaRepository alumnoAulaRepository) {
                 this.personaRepository = personaRepository;
                 this.materiaRepository = materiaRepository;
                 this.notaRepository = notaRepository;
@@ -116,7 +117,7 @@ public class DataInitializer implements CommandLineRunner {
 
                 // INSERTAR AULA
 
-                Aula aula = new Aula(pdep,2025,"K2025","1C",carlos);
+                Aula aula = new Aula(pdep, 2025, "K2025", "1C", carlos);
                 aulaRepository.saveAll(List.of(aula));
                 // INSERTAR ALUMNO AULA
 
@@ -125,7 +126,7 @@ public class DataInitializer implements CommandLineRunner {
                 relacion.setAula(aula);
                 alumnoAulaRepository.save(relacion);
 
-                 // INSERTAR ASISTENCIA
+                // INSERTAR ASISTENCIA
                 Asistencia asistencia = new Asistencia();
                 asistencia.setFecha("15042025");
                 asistencia.setEstado("PRESENTE");
@@ -136,7 +137,6 @@ public class DataInitializer implements CommandLineRunner {
 
                 asistenciaRepository.save(asistencia);
                 alumnoAulaRepository.save(relacion);
-
 
         }
 }
