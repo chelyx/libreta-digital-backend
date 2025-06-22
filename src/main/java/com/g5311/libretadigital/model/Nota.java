@@ -1,8 +1,11 @@
 package com.g5311.libretadigital.model;
 
+import com.g5311.libretadigital.model.dto.NotaDto;
+import com.g5311.libretadigital.model.dto.PersonaDto;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -33,12 +36,29 @@ public class Nota {
     public Nota() {
     }
 
-    public Nota(String fecha, Alumno alumnoID, Profesor profesorID, Materia materia, int valor) {
+    public Nota(String fecha, Alumno alumno, Profesor profesor, Materia materia, int valor) {
         this.fecha = fecha;
-        this.alumno = alumnoID;
-        this.profesor = profesorID;
+        this.alumno = alumno;
+        this.profesor = profesor;
         this.materia = materia;
         this.valor = valor;
+    }
+
+    public static Nota fromDto(NotaDto notaDto) {
+       Nota nota = new Nota();
+       nota.cargarDatosBase(notaDto);
+        return nota;
+    }
+
+    protected void cargarDatosBase(NotaDto dto) {
+        LocalDateTime fechaHora = LocalDateTime.now();
+        this.fecha = String.valueOf(fechaHora);
+        //TODO: Deberia instanciar los repositorios de alumno, profesor y materia
+        this.alumno = new Alumno();
+        this.alumno.setLegajo(dto.idAlumno.toString());
+        this.profesor = new Profesor();
+        this.materia = new Materia();
+        this.valor = dto.valor;
     }
 
     public UUID getId() {
@@ -88,4 +108,5 @@ public class Nota {
     public void setAlumno(Alumno alumno) {
         this.alumno = alumno;
     }
+
 }
