@@ -1,5 +1,7 @@
 package com.g5311.libretadigital.model.dto;
 
+import java.util.UUID;
+
 public class AlumnoDto extends PersonaDto {
     String legajo;
 
@@ -7,4 +9,6 @@ public class AlumnoDto extends PersonaDto {
     public AlumnoDto() {
     }
 
+    public AlumnoDto(UUID id, String nombre, String apellido, String mail, String legajo) {
+    }
 }

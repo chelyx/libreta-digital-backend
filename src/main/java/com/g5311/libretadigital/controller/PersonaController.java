@@ -1,14 +1,15 @@
 package com.g5311.libretadigital.controller;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+import com.g5311.libretadigital.model.AlumnoAula;
+import com.g5311.libretadigital.repository.AlumnoAulaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.g5311.libretadigital.model.Alumno;
 import com.g5311.libretadigital.model.Persona;
@@ -21,6 +22,8 @@ import com.g5311.libretadigital.service.PersonaService;
 @RequestMapping("/api")
 public class PersonaController {
     private final PersonaService personaService;
+    @Autowired
+    private AlumnoAulaRepository alumnoAulaRepository;
 
     public PersonaController(PersonaService personaService) {
         this.personaService = personaService;
@@ -52,4 +55,21 @@ public class PersonaController {
         return new ResponseEntity<>(profesores, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}/alumnos")
+    public ResponseEntity<List<Alumno>> listarAlumnosPorAula(@PathVariable UUID id) {
+        List<AlumnoAula> relaciones = alumnoAulaRepository.findByAulaId(id);
+
+        List<Alumno> alumnos = relaciones.stream()
+                .map(AlumnoAula::getAlumno)
+                .map(alumno -> new Alumno(
+
+                        alumno.getNombre(),
+                        alumno.getApellido(),
+                        alumno.getMail(),
+                        alumno.getLegajo()
+                ))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(alumnos);
+    }
 }

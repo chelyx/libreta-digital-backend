@@ -1,7 +1,5 @@
 package com.g5311.libretadigital.model;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import com.g5311.libretadigital.model.dto.AlumnoDto;
@@ -40,7 +38,7 @@ public class Alumno extends Persona {
         this.setNombre(nombre);
         this.setApellido(apellido);
         this.setMail(mail);
-        this.legajo = legajo;
+        this.setLegajo(legajo);
     }
 
 }
