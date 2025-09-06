@@ -1,7 +1,6 @@
 package com.g5311.libretadigital.repository;
 
 import com.g5311.libretadigital.model.Nota;
-import com.g5311.libretadigital.model.Persona;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

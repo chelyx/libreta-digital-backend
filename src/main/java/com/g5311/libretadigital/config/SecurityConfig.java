@@ -17,6 +17,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated())
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/h2-console/**") // desactiva CSRF solo para H2
+                )
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.disable()) // permite iframes (necesario para H2 console)
+                )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt());
         return http.build();
