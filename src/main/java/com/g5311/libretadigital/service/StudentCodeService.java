@@ -1,5 +1,6 @@
 package com.g5311.libretadigital.service;
 
+import java.lang.StackWalker.Option;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
@@ -26,10 +27,26 @@ public class StudentCodeService {
         return code;
     }
 
-    public Optional<String> validateCode(String code) {
-        return repo.findByCode(code)
-                .filter(sc -> sc.getExpiresAt().isAfter(LocalDateTime.now()))
-                // .pipe(st -> println(st))
-                .map(StudentCode::getStudentId);
+    public void validateCode(String code, String studentId) {
+        StudentCode sc = repo.findByCode(code);
+        if (sc.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Código expirado");
+        }
+
+        if (!sc.getStudentId().equals(studentId)) {
+            throw new IllegalArgumentException("Código no pertenece al usuario");
+        }
+
     }
+
+    public String validateCodeForAnyUser(String code) {
+        StudentCode sc = repo.findByCode(code); // EntityNotFoundException si no existe
+
+        if (sc.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Código expirado");
+        }
+
+        return sc.getStudentId(); // este es el alumno dueño del código
+    }
+
 }

@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StudentCodeRepository extends JpaRepository<StudentCode, String> {
-    Optional<StudentCode> findByCode(String code);
+    StudentCode findByCode(String code);
 }
