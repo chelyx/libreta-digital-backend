@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +61,7 @@ public class StudentCodeController {
         }
     }
 
+    @PreAuthorize("hasRole('PROFESOR')") // coincide exactamente con el rol en Auth0
     @PostMapping("/validate")
     public ResponseEntity<?> validate(@RequestBody Map<String, String> body) {
         String code = body.get("code");
