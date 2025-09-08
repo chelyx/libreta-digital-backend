@@ -30,13 +30,6 @@ public class StudentCodeController {
     @Autowired
     private Auth0Service auth0Service;
 
-    // Alumno pide su código
-    @PostMapping("/generate/{studentId}")
-    public ResponseEntity<?> generate(@PathVariable String studentId) {
-        String code = service.generateCode(studentId);
-        return ResponseEntity.ok(Map.of("studentId", studentId, "code", code));
-    }
-
     @PostMapping("/generate")
     public ResponseEntity<?> generateCode(@AuthenticationPrincipal Jwt jwt) {
         String userId = jwt.getSubject(); // el "sub" de Auth0

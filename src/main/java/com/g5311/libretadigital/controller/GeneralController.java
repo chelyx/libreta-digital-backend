@@ -1,5 +1,7 @@
 package com.g5311.libretadigital.controller;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -13,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.g5311.libretadigital.model.dto.AsignarMateriaDto;
 import com.g5311.libretadigital.service.GeneralService;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class GeneralController {
 
@@ -30,9 +32,13 @@ public class GeneralController {
         return generalService.asignarMateria(asignarMateriaDto);
     }
 
-    @GetMapping("/hello")
-    public String privateHello(@AuthenticationPrincipal Jwt jwt) {
-        System.out.println("JWT Claims: " + jwt.getClaims());
-        return "Hola " + jwt.getClaimAsString("email") + ", estás autenticado!";
+    @GetMapping("/roles")
+    public Map<String, Object> getProfile(@AuthenticationPrincipal Jwt jwt) {
+        // Leemos los claims que necesitamos
+        Object rolesClaim = jwt.getClaim("https://miapp.com/roles");
+
+        return Map.of(
+                "userId", jwt.getSubject(),
+                "roles", rolesClaim);
     }
 }
