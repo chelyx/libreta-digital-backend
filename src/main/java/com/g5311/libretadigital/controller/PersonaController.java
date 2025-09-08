@@ -19,7 +19,7 @@ import com.g5311.libretadigital.model.dto.ProfesorDto;
 import com.g5311.libretadigital.service.PersonaService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/personas")
 public class PersonaController {
     private final PersonaService personaService;
     @Autowired
@@ -66,8 +66,7 @@ public class PersonaController {
                         alumno.getNombre(),
                         alumno.getApellido(),
                         alumno.getMail(),
-                        alumno.getLegajo()
-                ))
+                        alumno.getLegajo()))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(alumnos);
