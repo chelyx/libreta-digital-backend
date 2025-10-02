@@ -10,6 +10,7 @@ public class StudentCode {
     private String studentId;
     private String code;
     private LocalDateTime expiresAt;
+    private boolean used = false;
 
     // Getters and Setters
     public String getStudentId() {
@@ -34,5 +35,13 @@ public class StudentCode {
 
     public void setExpiresAt(LocalDateTime expiresAt) {
         this.expiresAt = expiresAt;
+    }
+
+    public boolean isUsed() {
+        return used;
+    }
+
+    public void setUsed(boolean used) {
+        this.used = used;
     }
 }

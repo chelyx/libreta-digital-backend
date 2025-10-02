@@ -32,6 +32,9 @@ public class StudentCodeService {
         if (sc.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Código expirado");
         }
+        if (sc.isUsed()) {
+            throw new IllegalArgumentException("Código ya usado");
+        }
 
         if (!sc.getStudentId().equals(studentId)) {
             throw new IllegalArgumentException("Código no pertenece al usuario");
@@ -45,6 +48,13 @@ public class StudentCodeService {
         if (sc.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Código expirado");
         }
+
+        if (sc.isUsed()) {
+            throw new IllegalArgumentException("Código ya usado");
+        }
+
+        sc.setUsed(true);
+        repo.save(sc);
 
         return sc.getStudentId(); // este es el alumno dueño del código
     }
