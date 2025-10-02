@@ -35,7 +35,7 @@ public class GeneralController {
     @GetMapping("/roles")
     public Map<String, Object> getProfile(@AuthenticationPrincipal Jwt jwt) {
         // Leemos los claims que necesitamos
-        Object rolesClaim = jwt.getClaim("https://miapp.com/roles");
+        Object rolesClaim = jwt.getClaim("https://sirca.com/roles");
 
         return Map.of(
                 "userId", jwt.getSubject(),
