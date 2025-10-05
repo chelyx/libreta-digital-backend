@@ -15,6 +15,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**") // endpoints que queremos exponer
                         .allowedOrigins("http://localhost:4200") // URL del frontend
+                        .allowedOrigins("https://libreta-digital-frontend.vercel.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(true);
