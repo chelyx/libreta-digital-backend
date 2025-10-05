@@ -43,8 +43,9 @@ public class StudentCodeService {
     }
 
     public String validateCodeForAnyUser(String code) {
-        StudentCode sc = repo.findByCode(code); // EntityNotFoundException si no existe
+        Optional<StudentCode> optionalSc = Optional.ofNullable(repo.findByCode(code));
 
+        StudentCode sc = optionalSc.orElseThrow(() -> new IllegalArgumentException("Código no encontrado"));
         if (sc.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Código expirado");
         }
