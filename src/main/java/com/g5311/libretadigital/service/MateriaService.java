@@ -1,14 +1,15 @@
 package com.g5311.libretadigital.service;
 
 import com.g5311.libretadigital.model.Materia;
-import com.g5311.libretadigital.model.Nota;
 import com.g5311.libretadigital.model.dto.MateriaDto;
 import com.g5311.libretadigital.repository.MateriaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class MateriaService {
     private final MateriaRepository materiaRepository;
 
