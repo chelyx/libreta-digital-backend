@@ -3,6 +3,7 @@ package com.g5311.libretadigital.controller;
 import com.g5311.libretadigital.model.AlumnoAula;
 import com.g5311.libretadigital.model.Asistencia;
 import com.g5311.libretadigital.model.Nota;
+import com.g5311.libretadigital.model.dto.AsistenciaDetalleView;
 import com.g5311.libretadigital.repository.AlumnoAulaRepository;
 
 import com.g5311.libretadigital.repository.AsistenciaRepository;
@@ -60,11 +61,12 @@ public class AsistenciaController {
         return ResponseEntity.ok("Asistencias registradas con fecha " + fechaStr);
 
     }
-    /*
-    @GetMapping("/asistencias/{id}")
-    public ResponseEntity<List<AlumnoAula>> getAllAsistenciasById(@PathVariable UUID id) {
-        List<AlumnoAula> alumnoAulas = asistenciaService.getAllAlumnoAula(id);
-        return new ResponseEntity<>(alumnoAulas, HttpStatus.OK);
+    // Detalle de las asistencias por id de alumno
+    @GetMapping("/alumno/{alumnoId}/detalle")
+    public ResponseEntity<List<AsistenciaDetalleView>> obtenerDetalle(
+            @PathVariable UUID alumnoId
+    ) {
+        List<AsistenciaDetalleView> data = asistenciaService.obtenerDetallePorAlumno(alumnoId);
+        return ResponseEntity.ok(data);
     }
-   */
     }

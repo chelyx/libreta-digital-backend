@@ -2,6 +2,7 @@ package com.g5311.libretadigital.service;
 
 import com.g5311.libretadigital.model.AlumnoAula;
 import com.g5311.libretadigital.model.Materia;
+import com.g5311.libretadigital.model.dto.AsistenciaDetalleView;
 import com.g5311.libretadigital.model.dto.MateriaDto;
 import com.g5311.libretadigital.repository.AlumnoAulaRepository;
 import com.g5311.libretadigital.repository.AsistenciaRepository;
@@ -23,9 +24,8 @@ public class AsistenciaService {
         this.asistenciaRepository = asistenciaRepository;
         this.alumnoAulaRepository = alumnoAulaRepository;
     }
-/*
-    public List<AlumnoAula> getAllAlumnoAula(UUID alumnoId) {
-        return alumnoAulaRepository.findAllByAlumnoId(Collections.singleton(alumnoId));
+
+    public List<AsistenciaDetalleView> obtenerDetallePorAlumno(UUID alumnoId) {
+        return asistenciaRepository.findAsistenciaDetalleByAlumnoId(alumnoId);
     }
-*/
 }
