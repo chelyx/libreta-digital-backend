@@ -1,5 +1,6 @@
 package com.g5311.libretadigital.service;
 
+import com.g5311.libretadigital.repository.AulaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,18 @@ import com.g5311.libretadigital.model.dto.AsignarMateriaDto;
 import com.g5311.libretadigital.repository.MateriaRepository;
 import com.g5311.libretadigital.repository.PersonaRepository;
 
+import java.util.List;
+
 @Service
 public class GeneralService {
     private final MateriaRepository materiaRepository;
     private final PersonaRepository personaRepository;
+    private final AulaRepository aulaRepository;
 
-    public GeneralService(MateriaRepository materiaRepository, PersonaRepository personaRepository) {
+    public GeneralService(MateriaRepository materiaRepository, PersonaRepository personaRepository,AulaRepository aulaRepository ) {
         this.materiaRepository = materiaRepository;
         this.personaRepository = personaRepository;
+        this.aulaRepository = aulaRepository;
     }
 
     public ResponseEntity<String> asignarMateria(AsignarMateriaDto asignarMateriaDto) {
@@ -45,5 +50,7 @@ public class GeneralService {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Materia asignada correctamente a " + profesor.getNombre() + " " + profesor.getApellido());
     }
-
+    public List<Aula> obtenerAulasPorAnio(Integer anio) {
+        return aulaRepository.findByAnio(anio);
+    }
 }
