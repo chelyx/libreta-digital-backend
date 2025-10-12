@@ -46,3 +46,10 @@ insert into alumnoaula_asistencia (alumnoaula_id,asistencia_id) values ('80ee750
 insert into alumnoaula_asistencia (alumnoaula_id,asistencia_id) values ('80ee750e-6127-48e9-a83f-b762b53abef5','78348107-741b-4ccc-b8b0-8a0fda11fb6a');--MAXI
 insert into alumnoaula_asistencia (alumnoaula_id,asistencia_id) values ('80ee750e-6127-48e9-a83f-b762b53abef5','488d21ee-a732-4b20-8fee-6c1488a9c5e1');--MAXI
 insert into alumnoaula_asistencia (alumnoaula_id,asistencia_id) values ('80ee750e-6127-48e9-a83f-b762b53abef5','32d0b4ed-c8b2-4fda-b470-368c16fedd84');--MAXI
+
+--query para asistencias
+SELECT d.codigo,d.cuatri,d.anio, c.fecha,c.estado FROM ALUMNOAULA_ASISTENCIA a
+JOIN ALUMNO_AULA b on ALUMNOAULA_ID = b.ID
+JOIN ASISTENCIA c ON c.ID=ASISTENCIA_ID
+JOIN AULA d ON b.AULA_ID=d.ID
+WHERE b.ALUMNO_ID = '8925f1ce-e37e-4cd9-a50e-a91b12da86c5'
