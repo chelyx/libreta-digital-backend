@@ -17,14 +17,17 @@ insert into persona (apellido,email,nombre,legajo,type,id) values ('Castiglione'
 --Profesor
 insert into persona (apellido,email,nombre,legajo,type,id) values ('Ramirez','paramirez@frba.utn.edu.com','Pablo','105555','PROFESOR','3110bae1-d4f4-47fb-8402-3a5edbe70165');
 insert into persona (apellido,email,nombre,legajo,type,id) values ('Gonzalez','agonzalez@frba.utn.edu.com','Andrea','107777','PROFESOR','0d7635ca-337a-46b0-85f5-ca220a12dd72');
+insert into persona (apellido,email,nombre,legajo,type,id) values ('Diaz','fediaz@frba.utn.edu.com','Federico','912345','PROFESOR','0d7635ca-555a-46b0-85f5-ca220a12dd72');
 
 --Aula
 insert into aula (anio,codigo,cuatri,materia_id,profesor_id,id) values (2025,'k5040','1er Cuatri','34d7dd95-5fbc-48dd-91f8-3184e6e91e34','3110bae1-d4f4-47fb-8402-3a5edbe70165', '32bdc81c-9614-44f2-9974-50456f41aa5e');
-insert into aula (anio,codigo,cuatri,materia_id,profesor_id,id) values (2025,'k5040','1er Cuatri','595199c9-0937-46ab-8f76-af0cdd8188ea','0d7635ca-337a-46b0-85f5-ca220a12dd72', '5dbc8de4-7afb-40ce-89c4-b79468e27c00');
-insert into aula (anio,codigo,cuatri,materia_id,profesor_id,id) values (2025,'k5040','2do Cuatri','55b2cd00-c00b-46a3-8965-a544eb904b2e','0d7635ca-337a-46b0-85f5-ca220a12dd72', '890b9384-b13e-4d33-99cd-b06199e911fb');
+insert into aula (anio,codigo,cuatri,materia_id,profesor_id,id) values (2025,'k3040','1er Cuatri','595199c9-0937-46ab-8f76-af0cdd8188ea','0d7635ca-337a-46b0-85f5-ca220a12dd72', '5dbc8de4-7afb-40ce-89c4-b79468e27c00');
+insert into aula (anio,codigo,cuatri,materia_id,profesor_id,id) values (2025,'k5050','2do Cuatri','55b2cd00-c00b-46a3-8965-a544eb904b2e','0d7635ca-337a-46b0-85f5-ca220a12dd72', '890b9384-b13e-4d33-99cd-b06199e911fb');
+insert into aula (anio,codigo,cuatri,materia_id,profesor_id,id) values (2025,'k5060','2do Cuatri','55b2cd00-c00b-46a3-8965-a544eb904b2e','0d7635ca-337a-46b0-85f5-ca220a12dd72', '890b9384-b13e-4d33-99cd-b06199e911aa');
 
 --Asistencia
 insert into asistencia (estado,fecha,id) values ('AUSENTE','01/09/2025','b7fab35d-ca99-4d2b-a67f-c50f885d9f0f');
+insert into asistencia (estado,fecha,id) values ('PRESENTE','01/09/2025','aafab35d-ca99-4d2b-a67f-c50f885d9f0f');
 insert into asistencia (estado,fecha,id) values ('PRESENTE','08/09/2025','78348107-741b-4ccc-b8b0-8a0fda11fb6a');
 insert into asistencia (estado,fecha,id) values ('AUSENTE','01/04/2025','100c5bb0-abb3-4aed-b309-43de25a1748a');
 insert into asistencia (estado,fecha,id) values ('PRESENTE','15/09/2025','488d21ee-a732-4b20-8fee-6c1488a9c5e1');
@@ -38,6 +41,7 @@ insert into alumno_aula (alumno_id,aula_id,id) values ('8925f1ce-e37e-4cd9-a50e-
 insert into alumno_aula (alumno_id,aula_id,id) values ('866d1bca-96d6-4395-aaef-e69dfc6264bc','890b9384-b13e-4d33-99cd-b06199e911fb','ea9925b6-1597-4cc8-9446-6a143481cdf9');--YAYI
 insert into alumno_aula (alumno_id,aula_id,id) values ('866d1bca-96d6-4395-aaef-e69dfc6264bc','32bdc81c-9614-44f2-9974-50456f41aa5e','c4965217-ea5d-4178-8207-7e510680dcc2');--YAYI
 insert into alumno_aula (alumno_id,aula_id,id) values ('bb3c361c-b6a8-4f38-80fd-eca41200e835','32bdc81c-9614-44f2-9974-50456f41aa5e','6719a355-ef8f-44fd-a3c4-fe381bcc7a93');--ARA
+insert into alumno_aula (alumno_id,aula_id,id) values ('bb3c361c-b6a8-4f38-80fd-eca41200e835','890b9384-b13e-4d33-99cd-b06199e911aa','6719a355-ef8f-44fd-a3c4-fe381bcc7a90');--ARA
 insert into alumno_aula (alumno_id,aula_id,id) values ('8c3d8af3-9695-440a-a418-705f13b6bc35','32bdc81c-9614-44f2-9974-50456f41aa5e','52c8e297-4f59-4cbb-90f4-363cb6a60b17');--EZE
 
 
@@ -46,6 +50,13 @@ insert into alumnoaula_asistencia (alumnoaula_id,asistencia_id) values ('80ee750
 insert into alumnoaula_asistencia (alumnoaula_id,asistencia_id) values ('80ee750e-6127-48e9-a83f-b762b53abef5','78348107-741b-4ccc-b8b0-8a0fda11fb6a');--MAXI
 insert into alumnoaula_asistencia (alumnoaula_id,asistencia_id) values ('80ee750e-6127-48e9-a83f-b762b53abef5','488d21ee-a732-4b20-8fee-6c1488a9c5e1');--MAXI
 insert into alumnoaula_asistencia (alumnoaula_id,asistencia_id) values ('80ee750e-6127-48e9-a83f-b762b53abef5','32d0b4ed-c8b2-4fda-b470-368c16fedd84');--MAXI
+insert into alumnoaula_asistencia (alumnoaula_id,asistencia_id) values ('6719a355-ef8f-44fd-a3c4-fe381bcc7a90','aafab35d-ca99-4d2b-a67f-c50f885d9f0f');--ARA
+insert into alumnoaula_asistencia (alumnoaula_id,asistencia_id) values ('6719a355-ef8f-44fd-a3c4-fe381bcc7a90','78348107-741b-4ccc-b8b0-8a0fda11fb6a');--ARA
+
+
+--NOTAS
+insert into nota (fecha,valor,alumno_id,profesor_id,materia_id) values ('04/03/2025',9,'8925f1ce-e37e-4cd9-a50e-a91b12da86c5','0d7635ca-555a-46b0-85f5-ca220a12dd72','a4d49577-194c-49f4-9012-d0faa3078ea5');
+insert into nota (fecha,valor,alumno_id,profesor_id,materia_id) values ('08/12/2024',7,'8925f1ce-e37e-4cd9-a50e-a91b12da86c5','3110bae1-d4f4-47fb-8402-3a5edbe70165','9f2f3a15-8def-4206-a647-306af35efda7');
 
 --query para asistencias
 SELECT d.codigo,d.cuatri,d.anio, c.fecha,c.estado FROM ALUMNOAULA_ASISTENCIA a
