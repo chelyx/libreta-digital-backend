@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -42,6 +43,12 @@ public class CargaNotasController {
         List<Nota> notas = notasService.getAllNotas();
         return new ResponseEntity<>(notas, HttpStatus.OK);
     }
+
+   /* @GetMapping("/notas/{alumnoId}")
+    public ResponseEntity<List<Nota>> getAllNotasById( @PathVariable UUID alumnoId) {
+        List<Nota> notas = notasService.getAllNotasById(alumnoId);
+        return new ResponseEntity<>(notas, HttpStatus.OK);
+    }*/
 
     // Get all materias
     @GetMapping("/materias")

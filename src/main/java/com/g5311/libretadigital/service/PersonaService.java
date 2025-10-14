@@ -1,6 +1,8 @@
 package com.g5311.libretadigital.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +32,13 @@ public class PersonaService {
         return personaRepository.findByType("PROFESOR");
     }
 
+    public Optional<Persona> getPersonById(UUID idPersona)  {
+        return personaRepository.findById(idPersona);
+    }
+
     public ResponseEntity<Alumno> saveAlumno(AlumnoDto alumnoDto) {
         // Convertir AlumnoDto a Alumno
+        //TODO: AGREGAR EL TYPE
         Alumno alumno = Alumno.fromDto(alumnoDto);
         Alumno savedAlumno = personaRepository.save(alumno);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedAlumno);
@@ -39,6 +46,7 @@ public class PersonaService {
 
     public ResponseEntity<Profesor> saveProfesor(ProfesorDto profesorDto) {
         // Convertir ProfesorDto a Alumno
+        //TODO: AGREGAR EL TYPE
         Profesor profesor = Profesor.fromDto(profesorDto);
         Profesor savedProfesor = personaRepository.save(profesor);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProfesor);

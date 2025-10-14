@@ -44,20 +44,18 @@ public class Nota {
         this.valor = valor;
     }
 
-    public static Nota fromDto(NotaDto notaDto) {
+    public static Nota fromDto(NotaDto notaDto, Alumno al, Profesor prof, Materia mat) {
        Nota nota = new Nota();
-       nota.cargarDatosBase(notaDto);
+       nota.cargarDatosBase(notaDto, al, prof, mat);
         return nota;
     }
 
-    protected void cargarDatosBase(NotaDto dto) {
+    protected void cargarDatosBase(NotaDto dto, Alumno al, Profesor prof, Materia mat) {
         LocalDateTime fechaHora = LocalDateTime.now();
         this.fecha = String.valueOf(fechaHora);
-        //TODO: Deberia instanciar los repositorios de alumno, profesor y materia
-        this.alumno = new Alumno();
-        this.alumno.setLegajo(dto.idAlumno.toString());
-        this.profesor = new Profesor();
-        this.materia = new Materia();
+        this.alumno = al;
+        this.profesor = prof;
+        this.materia = mat;
         this.valor = dto.valor;
     }
 
