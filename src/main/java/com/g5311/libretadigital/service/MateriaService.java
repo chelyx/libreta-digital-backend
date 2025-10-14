@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class MateriaService {
@@ -23,6 +25,11 @@ public class MateriaService {
     public List<Materia> getMateriaByCodigo(String codigo) {
         return materiaRepository.findByCodigo(codigo);
     }
+
+    public Optional<Materia> getMateriaById(UUID id) {
+        return materiaRepository.findById(id);
+    }
+
 
     public ResponseEntity<Materia> saveMateria(MateriaDto materiaDto) {
         Materia materia = Materia.fromDto(materiaDto);
