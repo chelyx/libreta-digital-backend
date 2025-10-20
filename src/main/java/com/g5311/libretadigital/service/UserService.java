@@ -21,7 +21,7 @@ public class UserService {
                     nuevo.setAuth0Id(auth0Id);
                     nuevo.setNombre(jwt.getClaim("name"));
                     nuevo.setEmail(jwt.getClaim("email"));
-                    nuevo.setRol(jwt.getClaim("https://sirca.utn.edu/role"));
+                    nuevo.setRol(jwt.getClaim("https://sirca.com/roles"));
                     return usuarioRepository.save(nuevo);
                 });
     }

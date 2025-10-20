@@ -4,6 +4,7 @@ import com.g5311.libretadigital.model.User;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +16,8 @@ import com.g5311.libretadigital.service.UserService;
 @RequestMapping("/api/user")
 public class UserController {
 
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/register")
     public User register(@AuthenticationPrincipal Jwt jwt) {

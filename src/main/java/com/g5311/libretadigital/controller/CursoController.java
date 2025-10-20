@@ -2,6 +2,7 @@ package com.g5311.libretadigital.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -19,11 +20,8 @@ import com.g5311.libretadigital.service.CursoService;
 @RequestMapping("/api/cursos")
 public class CursoController {
 
-    private final CursoService cursoService;
-
-    public CursoController(CursoService cursoService) {
-        this.cursoService = cursoService;
-    }
+    @Autowired
+    private CursoService cursoService;
 
     @PreAuthorize("hasRole('PROFESOR')")
     @GetMapping("/profesor/{auth0Id}")

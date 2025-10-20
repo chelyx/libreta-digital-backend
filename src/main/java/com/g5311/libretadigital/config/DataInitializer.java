@@ -34,7 +34,7 @@ public class DataInitializer {
 
                 // 👩‍🏫 Profesores
                 User prof1 = new User();
-                prof1.setAuth0Id("auth0|prof123");
+                prof1.setAuth0Id("auth0|68bc93d0f21d782f04f36998");
                 prof1.setNombre("Profesor Uno");
                 prof1.setEmail("prof1@utn.edu.ar");
                 prof1.setRol("PROFESOR");
