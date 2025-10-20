@@ -1,37 +1,34 @@
 package com.g5311.libretadigital.model;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 import java.util.UUID;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
+@Table(name = "asistencias", uniqueConstraints = @UniqueConstraint(columnNames = { "curso_id", "alumno_id", "fecha" }))
 public class Asistencia {
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    private String fecha;
+    @Column(name = "curso_id", nullable = false)
+    private Long cursoId;
 
-    private String estado; //dps podemos ver si enum
+    @Column(name = "alumno_id", nullable = false)
+    private String alumnoId; // auth0_id del alumno
 
-    @ManyToMany(mappedBy = "asistencias")
-    private Set<AlumnoAula> alumnoAulas = new HashSet<>();
+    @Column(nullable = false)
+    private LocalDate fecha;
 
+    @Column(nullable = false)
+    private Boolean presente;
 
-    public Asistencia(String fecha, String estado, Set<AlumnoAula> alumnoAulas) {
-        this.fecha = fecha;
-        this.estado = estado;
-        this.alumnoAulas = alumnoAulas;
-    }
-
-    public Asistencia() {
-    }
-
+    // --- Getters y Setters ---
     public UUID getId() {
         return id;
     }
@@ -40,27 +37,35 @@ public class Asistencia {
         this.id = id;
     }
 
-    public String getFecha() {
+    public Long getCursoId() {
+        return cursoId;
+    }
+
+    public void setCursoId(Long cursoId) {
+        this.cursoId = cursoId;
+    }
+
+    public String getAlumnoId() {
+        return alumnoId;
+    }
+
+    public void setAlumnoId(String alumnoId) {
+        this.alumnoId = alumnoId;
+    }
+
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
-    public String getEstado() {
-        return estado;
+    public Boolean getPresente() {
+        return presente;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public Set<AlumnoAula> getAlumnoAulas() {
-        return alumnoAulas;
-    }
-
-    public void setAlumnoAulas(Set<AlumnoAula> alumnoAulas) {
-        this.alumnoAulas = alumnoAulas;
+    public void setPresente(Boolean presente) {
+        this.presente = presente;
     }
 }

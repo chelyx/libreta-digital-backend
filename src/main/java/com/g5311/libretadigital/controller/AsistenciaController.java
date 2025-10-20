@@ -1,52 +1,53 @@
 package com.g5311.libretadigital.controller;
 
-import com.g5311.libretadigital.model.AlumnoAula;
 import com.g5311.libretadigital.model.Asistencia;
-import com.g5311.libretadigital.repository.AlumnoAulaRepository;
-
-import com.g5311.libretadigital.repository.AsistenciaRepository;
+import com.g5311.libretadigital.model.dto.AsistenciaBulkRequest;
+import com.g5311.libretadigital.service.AsistenciaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/asistencia")
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api/asistencias")
 public class AsistenciaController {
 
     @Autowired
-    private AlumnoAulaRepository alumnoAulaRepository;
+    private AsistenciaService asistenciaService;
 
-    @Autowired
-    private AsistenciaRepository asistenciaRepository;
+    @PostMapping
+    public Asistencia registrar(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestParam Long cursoId,
+            @RequestParam Boolean presente) {
+        String alumnoId = jwt.getSubject(); // auth0_id
+        LocalDate fechaHoy = LocalDate.now();
 
-    // Este endpoint espera una lista de IDs de relaciones AlumnoAula
-    @PostMapping("/registrar")
-    public ResponseEntity<?> registrarAsistencia(@RequestBody Map<String, Object> body) {
-        String fechaStr = (String) body.get("fecha");
-
-        @SuppressWarnings("unchecked")
-        Map<String, Boolean> asistencias = (Map<String, Boolean>) body.get("asistencias");
-
-        for (Map.Entry<String, Boolean> entry : asistencias.entrySet()) {
-            UUID alumnoAulaId = UUID.fromString(entry.getKey());
-            boolean presente = entry.getValue();
-
-            AlumnoAula alumnoAula = alumnoAulaRepository.findById(alumnoAulaId)
-                    .orElseThrow(() -> new RuntimeException("AlumnoAula no encontrado: " + alumnoAulaId));
-
-            Asistencia asistencia = new Asistencia();
-            asistencia.setFecha(fechaStr);
-            asistencia.setEstado(presente ? "Presente" : "Ausente");
-            asistenciaRepository.save(asistencia);
-
-            alumnoAula.getAsistencias().add(asistencia);
-            alumnoAulaRepository.save(alumnoAula);
-        }
-
-        return ResponseEntity.ok("Asistencias registradas con fecha " + fechaStr);
-}
+        return asistenciaService.registrarAsistencia(cursoId, alumnoId, fechaHoy, presente);
     }
+
+    @PreAuthorize("hasRole('PROFESOR')")
+    @PostMapping("/curso")
+    public String registrarAsistenciasCurso(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestBody AsistenciaBulkRequest request) {
+        // TODO: validar que jwt.getSubject() == profesor del curso
+        List<Asistencia> asistencias = request.getAsistencias().stream().map(dto -> {
+            Asistencia a = new Asistencia();
+            a.setAlumnoId(dto.getAlumnoId());
+            a.setPresente(dto.isPresente());
+            return a;
+        }).toList();
+
+        asistenciaService.registrarAsistenciasMasivas(request.getCursoId(), request.getFecha(), asistencias);
+
+        return "Asistencias registradas correctamente";
+    }
+
+}

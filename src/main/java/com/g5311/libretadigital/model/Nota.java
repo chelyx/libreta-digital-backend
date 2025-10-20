@@ -1,112 +1,75 @@
 package com.g5311.libretadigital.model;
 
-import com.g5311.libretadigital.model.dto.NotaDto;
-import com.g5311.libretadigital.model.dto.PersonaDto;
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
+import java.time.LocalDate;
 
 @Entity
+@Table(name = "notas")
 public class Nota {
+
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String fecha; // por ahora lo dejo asi por el tema de los tipos de dato en la base
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "curso_id")
+    private Curso curso;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "alumno_id")
-    private Alumno alumno;
+    @Column(name = "alumno_auth0_id", nullable = false)
+    private String alumnoAuth0Id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profesor_id")
-    private Profesor profesor;
+    private String descripcion; // Ej: "Parcial 1", "TP 2", "Final"
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "materia_id")
-    private Materia materia;
+    private Double valor; // Ej: 8.5
 
-    private int valor;
+    private LocalDate fecha = LocalDate.now();
 
-    // Constructor vacío (requerido por JPA)
-    public Nota() {
-    }
-
-    public Nota(String fecha, Alumno alumno, Profesor profesor, Materia materia, int valor) {
-        this.fecha = fecha;
-        this.alumno = alumno;
-        this.profesor = profesor;
-        this.materia = materia;
-        this.valor = valor;
-    }
-
-    public static Nota fromDto(NotaDto notaDto) {
-       Nota nota = new Nota();
-       nota.cargarDatosBase(notaDto);
-        return nota;
-    }
-
-    protected void cargarDatosBase(NotaDto dto) {
-        LocalDateTime fechaHora = LocalDateTime.now();
-        this.fecha = String.valueOf(fechaHora);
-        //TODO: Deberia instanciar los repositorios de alumno, profesor y materia
-        this.alumno = new Alumno();
-        this.alumno.setLegajo(dto.idAlumno.toString());
-        this.profesor = new Profesor();
-        this.materia = new Materia();
-        this.valor = dto.valor;
-    }
-
-    public UUID getId() {
+    // --- Getters y Setters ---
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getFecha() {
-        return fecha;
+    public Curso getCurso() {
+        return curso;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setCurso(Curso curso) {
+        this.curso = curso;
     }
 
-    public Profesor getProfesor() {
-        return profesor;
+    public String getAlumnoAuth0Id() {
+        return alumnoAuth0Id;
     }
 
-    public void setProfesorID(Profesor profesorID) {
-        this.profesor = profesorID;
+    public void setAlumnoAuth0Id(String alumnoAuth0Id) {
+        this.alumnoAuth0Id = alumnoAuth0Id;
     }
 
-    public Materia getMateria() {
-        return materia;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setMateriaID(Materia materiaID) {
-        this.materia = materia;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public int getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(int valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 
-    public Alumno getAlumno() {
-        return alumno;
+    public LocalDate getFecha() {
+        return fecha;
     }
 
-    public void setAlumno(Alumno alumno) {
-        this.alumno = alumno;
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
     }
-
 }
