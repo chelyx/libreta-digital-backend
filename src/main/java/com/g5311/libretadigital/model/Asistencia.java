@@ -17,7 +17,7 @@ public class Asistencia {
     private UUID id;
 
     @Column(name = "curso_id", nullable = false)
-    private Long cursoId;
+    private UUID cursoId;
 
     @Column(name = "alumno_id", nullable = false)
     private String alumnoId; // auth0_id del alumno
@@ -37,11 +37,11 @@ public class Asistencia {
         this.id = id;
     }
 
-    public Long getCursoId() {
+    public UUID getCursoId() {
         return cursoId;
     }
 
-    public void setCursoId(Long cursoId) {
+    public void setCursoId(UUID cursoId) {
         this.cursoId = cursoId;
     }
 

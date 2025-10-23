@@ -7,6 +7,7 @@ import com.g5311.libretadigital.repository.NotaRepository;
 
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,7 +21,7 @@ public class NotaService {
         this.cursoRepository = cursoRepository;
     }
 
-    public Nota guardarNota(Long cursoId, String alumnoAuth0Id, String descripcion, Double valor) {
+    public Nota guardarNota(UUID cursoId, String alumnoAuth0Id, String descripcion, Double valor) {
         Curso curso = cursoRepository.findById(cursoId)
                 .orElseThrow(() -> new IllegalArgumentException("Curso no encontrado"));
 
@@ -33,15 +34,15 @@ public class NotaService {
         return notaRepository.save(nota);
     }
 
-    public List<Nota> obtenerNotasDeCurso(Long cursoId) {
+    public List<Nota> obtenerNotasDeCurso(UUID cursoId) {
         return notaRepository.findByCursoId(cursoId);
     }
 
-    public List<Nota> obtenerNotasDeAlumno(Long cursoId, String alumnoAuth0Id) {
+    public List<Nota> obtenerNotasDeAlumno(UUID cursoId, String alumnoAuth0Id) {
         return notaRepository.findByCursoIdAndAlumnoAuth0Id(cursoId, alumnoAuth0Id);
     }
 
-    public List<Nota> guardarNotasEnBulk(Long cursoId, List<Nota> notas) {
+    public List<Nota> guardarNotasEnBulk(UUID cursoId, List<Nota> notas) {
         Curso curso = cursoRepository.findById(cursoId)
                 .orElseThrow(() -> new IllegalArgumentException("Curso no encontrado"));
 

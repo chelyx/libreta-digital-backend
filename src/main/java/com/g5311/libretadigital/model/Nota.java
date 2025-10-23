@@ -2,14 +2,19 @@ package com.g5311.libretadigital.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "notas")
 public class Nota {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "curso_id")
@@ -25,11 +30,11 @@ public class Nota {
     private LocalDate fecha = LocalDate.now();
 
     // --- Getters y Setters ---
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

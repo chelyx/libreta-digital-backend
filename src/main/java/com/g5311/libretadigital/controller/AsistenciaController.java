@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -24,7 +25,7 @@ public class AsistenciaController {
     @PostMapping
     public Asistencia registrar(
             @AuthenticationPrincipal Jwt jwt,
-            @RequestParam Long cursoId,
+            @RequestParam UUID cursoId,
             @RequestParam Boolean presente) {
         String alumnoId = jwt.getSubject(); // auth0_id
         LocalDate fechaHoy = LocalDate.now();
@@ -33,7 +34,7 @@ public class AsistenciaController {
     }
 
     @PreAuthorize("hasRole('PROFESOR')")
-    @PostMapping("/curso")
+    @PostMapping("/guardar")
     public String registrarAsistenciasCurso(
             @AuthenticationPrincipal Jwt jwt,
             @RequestBody AsistenciaBulkRequest request) {

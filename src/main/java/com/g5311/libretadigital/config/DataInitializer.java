@@ -66,14 +66,32 @@ public class DataInitializer {
                 a3.setEmail("pedro@utn.edu.ar");
                 a3.setRol("ALUMNO");
 
-                userRepository.saveAll(List.of(a1, a2, a3));
+                User a4 = new User();
+                a4.setAuth0Id("auth0|alum4");
+                a4.setNombre("Ana Torres");
+                a4.setEmail("ana@utn.edu.ar");
+                a4.setRol("ALUMNO");
+
+                User a5 = new User();
+                a5.setAuth0Id("auth0|alum5");
+                a5.setNombre("Lucía Fernández");
+                a5.setEmail("lucia@utn.edu.ar");
+                a5.setRol("ALUMNO");
+
+                User a6 = new User();
+                a6.setAuth0Id("auth0|alum6");
+                a6.setNombre("Carlos Díaz");
+                a6.setEmail("carlos@utn.edu.ar");
+                a6.setRol("ALUMNO");
+
+                userRepository.saveAll(List.of(a1, a2, a3, a4, a5, a6)); // para tener más alumnos
 
                 // 📘 Cursos
                 Curso curso1 = new Curso();
                 curso1.setNombre("Programación I");
                 curso1.setCodigo("PROG1");
                 curso1.setDocenteAuth0Id(prof1.getAuth0Id());
-                curso1.setAlumnos(Set.of(a1, a2, a3)); // usamos List<User>
+                curso1.setAlumnos(Set.of(a1, a2, a3, a4, a5, a6)); // usamos List<User>
 
                 Curso curso2 = new Curso();
                 curso2.setNombre("Bases de Datos");

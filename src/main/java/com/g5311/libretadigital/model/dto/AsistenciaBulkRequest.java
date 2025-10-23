@@ -2,18 +2,19 @@ package com.g5311.libretadigital.model.dto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public class AsistenciaBulkRequest {
-    private Long cursoId;
+    private UUID cursoId;
     private LocalDate fecha;
     private List<AsistenciaAlumnoDto> asistencias;
 
     // getters y setters
-    public Long getCursoId() {
+    public UUID getCursoId() {
         return cursoId;
     }
 
-    public void setCursoId(Long cursoId) {
+    public void setCursoId(UUID cursoId) {
         this.cursoId = cursoId;
     }
 

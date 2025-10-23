@@ -5,6 +5,7 @@ import com.g5311.libretadigital.service.NotaService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/notas")
@@ -19,7 +20,7 @@ public class NotaController {
     // Cargar una nota
     @PostMapping("/curso/{cursoId}")
     public Nota guardarNota(
-            @PathVariable Long cursoId,
+            @PathVariable UUID cursoId,
             @RequestBody Map<String, Object> body) {
         String alumnoAuth0Id = (String) body.get("alumnoAuth0Id");
         String descripcion = (String) body.get("descripcion");
@@ -30,21 +31,21 @@ public class NotaController {
 
     // Obtener todas las notas de un curso
     @GetMapping("/curso/{cursoId}")
-    public List<Nota> obtenerNotasDeCurso(@PathVariable Long cursoId) {
+    public List<Nota> obtenerNotasDeCurso(@PathVariable UUID cursoId) {
         return notaService.obtenerNotasDeCurso(cursoId);
     }
 
     // Obtener las notas de un alumno en un curso
     @GetMapping("/curso/{cursoId}/alumno/{auth0Id}")
     public List<Nota> obtenerNotasDeAlumno(
-            @PathVariable Long cursoId,
+            @PathVariable UUID cursoId,
             @PathVariable String auth0Id) {
         return notaService.obtenerNotasDeAlumno(cursoId, auth0Id);
     }
 
     @PostMapping("/curso/{cursoId}/bulk")
     public List<Nota> guardarNotasEnBulk(
-            @PathVariable Long cursoId,
+            @PathVariable UUID cursoId,
             @RequestBody List<Map<String, Object>> notasData) {
         List<Nota> notas = notasData.stream().map(data -> {
             Nota n = new Nota();

@@ -9,6 +9,7 @@ import com.g5311.libretadigital.repository.AsistenciaRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AsistenciaService {
@@ -16,7 +17,7 @@ public class AsistenciaService {
     @Autowired
     private AsistenciaRepository asistenciaRepository;
 
-    public Asistencia registrarAsistencia(Long cursoId, String alumnoId, LocalDate fecha, boolean presente) {
+    public Asistencia registrarAsistencia(UUID cursoId, String alumnoId, LocalDate fecha, boolean presente) {
         // Verificar si ya existe una asistencia para ese día
         Optional<Asistencia> existente = asistenciaRepository.findByCursoIdAndAlumnoIdAndFecha(cursoId, alumnoId,
                 fecha);
@@ -36,7 +37,7 @@ public class AsistenciaService {
         return asistenciaRepository.save(nueva);
     }
 
-    public void registrarAsistenciasMasivas(Long cursoId, LocalDate fecha, List<Asistencia> lista) {
+    public void registrarAsistenciasMasivas(UUID cursoId, LocalDate fecha, List<Asistencia> lista) {
         for (Asistencia asistencia : lista) {
             registrarAsistencia(cursoId, asistencia.getAlumnoId(), fecha, asistencia.getPresente());
         }

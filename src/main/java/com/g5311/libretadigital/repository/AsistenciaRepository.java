@@ -9,5 +9,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface AsistenciaRepository extends JpaRepository<Asistencia, UUID> {
-    Optional<Asistencia> findByCursoIdAndAlumnoIdAndFecha(Long cursoId, String alumnoId, LocalDate fecha);
+    Optional<Asistencia> findByCursoIdAndAlumnoIdAndFecha(UUID cursoId, String alumnoId, LocalDate fecha);
 }
