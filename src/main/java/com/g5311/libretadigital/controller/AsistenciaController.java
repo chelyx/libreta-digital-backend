@@ -5,6 +5,7 @@ import com.g5311.libretadigital.model.dto.AsistenciaBulkRequest;
 import com.g5311.libretadigital.service.AsistenciaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -35,7 +37,7 @@ public class AsistenciaController {
 
     @PreAuthorize("hasRole('PROFESOR')")
     @PostMapping("/guardar")
-    public String registrarAsistenciasCurso(
+    public ResponseEntity<?> registrarAsistenciasCurso(
             @AuthenticationPrincipal Jwt jwt,
             @RequestBody AsistenciaBulkRequest request) {
         // TODO: validar que jwt.getSubject() == profesor del curso
@@ -48,7 +50,17 @@ public class AsistenciaController {
 
         asistenciaService.registrarAsistenciasMasivas(request.getCursoId(), request.getFecha(), asistencias);
 
-        return "Asistencias registradas correctamente";
+        return ResponseEntity.ok(Map.of("status", "Asistencias registradas correctamente"));
+    }
+
+    @PreAuthorize("hasRole('PROFESOR')")
+    @GetMapping("/{cursoId}")
+    public ResponseEntity<?> obtenerAsistencias(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID cursoId) {
+        List<Asistencia> asistencias = asistenciaService.obtenerAsistenciasPorCurso(cursoId);
+
+        return ResponseEntity.ok(asistencias);
     }
 
 }

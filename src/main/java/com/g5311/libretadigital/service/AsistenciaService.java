@@ -42,4 +42,8 @@ public class AsistenciaService {
             registrarAsistencia(cursoId, asistencia.getAlumnoId(), fecha, asistencia.getPresente());
         }
     }
+
+    public List<Asistencia> obtenerAsistenciasPorCurso(UUID cursoId) {
+        return asistenciaRepository.findByCursoId(cursoId);
+    }
 }
