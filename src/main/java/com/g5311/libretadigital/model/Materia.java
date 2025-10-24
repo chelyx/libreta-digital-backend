@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import com.g5311.libretadigital.model.dto.MateriaDto;
 import com.g5311.libretadigital.model.dto.NotaDto;
-import com.g5311.libretadigital.model.dto.PersonaDto;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;

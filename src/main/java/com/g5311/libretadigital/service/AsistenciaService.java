@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.g5311.libretadigital.model.Asistencia;
+import com.g5311.libretadigital.model.dto.AsistenciaAlumnoDto;
+import com.g5311.libretadigital.model.dto.AsistenciaResponse;
 import com.g5311.libretadigital.repository.AsistenciaRepository;
 
 import java.time.LocalDate;
@@ -37,13 +39,13 @@ public class AsistenciaService {
         return asistenciaRepository.save(nueva);
     }
 
-    public void registrarAsistenciasMasivas(UUID cursoId, LocalDate fecha, List<Asistencia> lista) {
-        for (Asistencia asistencia : lista) {
-            registrarAsistencia(cursoId, asistencia.getAlumnoId(), fecha, asistencia.getPresente());
+    public void registrarAsistenciasMasivas(UUID cursoId, List<AsistenciaAlumnoDto> lista) {
+        for (AsistenciaAlumnoDto asistencia : lista) {
+            registrarAsistencia(cursoId, asistencia.getAlumnoId(), asistencia.getFecha(), asistencia.isPresente());
         }
     }
 
-    public List<Asistencia> obtenerAsistenciasPorCurso(UUID cursoId) {
-        return asistenciaRepository.findByCursoId(cursoId);
+    public List<AsistenciaResponse> obtenerAsistenciasPorCurso(UUID cursoId) {
+        return asistenciaRepository.findAsistenciaResponsesByCursoId(cursoId);
     }
 }

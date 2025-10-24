@@ -2,6 +2,7 @@ package com.g5311.libretadigital.controller;
 
 import com.g5311.libretadigital.model.Asistencia;
 import com.g5311.libretadigital.model.dto.AsistenciaBulkRequest;
+import com.g5311.libretadigital.model.dto.AsistenciaResponse;
 import com.g5311.libretadigital.service.AsistenciaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +42,8 @@ public class AsistenciaController {
             @AuthenticationPrincipal Jwt jwt,
             @RequestBody AsistenciaBulkRequest request) {
         // TODO: validar que jwt.getSubject() == profesor del curso
-        List<Asistencia> asistencias = request.getAsistencias().stream().map(dto -> {
-            Asistencia a = new Asistencia();
-            a.setAlumnoId(dto.getAlumnoId());
-            a.setPresente(dto.isPresente());
-            return a;
-        }).toList();
 
-        asistenciaService.registrarAsistenciasMasivas(request.getCursoId(), request.getFecha(), asistencias);
+        asistenciaService.registrarAsistenciasMasivas(request.getCursoId(), request.getAsistencias());
 
         return ResponseEntity.ok(Map.of("status", "Asistencias registradas correctamente"));
     }
@@ -58,7 +53,7 @@ public class AsistenciaController {
     public ResponseEntity<?> obtenerAsistencias(
             @AuthenticationPrincipal Jwt jwt,
             @PathVariable UUID cursoId) {
-        List<Asistencia> asistencias = asistenciaService.obtenerAsistenciasPorCurso(cursoId);
+        List<AsistenciaResponse> asistencias = asistenciaService.obtenerAsistenciasPorCurso(cursoId);
 
         return ResponseEntity.ok(asistencias);
     }
