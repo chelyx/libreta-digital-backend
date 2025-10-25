@@ -2,16 +2,21 @@ package com.g5311.libretadigital.controller;
 
 import com.g5311.libretadigital.model.Nota;
 import com.g5311.libretadigital.service.NotaService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/notas")
 public class NotaController {
 
-    private final NotaService notaService;
+    @Autowired
+    private NotaService notaService;
 
     public NotaController(NotaService notaService) {
         this.notaService = notaService;
