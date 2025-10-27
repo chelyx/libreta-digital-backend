@@ -23,8 +23,7 @@ public class NotaService {
     private TsaService tsaService;
 
     public Nota guardarNota(UUID cursoId, String alumnoAuth0Id, String descripcion, Double valor) {
-        Curso curso = cursoRepository.findById(cursoId)
-                .orElseThrow(() -> new IllegalArgumentException("Curso no encontrado"));
+        Curso curso = cursoRepository.findById(cursoId).orElseThrow(() -> new IllegalArgumentException("Curso no encontrado"));
 
         Nota nota = new Nota();
         nota.setCurso(curso);
@@ -39,7 +38,7 @@ public class NotaService {
         return notaRepository.findByCursoId(cursoId);
     }
 
-    public List<Nota> obtenerNotasDeAlumno(UUID cursoId, String alumnoAuth0Id) {
+    public List<Nota> obtenerNotasDeAlumnoEnCurso(UUID cursoId, String alumnoAuth0Id) {
         return notaRepository.findByCursoIdAndAlumnoAuth0Id(cursoId, alumnoAuth0Id);
     }
 
@@ -71,7 +70,9 @@ public class NotaService {
         } catch (Exception e) {
             throw new RuntimeException("Error al registrar la nota en BFA TSA", e);
         }
-
     }
 
+    public List<Nota> obtenerNotasPorAlumno(String alumnoAuth0Id) {
+        return notaRepository.findByAlumnoAuth0Id(alumnoAuth0Id);
+    }
 }

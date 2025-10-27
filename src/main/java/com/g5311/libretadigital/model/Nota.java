@@ -1,5 +1,6 @@
 package com.g5311.libretadigital.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -18,6 +19,7 @@ public class Nota {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "curso_id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Curso curso;
 
     @Column(name = "alumno_auth0_id", nullable = false)

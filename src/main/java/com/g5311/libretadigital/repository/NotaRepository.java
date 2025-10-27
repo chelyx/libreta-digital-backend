@@ -10,4 +10,6 @@ public interface NotaRepository extends JpaRepository<Nota, UUID> {
     List<Nota> findByCursoId(UUID cursoId);
 
     List<Nota> findByCursoIdAndAlumnoAuth0Id(UUID cursoId, String alumnoAuth0Id);
+
+    List<Nota> findByAlumnoAuth0Id(String alumnoAuth0Id);
 }

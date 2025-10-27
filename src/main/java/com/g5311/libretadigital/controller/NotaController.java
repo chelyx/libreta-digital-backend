@@ -41,11 +41,17 @@ public class NotaController {
     }
 
     // Obtener las notas de un alumno en un curso
+    //El auth0Id normalmente viene con un pipe (auth0|xxxxx), pero en el path hay que replazar el '|' por '%7C' para que funcione
     @GetMapping("/curso/{cursoId}/alumno/{auth0Id}")
-    public List<Nota> obtenerNotasDeAlumno(
-            @PathVariable UUID cursoId,
-            @PathVariable String auth0Id) {
-        return notaService.obtenerNotasDeAlumno(cursoId, auth0Id);
+    public List<Nota> obtenerNotasDeAlumno(@PathVariable UUID cursoId, @PathVariable String auth0Id) {
+        return notaService.obtenerNotasDeAlumnoEnCurso(cursoId, auth0Id);
+    }
+
+    // Obtener las notas de un alumno en TODOS sus cursos
+    @GetMapping("/alumno/{auth0Id}")
+    public ResponseEntity<List<Nota>> getNotasPorAlumno(@PathVariable String auth0Id) {
+        List<Nota> notas = notaService.obtenerNotasPorAlumno(auth0Id);
+        return ResponseEntity.ok(notas);
     }
 
     @PostMapping("/curso/{cursoId}/bulk")
