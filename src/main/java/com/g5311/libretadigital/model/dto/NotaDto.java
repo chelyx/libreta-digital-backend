@@ -1,41 +1,26 @@
 package com.g5311.libretadigital.model.dto;
 
+import java.util.UUID;
+
 public class NotaDto {
-    private int legajoAlumno; // No lo subas al TSA, solo lo usás para generar hash
-    private String materia;
-    private int nota;
-    private String fecha; // formato ISO: yyyy-MM-dd
+    private UUID id;
+    private Double valor;
 
-    // Getters y Setters
-    public int getAlumno() {
-        return legajoAlumno;
+    // getters y setters
+    public UUID getId() {
+        return id;
     }
 
-    public void setAlumno(int alumnoId) {
-        this.legajoAlumno = alumnoId;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
-    public String getMateria() {
-        return materia;
+    public Double getValor() {
+        return valor;
     }
 
-    public void setMateria(String materia) {
-        this.materia = materia;
+    public void setValor(Double valor) {
+        this.valor = valor;
     }
 
-    public int getNota() {
-        return nota;
-    }
-
-    public void setNota(int nota) {
-        this.nota = nota;
-    }
-
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
 }

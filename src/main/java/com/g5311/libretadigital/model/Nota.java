@@ -1,6 +1,5 @@
 package com.g5311.libretadigital.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -17,10 +16,8 @@ public class Nota {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "curso_id")
-    @JsonIdentityReference(alwaysAsId = true)
-    private Curso curso;
+    @Column(name = "curso_id", nullable = false)
+    private UUID cursoId;
 
     @Column(name = "alumno_auth0_id", nullable = false)
     private String alumnoAuth0Id;
@@ -40,12 +37,12 @@ public class Nota {
         this.id = id;
     }
 
-    public Curso getCurso() {
-        return curso;
+    public UUID getCursoId() {
+        return cursoId;
     }
 
-    public void setCurso(Curso curso) {
-        this.curso = curso;
+    public void setCursoId(UUID curso) {
+        this.cursoId = curso;
     }
 
     public String getAlumnoAuth0Id() {
