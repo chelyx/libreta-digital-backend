@@ -1,14 +1,18 @@
 package com.g5311.libretadigital.config;
 
+import com.g5311.libretadigital.model.Asistencia;
 import com.g5311.libretadigital.model.Curso;
 import com.g5311.libretadigital.model.Nota;
 import com.g5311.libretadigital.model.User;
+import com.g5311.libretadigital.repository.AsistenciaRepository;
 import com.g5311.libretadigital.repository.CursoRepository;
 import com.g5311.libretadigital.repository.NotaRepository;
 import com.g5311.libretadigital.repository.UserRepository;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -17,15 +21,17 @@ public class DataInitializer {
 
         private final CursoRepository cursoRepository;
         private final UserRepository userRepository;
-
+        private final AsistenciaRepository asistenciaRepository;
         private final NotaRepository notaRepository;
 
         public DataInitializer(CursoRepository cursoRepository,
                         UserRepository userRepository,
-                        NotaRepository notaRepository) {
+                        NotaRepository notaRepository,
+                        AsistenciaRepository asistenciaRepository) {
                 this.cursoRepository = cursoRepository;
                 this.userRepository = userRepository;
                 this.notaRepository = notaRepository;
+                this.asistenciaRepository = asistenciaRepository;
         }
 
         @PostConstruct
@@ -101,6 +107,28 @@ public class DataInitializer {
                 curso2.setAlumnos(Set.of(a1, a2));
 
                 cursoRepository.saveAll(List.of(curso1, curso2));
+
+                //Asistencia para pruebas
+                Asistencia asist1 = new Asistencia();
+                LocalDate fechaHoy = LocalDate.now();
+                asist1.setCursoId(curso2.getId());
+                asist1.setAlumnoId(a5.getAuth0Id());
+                asist1.setFecha(fechaHoy);
+                asist1.setPresente(true);
+
+                Asistencia asist2 = new Asistencia();;
+                asist2.setCursoId(curso2.getId());
+                asist2.setAlumnoId(a4.getAuth0Id());
+                asist2.setFecha(fechaHoy);
+                asist2.setPresente(true);
+
+                Asistencia asist3 = new Asistencia();;
+                asist3.setCursoId(curso1.getId());
+                asist3.setAlumnoId(a3.getAuth0Id());
+                asist3.setFecha(fechaHoy);
+                asist3.setPresente(true);
+
+                asistenciaRepository.saveAll(List.of(asist1, asist2, asist3));
 
                 // 🧮 Notas de ejemplo
                 Nota n1 = new Nota();

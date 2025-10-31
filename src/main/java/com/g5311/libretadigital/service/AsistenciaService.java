@@ -9,6 +9,7 @@ import com.g5311.libretadigital.model.dto.AsistenciaResponse;
 import com.g5311.libretadigital.repository.AsistenciaRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -47,5 +48,35 @@ public class AsistenciaService {
 
     public List<AsistenciaResponse> obtenerAsistenciasPorCurso(UUID cursoId) {
         return asistenciaRepository.findAsistenciaResponsesByCursoId(cursoId);
+    }
+
+    /** Actualiza una asistencia existente, buscándola por (cursoId, alumnoId, fecha). */
+    public Asistencia actualizarAsistencia(UUID cursoId, String alumnoId, LocalDate fecha, boolean presente) {
+        Asistencia existente = asistenciaRepository
+                .findByCursoIdAndAlumnoIdAndFecha(cursoId, alumnoId, fecha)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No existe asistencia para curso=" + cursoId + ", alumno=" + alumnoId + ", fecha=" + fecha));
+
+        existente.setPresente(presente);
+        return asistenciaRepository.save(existente);
+    }
+
+    /** Actualiza varias asistencias. Si alguna no existe, arroja error detallado. */
+    public List<Asistencia> actualizarAsistenciasMasivas(UUID cursoId, List<AsistenciaAlumnoDto> lista) {
+        List<Asistencia> actualizadas = new ArrayList<>();
+        for (AsistenciaAlumnoDto dto : lista) {
+            LocalDate fecha = dto.getFecha();
+            String alumnoId = dto.getAlumnoId();
+            boolean presente = dto.isPresente();
+
+            Asistencia existente = asistenciaRepository
+                    .findByCursoIdAndAlumnoIdAndFecha(cursoId, alumnoId, fecha)
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "No existe asistencia para curso=" + cursoId + ", alumno=" + alumnoId + ", fecha=" + fecha));
+
+            existente.setPresente(presente);
+            actualizadas.add(asistenciaRepository.save(existente));
+        }
+        return actualizadas;
     }
 }

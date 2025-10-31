@@ -1,6 +1,7 @@
 package com.g5311.libretadigital.controller;
 
 import com.g5311.libretadigital.model.Asistencia;
+import com.g5311.libretadigital.model.dto.AsistenciaAlumnoDto;
 import com.g5311.libretadigital.model.dto.AsistenciaBulkRequest;
 import com.g5311.libretadigital.model.dto.AsistenciaResponse;
 import com.g5311.libretadigital.service.AsistenciaService;
@@ -56,6 +57,35 @@ public class AsistenciaController {
         List<AsistenciaResponse> asistencias = asistenciaService.obtenerAsistenciasPorCurso(cursoId);
 
         return ResponseEntity.ok(asistencias);
+    }
+
+    @PreAuthorize("hasRole('PROFESOR')")
+    @PutMapping("/{cursoId}/alumno/actualizar")
+    public ResponseEntity<?> actualizarAsistencia(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID cursoId,
+            @RequestBody AsistenciaAlumnoDto asistencia) {
+
+        Asistencia actualizada = asistenciaService.actualizarAsistencia(cursoId, asistencia.getAlumnoId(), asistencia.getFecha(), asistencia.isPresente());
+        return ResponseEntity.ok(actualizada);
+    }
+
+    // === ACTUALIZAR VARIAS ASISTENCIAS (bulk) ===
+    // Reutilizamos AsistenciaBulkRequest { UUID cursoId; List<AsistenciaAlumnoDto> asistencias; }
+    @PreAuthorize("hasRole('PROFESOR')")
+    @PutMapping("actualizar/bulk")
+    public ResponseEntity<?> actualizarAsistenciasMasivas(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestBody AsistenciaBulkRequest request) {
+
+        List<Asistencia> result = asistenciaService.actualizarAsistenciasMasivas(
+                request.getCursoId(),
+                request.getAsistencias()
+        );
+        return ResponseEntity.ok(Map.of(
+                "updated", result.size(),
+                "items", result
+        ));
     }
 
 }
