@@ -1,6 +1,7 @@
 package com.g5311.libretadigital.controller;
 
 import com.g5311.libretadigital.model.Nota;
+import com.g5311.libretadigital.model.dto.NotaBFA;
 import com.g5311.libretadigital.model.dto.NotaBulkDto;
 import com.g5311.libretadigital.model.dto.NotaResponse;
 import com.g5311.libretadigital.service.NotaService;
@@ -84,6 +85,11 @@ public class NotaController {
             @RequestBody NotaBulkDto notasData) {
 
         return notaService.updateNotasBulk(notasData);
+    }
+
+    @PostMapping("/registrar")
+    public void registrarNotaBFA(@RequestBody NotaBFA entity) {
+        notaService.registrarNotaTSA(entity);
     }
 
 }

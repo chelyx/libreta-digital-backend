@@ -1,18 +1,37 @@
 package com.g5311.libretadigital.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.FileInputStream;
+import java.security.MessageDigest;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class HashUtil {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
+    public static String sha256(String rutaArchivo) throws Exception {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        FileInputStream fis = new FileInputStream(rutaArchivo);
+        byte[] byteArray = new byte[1024];
+        int bytesCount = 0;
 
-    public static String generarHash(Object data) {
-        try {
-            String json = mapper.writeValueAsString(data);
-            return DigestUtils.sha256Hex(json);
-        } catch (Exception e) {
-            throw new RuntimeException("Error generando hash", e);
+        while ((bytesCount = fis.read(byteArray)) != -1) {
+            digest.update(byteArray, 0, bytesCount);
         }
+        fis.close();
+
+        byte[] bytes = digest.digest();
+        // Convertir a hexadecimal
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
+    public static void main(String[] args) throws Exception {
+        // String rutaPdf = "nota_final_juanperez.pdf";
+        // String hash = sha256(rutaPdf);
+        // System.out.println("Hash SHA-256 del PDF: " + hash);
     }
 }

@@ -1,20 +1,20 @@
 package com.g5311.libretadigital.model.dto;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 public class NotaResponse {
 
     private UUID id;
     private UUID cursoId;
-    private LocalDate fecha;
+    private Date fecha;
     private String alumnoId;
     private String alumnoNombre;
     private String descripcion;
     private Double valor;
 
     // 👇 Constructor usado por el JPQL
-    public NotaResponse(UUID id, UUID cursoId, LocalDate fecha, String auth0Id, String nombre, Double valor,
+    public NotaResponse(UUID id, UUID cursoId, Date fecha, String auth0Id, String nombre, Double valor,
             String descripcion) {
         this.id = id;
         this.cursoId = cursoId;
@@ -42,11 +42,11 @@ public class NotaResponse {
         this.cursoId = cursoId;
     }
 
-    public LocalDate getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
