@@ -75,7 +75,7 @@ public class AsistenciaController {
     // Reutilizamos AsistenciaBulkRequest { UUID cursoId; List<AsistenciaAlumnoDto>
     // asistencias; }
     @PreAuthorize("hasRole('PROFESOR')")
-    @PutMapping("actualizar/bulk")
+    @PutMapping("/actualizar/bulk")
     public ResponseEntity<?> actualizarAsistenciasMasivas(
             @AuthenticationPrincipal Jwt jwt,
             @RequestBody AsistenciaBulkRequest request) {
