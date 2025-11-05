@@ -2,6 +2,7 @@ package com.g5311.libretadigital.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -26,7 +27,7 @@ public class Nota {
 
     private Double valor; // Ej: 8.5
 
-    private LocalDate fecha = LocalDate.now();
+    private Date fecha = new Date();
 
     // --- Getters y Setters ---
     public UUID getId() {
@@ -69,11 +70,11 @@ public class Nota {
         this.valor = valor;
     }
 
-    public LocalDate getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 }

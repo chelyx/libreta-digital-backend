@@ -14,6 +14,9 @@ public class NotaResponse {
     private Double valor;
 
     // 👇 Constructor usado por el JPQL
+    public NotaResponse() {
+    }
+
     public NotaResponse(UUID id, UUID cursoId, Date fecha, String auth0Id, String nombre, Double valor,
             String descripcion) {
         this.id = id;
