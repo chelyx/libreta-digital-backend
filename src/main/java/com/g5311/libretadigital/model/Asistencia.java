@@ -1,7 +1,7 @@
 package com.g5311.libretadigital.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -23,7 +23,7 @@ public class Asistencia {
     private String alumnoId; // auth0_id del alumno
 
     @Column(nullable = false)
-    private LocalDate fecha;
+    private Date fecha;
 
     @Column(nullable = false)
     private Boolean presente;
@@ -53,11 +53,11 @@ public class Asistencia {
         this.alumnoId = alumnoId;
     }
 
-    public LocalDate getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

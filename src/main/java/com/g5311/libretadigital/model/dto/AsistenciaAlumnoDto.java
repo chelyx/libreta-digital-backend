@@ -1,12 +1,11 @@
 package com.g5311.libretadigital.model.dto;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class AsistenciaAlumnoDto {
     private String alumnoId;
     private boolean presente;
-    private LocalDate fecha;
+    private Date fecha;
 
     // getters y setters
     public String getAlumnoId() {
@@ -25,11 +24,11 @@ public class AsistenciaAlumnoDto {
         this.presente = presente;
     }
 
-    public LocalDate getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 }

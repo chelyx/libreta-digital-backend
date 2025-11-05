@@ -2,6 +2,8 @@ package com.g5311.libretadigital.model;
 
 import java.time.LocalDateTime;
 
+import org.springframework.cglib.core.Local;
+
 import jakarta.persistence.*;
 
 @Entity

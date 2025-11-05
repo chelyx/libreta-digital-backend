@@ -1,17 +1,17 @@
 package com.g5311.libretadigital.model.dto;
 
-import java.time.LocalDate;
+import java.time.Date;
 import java.util.UUID;
 
 public class AsistenciaResponse {
     private UUID cursoId;
-    private LocalDate fecha;
+    private Date fecha;
     private String auth0Id;
     private String nombre;
     private boolean presente;
 
     // Constructor for JPQL constructor expression
-    public AsistenciaResponse(UUID cursoId, LocalDate fecha, String auth0Id, String nombre, boolean presente) {
+    public AsistenciaResponse(UUID cursoId, Date fecha, String auth0Id, String nombre, boolean presente) {
         this.cursoId = cursoId;
         this.fecha = fecha;
         this.auth0Id = auth0Id;
@@ -28,11 +28,11 @@ public class AsistenciaResponse {
         this.cursoId = cursoId;
     }
 
-    public LocalDate getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

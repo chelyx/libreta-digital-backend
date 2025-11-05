@@ -13,7 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -32,7 +32,7 @@ public class AsistenciaController {
             @RequestParam UUID cursoId,
             @RequestParam Boolean presente) {
         String alumnoId = jwt.getSubject(); // auth0_id
-        LocalDate fechaHoy = LocalDate.now();
+        Date fechaHoy = new Date();
 
         return asistenciaService.registrarAsistencia(cursoId, alumnoId, fechaHoy, presente);
     }
@@ -66,12 +66,14 @@ public class AsistenciaController {
             @PathVariable UUID cursoId,
             @RequestBody AsistenciaAlumnoDto asistencia) {
 
-        Asistencia actualizada = asistenciaService.actualizarAsistencia(cursoId, asistencia.getAlumnoId(), asistencia.getFecha(), asistencia.isPresente());
+        Asistencia actualizada = asistenciaService.actualizarAsistencia(cursoId, asistencia.getAlumnoId(),
+                asistencia.getFecha(), asistencia.isPresente());
         return ResponseEntity.ok(actualizada);
     }
 
     // === ACTUALIZAR VARIAS ASISTENCIAS (bulk) ===
-    // Reutilizamos AsistenciaBulkRequest { UUID cursoId; List<AsistenciaAlumnoDto> asistencias; }
+    // Reutilizamos AsistenciaBulkRequest { UUID cursoId; List<AsistenciaAlumnoDto>
+    // asistencias; }
     @PreAuthorize("hasRole('PROFESOR')")
     @PutMapping("actualizar/bulk")
     public ResponseEntity<?> actualizarAsistenciasMasivas(
@@ -80,12 +82,10 @@ public class AsistenciaController {
 
         List<Asistencia> result = asistenciaService.actualizarAsistenciasMasivas(
                 request.getCursoId(),
-                request.getAsistencias()
-        );
+                request.getAsistencias());
         return ResponseEntity.ok(Map.of(
                 "updated", result.size(),
-                "items", result
-        ));
+                "items", result));
     }
 
 }

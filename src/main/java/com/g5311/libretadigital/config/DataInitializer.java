@@ -12,7 +12,7 @@ import com.g5311.libretadigital.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -108,21 +108,23 @@ public class DataInitializer {
 
                 cursoRepository.saveAll(List.of(curso1, curso2));
 
-                //Asistencia para pruebas
+                // Asistencia para pruebas
                 Asistencia asist1 = new Asistencia();
-                LocalDate fechaHoy = LocalDate.now();
+                Date fechaHoy = new Date();
                 asist1.setCursoId(curso2.getId());
                 asist1.setAlumnoId(a5.getAuth0Id());
                 asist1.setFecha(fechaHoy);
                 asist1.setPresente(true);
 
-                Asistencia asist2 = new Asistencia();;
+                Asistencia asist2 = new Asistencia();
+                ;
                 asist2.setCursoId(curso2.getId());
                 asist2.setAlumnoId(a4.getAuth0Id());
                 asist2.setFecha(fechaHoy);
                 asist2.setPresente(true);
 
-                Asistencia asist3 = new Asistencia();;
+                Asistencia asist3 = new Asistencia();
+                ;
                 asist3.setCursoId(curso1.getId());
                 asist3.setAlumnoId(a3.getAuth0Id());
                 asist3.setFecha(fechaHoy);

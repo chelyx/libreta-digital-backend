@@ -1,7 +1,6 @@
 package com.g5311.libretadigital.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
