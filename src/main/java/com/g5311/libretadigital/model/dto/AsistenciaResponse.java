@@ -1,6 +1,6 @@
 package com.g5311.libretadigital.model.dto;
 
-import java.time.Date;
+import java.util.Date;
 import java.util.UUID;
 
 public class AsistenciaResponse {
