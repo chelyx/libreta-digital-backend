@@ -35,6 +35,14 @@ public class CursoController {
         return cursoService.obtenerCursosPorDocente(auth0Id);
     }
 
+    // PROFESOR o BEDEL
+    @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
+    @GetMapping("/codigo/{codigo}")
+    public ResponseEntity<Curso> obtenerPorCodigo(
+            @PathVariable String codigo) {
+        return ResponseEntity.ok(cursoService.obtenerPorCodigo(codigo));
+    }
+
     // (A) POST usando el docente del JWT
     @PreAuthorize("hasRole('PROFESOR')")
     @PostMapping("/mios")

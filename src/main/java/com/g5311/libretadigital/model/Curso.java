@@ -22,6 +22,7 @@ public class Curso {
 
     private String nombre;
 
+    @Column(nullable = false, unique = true)
     private String codigo; // Ej: "SIS101" o "INF3A"
 
     @Column(name = "docente_auth0_id")

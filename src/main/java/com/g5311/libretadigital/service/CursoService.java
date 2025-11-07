@@ -4,8 +4,11 @@ import com.g5311.libretadigital.model.Curso;
 import com.g5311.libretadigital.model.dto.CursoDto;
 import com.g5311.libretadigital.repository.CursoRepository;
 import com.g5311.libretadigital.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -44,4 +47,8 @@ public class CursoService {
         return cursoRepository.save(c);
     }
 
+    public Curso obtenerPorCodigo(String codigo) {
+        return cursoRepository.findByCodigoIgnoreCase(codigo.trim())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso no encontrado…" + codigo));
+    }
 }
