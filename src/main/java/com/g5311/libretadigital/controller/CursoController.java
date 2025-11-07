@@ -23,7 +23,7 @@ public class CursoController {
     @Autowired
     private CursoService cursoService;
 
-    @PreAuthorize("hasRole('PROFESOR')")
+    @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
     @GetMapping("/profesor/{auth0Id}")
     public List<Curso> obtenerCursosPorProfesor(@PathVariable String auth0Id) {
         return cursoService.obtenerCursosPorDocente(auth0Id);

@@ -37,7 +37,7 @@ public class AsistenciaController {
         return asistenciaService.registrarAsistencia(cursoId, alumnoId, fechaHoy, presente);
     }
 
-    @PreAuthorize("hasRole('PROFESOR')")
+    @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
     @PostMapping("/guardar")
     public ResponseEntity<?> registrarAsistenciasCurso(
             @AuthenticationPrincipal Jwt jwt,
@@ -49,7 +49,7 @@ public class AsistenciaController {
         return ResponseEntity.ok(Map.of("status", "Asistencias registradas correctamente"));
     }
 
-    @PreAuthorize("hasRole('PROFESOR')")
+    @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
     @GetMapping("/{cursoId}")
     public ResponseEntity<?> obtenerAsistencias(
             @AuthenticationPrincipal Jwt jwt,
@@ -59,7 +59,7 @@ public class AsistenciaController {
         return ResponseEntity.ok(asistencias);
     }
 
-    @PreAuthorize("hasRole('PROFESOR')")
+    @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
     @PutMapping("/{cursoId}/alumno/actualizar")
     public ResponseEntity<?> actualizarAsistencia(
             @AuthenticationPrincipal Jwt jwt,
@@ -72,9 +72,7 @@ public class AsistenciaController {
     }
 
     // === ACTUALIZAR VARIAS ASISTENCIAS (bulk) ===
-    // Reutilizamos AsistenciaBulkRequest { UUID cursoId; List<AsistenciaAlumnoDto>
-    // asistencias; }
-    @PreAuthorize("hasRole('PROFESOR')")
+    @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
     @PutMapping("/actualizar/bulk")
     public ResponseEntity<?> actualizarAsistenciasMasivas(
             @AuthenticationPrincipal Jwt jwt,

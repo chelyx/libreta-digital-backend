@@ -8,6 +8,9 @@ import com.g5311.libretadigital.service.NotaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +29,7 @@ public class NotaController {
     // Cargar una nota
     @PostMapping("/curso/{cursoId}")
     public Nota guardarNota(
+            @AuthenticationPrincipal Jwt jwt,
             @PathVariable UUID cursoId,
             @RequestBody Map<String, Object> body) {
         String alumnoAuth0Id = (String) body.get("alumnoAuth0Id");
@@ -43,7 +47,7 @@ public class NotaController {
 
     // Obtener las notas de un alumno en un curso
     // El auth0Id normalmente viene con un pipe (auth0|xxxxx), pero en el path hay
-    // que replazar el '|' por '%7C' para que funcione
+    // que reemplazar el '|' por '%7C' para que funcione
     @GetMapping("/curso/{cursoId}/alumno/{auth0Id}")
     public List<Nota> obtenerNotasDeAlumno(@PathVariable UUID cursoId, @PathVariable String auth0Id) {
         return notaService.obtenerNotasDeAlumnoEnCurso(cursoId, auth0Id);
@@ -58,6 +62,7 @@ public class NotaController {
 
     @PostMapping("/curso/{cursoId}/bulk")
     public List<Nota> guardarNotasEnBulk(
+            @AuthenticationPrincipal Jwt jwt,
             @PathVariable UUID cursoId,
             @RequestBody List<Map<String, Object>> notasData) {
         List<Nota> notas = notasData.stream().map(data -> {
@@ -71,8 +76,10 @@ public class NotaController {
         return notaService.guardarNotasEnBulk(cursoId, notas);
     }
 
+    @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
     @PostMapping("/actualizar/{notaId}")
     public Nota updateNota(
+            @AuthenticationPrincipal Jwt jwt,
             @PathVariable UUID notaId,
             @RequestBody Map<String, Object> body) {
         Double valor = ((Number) body.get("valor")).doubleValue();
@@ -80,8 +87,10 @@ public class NotaController {
         return notaService.updateNota(notaId, valor);
     }
 
+    @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
     @PostMapping("/actualizar-bulk")
     public List<Nota> updateNotasBulk(
+            @AuthenticationPrincipal Jwt jwt,
             @RequestBody NotaBulkDto notasData) {
 
         return notaService.updateNotasBulk(notasData);
