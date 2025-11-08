@@ -1,8 +1,11 @@
 package com.g5311.libretadigital.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -31,6 +34,13 @@ public class Curso {
     @ManyToMany
     @JoinTable(name = "curso_alumno", joinColumns = @JoinColumn(name = "curso_id"), inverseJoinColumns = @JoinColumn(name = "alumno_auth0_id"))
     private Set<User> alumnos = new HashSet<>();
+
+    @Column(name = "esFinal", nullable = false)
+    private Boolean esFinal;
+
+    @Column(name = "Fecha", nullable = true)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private Date fecha;
 
     public UUID getId() {
         return id;
@@ -71,4 +81,13 @@ public class Curso {
     public void setAlumnos(Set<User> alumnos) {
         this.alumnos = alumnos;
     }
+
+    public Boolean getEsFinal() {return esFinal;}
+
+    public void setEsFinal(Boolean esFinal) {this.esFinal = esFinal;}
+
+    public Date getFecha() {return fecha;}
+
+    public void setFecha(Date fecha) {this.fecha = fecha;}
+
 }

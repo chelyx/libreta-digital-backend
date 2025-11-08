@@ -6,7 +6,8 @@ public class CursoDto {
 
     private String docenteAuth0Id;        // opcional si tomás el docente del JWT
     private String nombre;                // si tu entidad lo usa
-    private String codigo;                // si tu entidad lo usa
+    private String codigo;             // si tu entidad lo usa
+    private String fecha;
 
     public CursoDto() {
     }
@@ -35,4 +36,11 @@ public class CursoDto {
         this.codigo = codigo;
     }
 
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
 }

@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,7 +31,7 @@ public class CursoService {
     }
 
     @Transactional
-    public Curso crearCurso(CursoDto dto, String docenteAuth0IdFromJwtIfAny) {
+    public Curso crearCurso(CursoDto dto, String docenteAuth0IdFromJwtIfAny) throws ParseException {
         Curso c = new Curso();
 
         // prioridad al JWT; si no hay, usa el body
@@ -43,12 +46,18 @@ public class CursoService {
 
         if (dto.getNombre() != null)        c.setNombre(dto.getNombre());
         if (dto.getCodigo() != null)        c.setCodigo(dto.getCodigo());
-
+        if (dto.getFecha() != null)
+            c.setFecha(convertirAFecha(dto.getFecha()));
         return cursoRepository.save(c);
     }
 
     public Curso obtenerPorCodigo(String codigo) {
         return cursoRepository.findByCodigoIgnoreCase(codigo.trim())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso no encontrado…" + codigo));
+    }
+
+    public Date convertirAFecha(String fechaStr) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.parse(fechaStr);
     }
 }

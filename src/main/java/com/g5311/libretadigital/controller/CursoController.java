@@ -1,6 +1,7 @@
 package com.g5311.libretadigital.controller;
 
 import java.net.URI;
+import java.text.ParseException;
 import java.util.List;
 
 import com.g5311.libretadigital.model.dto.CursoDto;
@@ -47,7 +48,7 @@ public class CursoController {
     @PreAuthorize("hasRole('PROFESOR')")
     @PostMapping("/mios")
     public ResponseEntity<Curso> crearMiCurso(@AuthenticationPrincipal Jwt jwt,
-                                              @RequestBody CursoDto dto) {
+                                              @RequestBody CursoDto dto) throws ParseException {
         String docenteAuth0Id = jwt.getSubject();
         Curso creado = cursoService.crearCurso(dto, docenteAuth0Id);
         // 201 + Location (si tenés getId en Curso)
@@ -59,7 +60,7 @@ public class CursoController {
     //POST indicando el docente en el body
     @PreAuthorize("hasRole('PROFESOR')")
     @PostMapping
-    public ResponseEntity<Curso> crearCurso(@RequestBody CursoDto dto) {
+    public ResponseEntity<Curso> crearCurso(@RequestBody CursoDto dto) throws ParseException {
         Curso creado = cursoService.crearCurso(dto, null);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

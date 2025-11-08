@@ -12,6 +12,8 @@ import com.g5311.libretadigital.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -93,38 +95,46 @@ public class DataInitializer {
 
                 userRepository.saveAll(List.of(a1, a2, a3, a4, a5, a6)); // para tener más alumnos
 
+                //Fechas ejemplo
+                Date fechaHoy = new Date();
+                Date fechaAyer = new Date("11/07/2025");
+
                 // 📘 Cursos
                 Curso curso1 = new Curso();
                 curso1.setNombre("Programación I");
                 curso1.setCodigo("PROG1");
                 curso1.setDocenteAuth0Id(prof1.getAuth0Id());
+                curso1.setFecha(fechaAyer);
+                curso1.setEsFinal(false);
                 curso1.setAlumnos(Set.of(a1, a2, a3, a4, a5, a6)); // usamos List<User>
 
                 Curso curso2 = new Curso();
                 curso2.setNombre("Bases de Datos");
                 curso2.setCodigo("BD2024");
                 curso2.setDocenteAuth0Id(prof2.getAuth0Id());
+                curso2.setFecha(fechaHoy);
+                curso2.setEsFinal(true);
                 curso2.setAlumnos(Set.of(a1, a2));
 
                 cursoRepository.saveAll(List.of(curso1, curso2));
 
                 // Asistencia para pruebas
                 Asistencia asist1 = new Asistencia();
-                Date fechaHoy = new Date();
+
                 asist1.setCursoId(curso2.getId());
                 asist1.setAlumnoId(a5.getAuth0Id());
                 asist1.setFecha(fechaHoy);
                 asist1.setPresente(true);
 
                 Asistencia asist2 = new Asistencia();
-                ;
+
                 asist2.setCursoId(curso2.getId());
                 asist2.setAlumnoId(a4.getAuth0Id());
                 asist2.setFecha(fechaHoy);
                 asist2.setPresente(true);
 
                 Asistencia asist3 = new Asistencia();
-                ;
+
                 asist3.setCursoId(curso1.getId());
                 asist3.setAlumnoId(a3.getAuth0Id());
                 asist3.setFecha(fechaHoy);
