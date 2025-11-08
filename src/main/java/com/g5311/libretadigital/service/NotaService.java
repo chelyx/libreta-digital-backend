@@ -54,9 +54,11 @@ public class NotaService {
         return notaRepository.findNotaResponsesByCursoId(cursoId);
     }
 
-    public List<Nota> obtenerNotasDeAlumnoEnCurso(UUID cursoId, String alumnoAuth0Id) {
-        return notaRepository.findByCursoIdAndAlumnoAuth0Id(cursoId, alumnoAuth0Id);
-    }
+    // public List<NotaResponse> obtenerNotasDeAlumnoEnCurso(UUID cursoId, String
+    // alumnoAuth0Id) {
+
+    // return notaRepository.findByCursoIdAndAlumnoAuth0Id(cursoId, alumnoAuth0Id);
+    // }
 
     public List<Nota> guardarNotasEnBulk(UUID cursoId, List<Nota> notas) {
         List<Nota> notasAGuardar = notas.stream()
@@ -88,7 +90,7 @@ public class NotaService {
         }
     }
 
-    public List<Nota> obtenerNotasPorAlumno(String alumnoAuth0Id) {
-        return notaRepository.findByAlumnoAuth0Id(alumnoAuth0Id);
+    public List<NotaResponse> obtenerNotasPorAlumno(String alumnoAuth0Id) {
+        return notaRepository.findNotaResponseByAlumnoId(alumnoAuth0Id);
     }
 }

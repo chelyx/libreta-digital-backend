@@ -8,24 +8,34 @@ public class NotaResponse {
     private UUID id;
     private UUID cursoId;
     private Date fecha;
-    private String alumnoId;
     private String alumnoNombre;
     private String descripcion;
     private Double valor;
+    private boolean presente;
 
     // 👇 Constructor usado por el JPQL
     public NotaResponse() {
     }
 
-    public NotaResponse(UUID id, UUID cursoId, Date fecha, String auth0Id, String nombre, Double valor,
-            String descripcion) {
+    public NotaResponse(UUID id, UUID cursoId, Date fecha, Double valor,
+            String descripcion, boolean presente) {
         this.id = id;
         this.cursoId = cursoId;
         this.fecha = fecha;
-        this.alumnoId = auth0Id;
+        this.valor = valor;
+        this.descripcion = descripcion;
+        this.presente = presente;
+    }
+
+    public NotaResponse(UUID id, UUID cursoId, Date fecha, String nombre, Double valor,
+            String descripcion, boolean presente) {
+        this.id = id;
+        this.cursoId = cursoId;
+        this.fecha = fecha;
         this.alumnoNombre = nombre;
         this.valor = valor;
         this.descripcion = descripcion;
+        this.presente = presente;
     }
 
     // getters y setters
@@ -53,14 +63,6 @@ public class NotaResponse {
         this.fecha = fecha;
     }
 
-    public String getAlumnoId() {
-        return alumnoId;
-    }
-
-    public void setAlumnoId(String alumnoId) {
-        this.alumnoId = alumnoId;
-    }
-
     public String getAlumnoNombre() {
         return alumnoNombre;
     }
@@ -83,6 +85,14 @@ public class NotaResponse {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public boolean isPresente() {
+        return presente;
+    }
+
+    public void setPresente(boolean presente) {
+        this.presente = presente;
     }
 
 }

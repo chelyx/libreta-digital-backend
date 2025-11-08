@@ -22,11 +22,17 @@ public class Nota {
     @Column(name = "alumno_auth0_id", nullable = false)
     private String alumnoAuth0Id;
 
+    @Column(name = "descripcion", nullable = false)
     private String descripcion; // Ej: "Parcial 1", "TP 2", "Final"
 
+    @Column(name = "valor", nullable = false)
     private Double valor; // Ej: 8.5
 
+    @Column(name = "fecha", nullable = false)
     private Date fecha = new Date();
+
+    @Column(name = "presente", nullable = false)
+    private boolean presente;
 
     // --- Getters y Setters ---
     public UUID getId() {
@@ -75,5 +81,13 @@ public class Nota {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public boolean isPresente() {
+        return presente;
+    }
+
+    public void setPresente(boolean presente) {
+        this.presente = presente;
     }
 }

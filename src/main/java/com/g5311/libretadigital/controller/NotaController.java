@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -47,17 +45,18 @@ public class NotaController {
 
     // Obtener las notas de un alumno en un curso
     // El auth0Id normalmente viene con un pipe (auth0|xxxxx), pero en el path hay
-    // que reemplazar el '|' por '%7C' para que funcione
-    @GetMapping("/curso/{cursoId}/alumno/{auth0Id}")
-    public List<Nota> obtenerNotasDeAlumno(@PathVariable UUID cursoId, @PathVariable String auth0Id) {
-        return notaService.obtenerNotasDeAlumnoEnCurso(cursoId, auth0Id);
-    }
+    // que replazar el '|' por '%7C' para que funcione
+    // @GetMapping("/curso/{cursoId}/alumno/{auth0Id}")
+    // public List<NotaResponse> obtenerNotasDeAlumno(@PathVariable UUID cursoId,
+    // @PathVariable String auth0Id) {
+    // return notaService.obtenerNotasDeAlumnoEnCurso(cursoId, auth0Id);
+    // }
 
     // Obtener las notas de un alumno en TODOS sus cursos
-    @GetMapping("/alumno/{auth0Id}")
-    public ResponseEntity<List<Nota>> getNotasPorAlumno(@PathVariable String auth0Id) {
-        List<Nota> notas = notaService.obtenerNotasPorAlumno(auth0Id);
-        return ResponseEntity.ok(notas);
+    @GetMapping("/me")
+    public List<NotaResponse> getNotasPorAlumno(@AuthenticationPrincipal Jwt jwt) {
+        String auth0Id = jwt.getSubject();
+        return notaService.obtenerNotasPorAlumno(auth0Id);
     }
 
     @PostMapping("/curso/{cursoId}/bulk")
