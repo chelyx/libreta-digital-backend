@@ -12,6 +12,7 @@ public class User {
     private String nombre;
     private String email;
     private String rol;
+    private String legajo;
 
     public String getAuth0Id() {
         return auth0Id;
@@ -44,5 +45,9 @@ public class User {
     public void setRol(String rol) {
         this.rol = rol;
     }
+
+    public String getLegajo() {return legajo;}
+
+    public void setLegajo(String legajo) {this.legajo = legajo;}
 
 }

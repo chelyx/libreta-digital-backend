@@ -62,36 +62,47 @@ public class DataInitializer {
                 a1.setNombre("Juan Pérez");
                 a1.setEmail("juan@utn.edu.ar");
                 a1.setRol("ALUMNO");
+                a1.setLegajo("1685551");
+
 
                 User a2 = new User();
                 a2.setAuth0Id("auth0|alum2");
                 a2.setNombre("María Gómez");
                 a2.setEmail("maria@utn.edu.ar");
                 a2.setRol("ALUMNO");
+                a2.setLegajo("1222222");
+
 
                 User a3 = new User();
                 a3.setAuth0Id("auth0|alum3");
                 a3.setNombre("Pedro López");
                 a3.setEmail("pedro@utn.edu.ar");
                 a3.setRol("ALUMNO");
+                a3.setLegajo("1131313");
+
 
                 User a4 = new User();
                 a4.setAuth0Id("auth0|alum4");
                 a4.setNombre("Ana Torres");
                 a4.setEmail("ana@utn.edu.ar");
                 a4.setRol("ALUMNO");
+                a4.setLegajo("1685051");
+
 
                 User a5 = new User();
                 a5.setAuth0Id("auth0|alum5");
                 a5.setNombre("Lucía Fernández");
                 a5.setEmail("lucia@utn.edu.ar");
                 a5.setRol("ALUMNO");
+                a5.setLegajo("1600001");
+
 
                 User a6 = new User();
                 a6.setAuth0Id("auth0|alum6");
                 a6.setNombre("Carlos Díaz");
                 a6.setEmail("carlos@utn.edu.ar");
                 a6.setRol("ALUMNO");
+                a6.setLegajo("1685551");
 
                 userRepository.saveAll(List.of(a1, a2, a3, a4, a5, a6)); // para tener más alumnos
 
