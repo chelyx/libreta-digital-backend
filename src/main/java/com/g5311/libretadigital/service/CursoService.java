@@ -44,10 +44,12 @@ public class CursoService {
         }
         c.setDocenteAuth0Id(docenteId);
 
-        if (dto.getNombre() != null)        c.setNombre(dto.getNombre());
-        if (dto.getCodigo() != null)        c.setCodigo(dto.getCodigo());
+        if (dto.getNombre() != null)
+            c.setNombre(dto.getNombre());
+        if (dto.getCodigo() != null)
+            c.setCodigo(dto.getCodigo());
         if (dto.getFecha() != null)
-            c.setFecha(convertirAFecha(dto.getFecha()));
+            c.setFecha(dto.getFecha());
         return cursoRepository.save(c);
     }
 
@@ -56,8 +58,8 @@ public class CursoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso no encontrado…" + codigo));
     }
 
-    public Date convertirAFecha(String fechaStr) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return sdf.parse(fechaStr);
-    }
+    // public Date convertirAFecha(String fechaStr) throws ParseException {
+    // SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    // return sdf.parse(fechaStr);
+    // }
 }

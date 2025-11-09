@@ -1,13 +1,14 @@
 package com.g5311.libretadigital.model.dto;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 public class CursoDto {
 
-    private String docenteAuth0Id;        // opcional si tomás el docente del JWT
-    private String nombre;                // si tu entidad lo usa
-    private String codigo;             // si tu entidad lo usa
-    private String fecha;
+    private String docenteAuth0Id; // opcional si tomás el docente del JWT
+    private String nombre; // si tu entidad lo usa
+    private String codigo; // si tu entidad lo usa
+    private LocalDate fecha;
 
     public CursoDto() {
     }
@@ -36,11 +37,11 @@ public class CursoDto {
         this.codigo = codigo;
     }
 
-    public String getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 }

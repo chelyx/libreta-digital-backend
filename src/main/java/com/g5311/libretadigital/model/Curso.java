@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -40,7 +40,7 @@ public class Curso {
 
     @Column(name = "Fecha", nullable = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date fecha;
+    private LocalDate fecha;
 
     public UUID getId() {
         return id;
@@ -86,8 +86,8 @@ public class Curso {
 
     public void setEsFinal(Boolean esFinal) {this.esFinal = esFinal;}
 
-    public Date getFecha() {return fecha;}
+    public LocalDate getFecha() {return fecha;}
 
-    public void setFecha(Date fecha) {this.fecha = fecha;}
+    public void setFecha(LocalDate fecha) {this.fecha = fecha;}
 
 }

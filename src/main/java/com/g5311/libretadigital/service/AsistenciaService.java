@@ -1,6 +1,7 @@
 package com.g5311.libretadigital.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import com.g5311.libretadigital.model.Asistencia;
@@ -8,7 +9,7 @@ import com.g5311.libretadigital.model.dto.AsistenciaAlumnoDto;
 import com.g5311.libretadigital.model.dto.AsistenciaResponse;
 import com.g5311.libretadigital.repository.AsistenciaRepository;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,7 @@ public class AsistenciaService {
     @Autowired
     private AsistenciaRepository asistenciaRepository;
 
-    public Asistencia registrarAsistencia(UUID cursoId, String alumnoId, Date fecha, boolean presente) {
+    public Asistencia registrarAsistencia(UUID cursoId, String alumnoId, LocalDate fecha, boolean presente) {
         // Verificar si ya existe una asistencia para ese día
         Optional<Asistencia> existente = asistenciaRepository.findByCursoIdAndAlumnoIdAndFecha(cursoId, alumnoId,
                 fecha);
@@ -54,7 +55,7 @@ public class AsistenciaService {
      * Actualiza una asistencia existente, buscándola por (cursoId, alumnoId,
      * fecha).
      */
-    public Asistencia actualizarAsistencia(UUID cursoId, String alumnoId, Date fecha, boolean presente) {
+    public Asistencia actualizarAsistencia(UUID cursoId, String alumnoId, LocalDate fecha, boolean presente) {
         Asistencia existente = asistenciaRepository
                 .findByCursoIdAndAlumnoIdAndFecha(cursoId, alumnoId, fecha)
                 .orElseThrow(() -> new IllegalArgumentException(
@@ -70,7 +71,7 @@ public class AsistenciaService {
     public List<Asistencia> actualizarAsistenciasMasivas(UUID cursoId, List<AsistenciaAlumnoDto> lista) {
         List<Asistencia> actualizadas = new ArrayList<>();
         for (AsistenciaAlumnoDto dto : lista) {
-            Date fecha = dto.getFecha();
+            LocalDate fecha = dto.getFecha();
             String alumnoId = dto.getAlumnoId();
             boolean presente = dto.isPresente();
 

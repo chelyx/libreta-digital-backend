@@ -4,9 +4,12 @@ import com.g5311.libretadigital.model.Nota;
 import com.g5311.libretadigital.model.dto.NotaBFA;
 import com.g5311.libretadigital.model.dto.NotaBulkDto;
 import com.g5311.libretadigital.model.dto.NotaResponse;
+import com.g5311.libretadigital.service.BfaTsaService;
 import com.g5311.libretadigital.service.NotaService;
+import com.g5311.libretadigital.service.TsaService2;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +26,12 @@ public class NotaController {
 
     @Autowired
     private NotaService notaService;
+
+    @Autowired
+    private TsaService2 tsaService;
+
+    @Autowired
+    private BfaTsaService bfaTsaService;
 
     // Cargar una nota
     @PostMapping("/curso/{cursoId}")
@@ -42,15 +51,6 @@ public class NotaController {
     public List<NotaResponse> obtenerNotasDeCurso(@PathVariable UUID cursoId) {
         return notaService.obtenerNotasDeCurso(cursoId);
     }
-
-    // Obtener las notas de un alumno en un curso
-    // El auth0Id normalmente viene con un pipe (auth0|xxxxx), pero en el path hay
-    // que replazar el '|' por '%7C' para que funcione
-    // @GetMapping("/curso/{cursoId}/alumno/{auth0Id}")
-    // public List<NotaResponse> obtenerNotasDeAlumno(@PathVariable UUID cursoId,
-    // @PathVariable String auth0Id) {
-    // return notaService.obtenerNotasDeAlumnoEnCurso(cursoId, auth0Id);
-    // }
 
     // Obtener las notas de un alumno en TODOS sus cursos
     @GetMapping("/me")
@@ -100,4 +100,45 @@ public class NotaController {
         notaService.registrarNotaTSA(entity);
     }
 
+    @PostMapping("/sellar-temp")
+    public ResponseEntity<String> sellarNotas() {
+        try {
+            int cantidad = tsaService.generarNotaRequest();
+            System.out.println("Notas registradas para TSA: " + cantidad);
+            int cantidad2 = bfaTsaService.primerSelloABFA();
+            System.out.println("Notas selladas en BFA: " + cantidad2);
+            return ResponseEntity.ok("✅ " + cantidad + " notas selladas (registradas para TSA)");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("❌ Error: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/sellar-definitivo")
+    public ResponseEntity<String> generarRecibos() {
+        try {
+            int cantidad = bfaTsaService.generarRecibosDefinitivos();
+            return ResponseEntity.ok("✅ " + cantidad + " recibos definitivos generados");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("❌ Error: " + e.getMessage());
+        }
+    }
+
+    // @GetMapping("/notas/{id}/json")
+    // public ResponseEntity<String> obtenerJsonOriginal(@PathVariable UUID id) {
+    // String record = tsaService.obtenerJsonOriginal(id);
+    // // .orElseThrow(() -> new RuntimeException("JSON no encontrado"));
+    // return ResponseEntity.ok()
+    // .contentType(MediaType.APPLICATION_JSON)
+    // .body(record);
+    // }
+
+    @GetMapping("/test-mail")
+    public ResponseEntity<String> test() throws Exception {
+        String json = "{\"alumno\": 1234, \"nota\": 10}";
+        String dummyRd = "MHgtZmFrZS1iYXNlNjQ="; // simulación de Base64
+
+        bfaTsaService.enviarSelloPorMail("arasoffulto@gmail.com", json, dummyRd);
+        return ResponseEntity.ok("Mail enviado correctamente");
+    }
 }

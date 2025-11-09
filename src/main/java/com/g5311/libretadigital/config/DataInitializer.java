@@ -10,6 +10,8 @@ import com.g5311.libretadigital.repository.NotaRepository;
 import com.g5311.libretadigital.repository.UserRepository;
 
 import jakarta.annotation.PostConstruct;
+
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -64,14 +66,12 @@ public class DataInitializer {
                 a1.setRol("ALUMNO");
                 a1.setLegajo("1685551");
 
-
                 User a2 = new User();
                 a2.setAuth0Id("auth0|alum2");
                 a2.setNombre("María Gómez");
                 a2.setEmail("maria@utn.edu.ar");
                 a2.setRol("ALUMNO");
                 a2.setLegajo("1222222");
-
 
                 User a3 = new User();
                 a3.setAuth0Id("auth0|alum3");
@@ -80,7 +80,6 @@ public class DataInitializer {
                 a3.setRol("ALUMNO");
                 a3.setLegajo("1131313");
 
-
                 User a4 = new User();
                 a4.setAuth0Id("auth0|alum4");
                 a4.setNombre("Ana Torres");
@@ -88,14 +87,12 @@ public class DataInitializer {
                 a4.setRol("ALUMNO");
                 a4.setLegajo("1685051");
 
-
                 User a5 = new User();
                 a5.setAuth0Id("auth0|alum5");
                 a5.setNombre("Lucía Fernández");
                 a5.setEmail("lucia@utn.edu.ar");
                 a5.setRol("ALUMNO");
                 a5.setLegajo("1600001");
-
 
                 User a6 = new User();
                 a6.setAuth0Id("auth0|alum6");
@@ -106,9 +103,9 @@ public class DataInitializer {
 
                 userRepository.saveAll(List.of(a1, a2, a3, a4, a5, a6)); // para tener más alumnos
 
-                //Fechas ejemplo
-                Date fechaHoy = new Date();
-                Date fechaAyer = new Date("11/07/2025");
+                // Fechas ejemplo
+                LocalDate fechaHoy = LocalDate.now();
+                LocalDate fechaAyer = fechaHoy.minusDays(1);
 
                 // 📘 Cursos
                 Curso curso1 = new Curso();
@@ -165,6 +162,7 @@ public class DataInitializer {
                 n2.setAlumnoAuth0Id(a2.getAuth0Id());
                 n2.setDescripcion("Parcial 1");
                 n2.setValor(6.5);
+                n2.setFecha(fechaAyer);
 
                 Nota n3 = new Nota();
                 n3.setCursoId(curso1.getId());

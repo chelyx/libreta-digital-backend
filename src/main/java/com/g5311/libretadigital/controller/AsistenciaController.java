@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class AsistenciaController {
             @RequestParam UUID cursoId,
             @RequestParam Boolean presente) {
         String alumnoId = jwt.getSubject(); // auth0_id
-        Date fechaHoy = new Date();
+        LocalDate fechaHoy = LocalDate.now();
 
         return asistenciaService.registrarAsistencia(cursoId, alumnoId, fechaHoy, presente);
     }

@@ -1,6 +1,8 @@
 package com.g5311.libretadigital.model;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -29,7 +31,7 @@ public class Nota {
     private Double valor; // Ej: 8.5
 
     @Column(name = "fecha", nullable = false)
-    private Date fecha = new Date();
+    private LocalDate fecha = LocalDate.now();
 
     @Column(name = "presente", nullable = false)
     private boolean presente;
@@ -75,11 +77,11 @@ public class Nota {
         this.valor = valor;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

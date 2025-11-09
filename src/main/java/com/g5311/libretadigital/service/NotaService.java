@@ -5,7 +5,6 @@ import com.g5311.libretadigital.model.dto.NotaBFA;
 import com.g5311.libretadigital.model.dto.NotaBulkDto;
 import com.g5311.libretadigital.model.dto.NotaResponse;
 import com.g5311.libretadigital.repository.NotaRepository;
-import com.g5311.libretadigital.utils.HashUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,22 +71,23 @@ public class NotaService {
     }
 
     public void registrarNotaTSA(NotaBFA nota) {
-        try {
-            // 1️⃣ Generar hash (sin exponer datos personales)
-            String rutaPdf = "nota_" + nota.getLegajoAlumno() + ".pdf";
-            PdfGenerator.generarPdfNota(rutaPdf, nota.getFecha().toString(), nota.getLegajoAlumno(),
-                    nota.getMateria(), nota.getNota());
-            String hash = HashUtil.sha256(rutaPdf);
+        // try {
+        // // 1️⃣ Generar hash (sin exponer datos personales)
+        // String rutaPdf = "nota_" + nota.getLegajoAlumno() + ".pdf";
+        // PdfGenerator.generarPdfNota(rutaPdf, nota.getFecha().toString(),
+        // nota.getLegajoAlumno(),
+        // nota.getMateria(), nota.getNota());
+        // String hash = HashUtil.sha256(rutaPdf);
 
-            // 2️⃣ Enviar a TSA de BFA
-            var result = tsaService.registrarHashEnTsa(hash);
+        // // 2️⃣ Enviar a TSA de BFA
+        // var result = tsaService.registrarHashEnTsa(hash);
 
-            // 3️⃣ Guardar en tu base de datos el hash y los datos devueltos
-            System.out.println("Nota registrada en la blockchain BFA:");
-            System.out.println(result);
-        } catch (Exception e) {
-            throw new RuntimeException("Error al registrar la nota en BFA TSA", e);
-        }
+        // // 3️⃣ Guardar en tu base de datos el hash y los datos devueltos
+        // System.out.println("Nota registrada en la blockchain BFA:");
+        // System.out.println(result);
+        // } catch (Exception e) {
+        // throw new RuntimeException("Error al registrar la nota en BFA TSA", e);
+        // }
     }
 
     public List<NotaResponse> obtenerNotasPorAlumno(String alumnoAuth0Id) {
