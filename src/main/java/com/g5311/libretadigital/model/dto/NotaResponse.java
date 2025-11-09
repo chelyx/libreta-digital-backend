@@ -1,5 +1,6 @@
 package com.g5311.libretadigital.model.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -7,7 +8,7 @@ public class NotaResponse {
 
     private UUID id;
     private UUID cursoId;
-    private Date fecha;
+    private LocalDate fecha;
     private String alumnoNombre;
     private String descripcion;
     private Double valor;
@@ -17,7 +18,7 @@ public class NotaResponse {
     public NotaResponse() {
     }
 
-    public NotaResponse(UUID id, UUID cursoId, Date fecha, Double valor,
+    public NotaResponse(UUID id, UUID cursoId, LocalDate fecha, Double valor,
             String descripcion, boolean presente) {
         this.id = id;
         this.cursoId = cursoId;
@@ -27,7 +28,7 @@ public class NotaResponse {
         this.presente = presente;
     }
 
-    public NotaResponse(UUID id, UUID cursoId, Date fecha, String nombre, Double valor,
+    public NotaResponse(UUID id, UUID cursoId, LocalDate fecha, String nombre, Double valor,
             String descripcion, boolean presente) {
         this.id = id;
         this.cursoId = cursoId;
@@ -55,11 +56,11 @@ public class NotaResponse {
         this.cursoId = cursoId;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
