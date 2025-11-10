@@ -12,8 +12,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CursoService {
@@ -24,6 +26,10 @@ public class CursoService {
     public CursoService(CursoRepository cursoRepository, UserRepository userRepository) {
         this.cursoRepository = cursoRepository;
         this.userRepository = userRepository;
+    }
+
+    public List<Curso> findAll() {
+        return cursoRepository.findAll();
     }
 
     public List<Curso> obtenerCursosPorDocente(String docenteAuth0Id) {
@@ -58,6 +64,24 @@ public class CursoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso no encontrado…" + codigo));
     }
 
+    public Optional<Curso> findByCodigoAndFecha(String codigo, LocalDate fecha) {
+        return cursoRepository.findByCodigoAndFecha(codigo, fecha);
+    }
+
+
+    // --- Mapper básico. Reemplaza por MapStruct si lo usas en el proyecto ---
+    public CursoDto toDto(Curso c) {
+        CursoDto dto = new CursoDto();
+        dto.setNombre(c.getNombre());
+        dto.setCodigo(c.getCodigo());
+        dto.setFecha(c.getFecha() != null ? c.getFecha() : null); // LocalDate -> 'YYYY-MM-DD'
+        dto.setDocenteAuth0Id(c.getDocenteAuth0Id());
+        return dto;
+    }
+
+    public List<CursoDto> toDtoList(List<Curso> cursos) {
+        return cursos.stream().map(this::toDto).toList();
+    }
     // public Date convertirAFecha(String fechaStr) throws ParseException {
     // SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     // return sdf.parse(fechaStr);
