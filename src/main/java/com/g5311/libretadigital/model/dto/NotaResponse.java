@@ -8,6 +8,7 @@ public class NotaResponse {
 
     private UUID id;
     private UUID cursoId;
+    private String nombreCurso;
     private LocalDate fecha;
     private String alumnoNombre;
     private String descripcion;
@@ -18,10 +19,11 @@ public class NotaResponse {
     public NotaResponse() {
     }
 
-    public NotaResponse(UUID id, UUID cursoId, LocalDate fecha, Double valor,
+    public NotaResponse(UUID id, UUID cursoId, String nombreCurso,LocalDate fecha, Double valor,
             String descripcion, boolean presente) {
         this.id = id;
         this.cursoId = cursoId;
+        this.nombreCurso = nombreCurso;
         this.fecha = fecha;
         this.valor = valor;
         this.descripcion = descripcion;
@@ -96,4 +98,9 @@ public class NotaResponse {
         this.presente = presente;
     }
 
+    public String getNombreCurso() {return nombreCurso;
+    }
+
+    public void setNombreCurso(String nombreCurso) {this.nombreCurso = nombreCurso;
+    }
 }

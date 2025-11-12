@@ -53,9 +53,9 @@ public class NotaController {
     }
 
     // Obtener las notas de un alumno en TODOS sus cursos
-    @GetMapping("/me")
-    public List<NotaResponse> getNotasPorAlumno(@AuthenticationPrincipal Jwt jwt) {
-        String auth0Id = jwt.getSubject();
+    @GetMapping("/{auth0Id}") //TODO: VOLVER A PONER "/ME" y tomar el usuario del jwt. Lo cambie solo para la demo rápida.
+    public List<NotaResponse> getNotasPorAlumno(@AuthenticationPrincipal Jwt jwt,@PathVariable String auth0Id) {
+        //String auth0Id = jwt.getSubject();
         return notaService.obtenerNotasPorAlumno(auth0Id);
     }
 
