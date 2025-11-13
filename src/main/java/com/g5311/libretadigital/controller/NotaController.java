@@ -122,6 +122,7 @@ public class NotaController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("❌ Error: " + e.getMessage());
         }
+        
     }
 
     // @GetMapping("/notas/{id}/json")
