@@ -14,4 +14,8 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     User findByEmail(String email);
 
+    boolean existsByAuth0Id(String auth0Id);
+
+    List<User> findAllByLegajoIsNotNull();
+
 }

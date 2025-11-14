@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.g5311.libretadigital.model.User;
 import com.g5311.libretadigital.service.Auth0Service;
 import com.g5311.libretadigital.service.StudentCodeService;
+import com.g5311.libretadigital.service.UserService;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -29,6 +31,8 @@ public class StudentCodeController {
     private StudentCodeService service;
     @Autowired
     private Auth0Service auth0Service;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/generate")
     public ResponseEntity<?> generateCode(@AuthenticationPrincipal Jwt jwt) {
@@ -61,7 +65,7 @@ public class StudentCodeController {
 
         try {
             String studentId = service.validateCodeForAnyUser(code);
-            Map<String, Object> user = auth0Service.getUserById(studentId);
+            User user = userService.getUserById(studentId);
 
             return ResponseEntity.ok(user);
         } catch (EntityNotFoundException e) {

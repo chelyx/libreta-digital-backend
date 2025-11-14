@@ -8,17 +8,22 @@ import com.g5311.libretadigital.repository.AsistenciaRepository;
 import com.g5311.libretadigital.repository.CursoRepository;
 import com.g5311.libretadigital.repository.NotaRepository;
 import com.g5311.libretadigital.repository.UserRepository;
+import com.g5311.libretadigital.service.Auth0Service;
 
 import jakarta.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class DataInitializer {
@@ -27,6 +32,9 @@ public class DataInitializer {
         private final UserRepository userRepository;
         private final AsistenciaRepository asistenciaRepository;
         private final NotaRepository notaRepository;
+
+        @Autowired
+        private Auth0Service auth0Service;
 
         public DataInitializer(CursoRepository cursoRepository,
                         UserRepository userRepository,
@@ -40,25 +48,21 @@ public class DataInitializer {
 
         @PostConstruct
         public void init() {
-                if (cursoRepository.count() > 0)
-                        return;
+                auth0Service.syncUsersFromAuth0();
+
+                // if (cursoRepository.count() > 0)
+                // return;
 
                 // 👩‍🏫 Profesores
-                User prof1 = new User();
-                prof1.setAuth0Id("auth0|68bc93d0f21d782f04f36998");
-                prof1.setNombre("Profesor Uno");
-                prof1.setEmail("prof1@utn.edu.ar");
-                prof1.setRol("PROFESOR");
+                // user profesor@frba.utn.edu.ar
+                User prof1 = userRepository.findById("auth0|68bc93d0f21d782f04f36998").orElse(null);
 
-                User prof2 = new User();
-                prof2.setAuth0Id("auth0|prof456");
-                prof2.setNombre("Profesor Dos");
-                prof2.setEmail("prof2@utn.edu.ar");
-                prof2.setRol("PROFESOR");
+                // es el usuario de ANDREA
+                User prof2 = userRepository.findById("google-oauth2|117509478967819287002").orElse(null);
 
-                userRepository.saveAll(List.of(prof1, prof2));
+                List<User> alumnosAuth0 = userRepository.findAllByLegajoIsNotNull();
 
-                // 👨‍🎓 Alumnos
+                // // 👨‍🎓 Alumnos
                 User a1 = new User();
                 a1.setAuth0Id("auth0|alum1");
                 a1.setNombre("Juan Pérez");
@@ -101,7 +105,8 @@ public class DataInitializer {
                 a6.setRol("ALUMNO");
                 a6.setLegajo("1685551");
 
-                userRepository.saveAll(List.of(a1, a2, a3, a4, a5, a6)); // para tener más alumnos
+                userRepository.saveAll(List.of(a1, a2, a3, a4, a5, a6)); // para tener más
+                // alumnos
 
                 // Fechas ejemplo
                 LocalDate fechaHoy = LocalDate.now();
@@ -114,7 +119,8 @@ public class DataInitializer {
                 curso1.setDocenteAuth0Id(prof1.getAuth0Id());
                 curso1.setFecha(fechaAyer);
                 curso1.setEsFinal(false);
-                curso1.setAlumnos(Set.of(a1, a2, a3, a4, a5, a6)); // usamos List<User>
+
+                curso1.setAlumnos(alumnosAuth0.stream().collect(Collectors.toSet())); // usamos List<User>
 
                 Curso curso2 = new Curso();
                 curso2.setNombre("Bases de Datos");
@@ -126,57 +132,57 @@ public class DataInitializer {
 
                 cursoRepository.saveAll(List.of(curso1, curso2));
 
-                // Asistencia para pruebas
-                Asistencia asist1 = new Asistencia();
+                // // Asistencia para pruebas
+                // Asistencia asist1 = new Asistencia();
 
-                asist1.setCursoId(curso2.getId());
-                asist1.setAlumnoId(a5.getAuth0Id());
-                asist1.setFecha(fechaHoy);
-                asist1.setPresente(true);
+                // asist1.setCursoId(curso2.getId());
+                // asist1.setAlumnoId(a5.getAuth0Id());
+                // asist1.setFecha(fechaHoy);
+                // asist1.setPresente(true);
 
-                Asistencia asist2 = new Asistencia();
+                // Asistencia asist2 = new Asistencia();
 
-                asist2.setCursoId(curso2.getId());
-                asist2.setAlumnoId(a4.getAuth0Id());
-                asist2.setFecha(fechaHoy);
-                asist2.setPresente(true);
+                // asist2.setCursoId(curso2.getId());
+                // asist2.setAlumnoId(a4.getAuth0Id());
+                // asist2.setFecha(fechaHoy);
+                // asist2.setPresente(true);
 
-                Asistencia asist3 = new Asistencia();
+                // Asistencia asist3 = new Asistencia();
 
-                asist3.setCursoId(curso1.getId());
-                asist3.setAlumnoId(a3.getAuth0Id());
-                asist3.setFecha(fechaHoy);
-                asist3.setPresente(true);
+                // asist3.setCursoId(curso1.getId());
+                // asist3.setAlumnoId(a3.getAuth0Id());
+                // asist3.setFecha(fechaHoy);
+                // asist3.setPresente(true);
 
-                asistenciaRepository.saveAll(List.of(asist1, asist2, asist3));
+                // asistenciaRepository.saveAll(List.of(asist1, asist2, asist3));
 
-                // 🧮 Notas de ejemplo
-                Nota n1 = new Nota();
-                n1.setCursoId(curso1.getId());
-                n1.setAlumnoAuth0Id(a1.getAuth0Id());
-                n1.setDescripcion("Parcial 1");
-                n1.setValor(8.0);
+                // // 🧮 Notas de ejemplo
+                // Nota n1 = new Nota();
+                // n1.setCursoId(curso1.getId());
+                // n1.setAlumnoAuth0Id(a1.getAuth0Id());
+                // n1.setDescripcion("Parcial 1");
+                // n1.setValor(8.0);
 
-                Nota n2 = new Nota();
-                n2.setCursoId(curso1.getId());
-                n2.setAlumnoAuth0Id(a2.getAuth0Id());
-                n2.setDescripcion("Parcial 1");
-                n2.setValor(6.5);
-                n2.setFecha(fechaAyer);
+                // Nota n2 = new Nota();
+                // n2.setCursoId(curso1.getId());
+                // n2.setAlumnoAuth0Id(a2.getAuth0Id());
+                // n2.setDescripcion("Parcial 1");
+                // n2.setValor(6.5);
+                // n2.setFecha(fechaAyer);
 
-                Nota n3 = new Nota();
-                n3.setCursoId(curso1.getId());
-                n3.setAlumnoAuth0Id(a3.getAuth0Id());
-                n3.setDescripcion("Parcial 1");
-                n3.setValor(9.0);
+                // Nota n3 = new Nota();
+                // n3.setCursoId(curso1.getId());
+                // n3.setAlumnoAuth0Id(a3.getAuth0Id());
+                // n3.setDescripcion("Parcial 1");
+                // n3.setValor(9.0);
 
-                Nota n4 = new Nota();
-                n4.setCursoId(curso2.getId());
-                n4.setAlumnoAuth0Id(a1.getAuth0Id());
-                n4.setDescripcion("TP 1");
-                n4.setValor(7.5);
+                // Nota n4 = new Nota();
+                // n4.setCursoId(curso2.getId());
+                // n4.setAlumnoAuth0Id(a1.getAuth0Id());
+                // n4.setDescripcion("TP 1");
+                // n4.setValor(7.5);
 
-                notaRepository.saveAll(List.of(n1, n2, n3, n4));
+                // notaRepository.saveAll(List.of(n1, n2, n3, n4));
 
                 System.out.println("✅ Datos iniciales cargados correctamente");
         }

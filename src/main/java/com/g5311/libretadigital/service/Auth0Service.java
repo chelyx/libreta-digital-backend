@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class Auth0Service {
     private String clientSecret;
 
     private String managementToken;
+
+    @Autowired
+    private UserService usuarioService;
 
     private String getManagementToken() {
         if (managementToken == null) {
@@ -64,6 +68,33 @@ public class Auth0Service {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+
+        return response.getBody();
+    }
+
+    public void syncUsersFromAuth0() {
+        String token = getManagementToken();
+        List<Map<String, Object>> auth0Users = getUsers(token);
+
+        for (var user : auth0Users) {
+            String auth0Id = (String) user.get("user_id");
+            String email = (String) user.get("email");
+            String picture = (String) user.get("picture");
+            String name = (String) user.get("name");
+
+            usuarioService.createIfNotExists(auth0Id, email, picture, name);
+        }
+    }
+
+    private List<Map<String, Object>> getUsers(String token) {
+        String url = domain + "/api/v2/users?per_page=100";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<List> response = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
 
         return response.getBody();
     }
