@@ -4,8 +4,11 @@ import java.net.URI;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import com.g5311.libretadigital.model.dto.CursoDto;
+import com.g5311.libretadigital.model.dto.ExamenEstadoDto;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +19,10 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import com.g5311.libretadigital.model.Curso;
+import com.g5311.libretadigital.service.AsistenciaService;
 import com.g5311.libretadigital.service.CursoService;
+import com.g5311.libretadigital.service.NotaService;
+
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -26,6 +32,11 @@ public class CursoController {
 
     @Autowired
     private CursoService cursoService;
+    @Autowired
+    private AsistenciaService asistenciaService;
+    @Autowired
+    private NotaService notasService;
+
 
     @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
     @GetMapping("/profesor/{auth0Id}")
@@ -110,4 +121,19 @@ public class CursoController {
                         HttpStatus.NOT_FOUND,
                         String.format("No se encontró curso con código '%s' y fecha '%s'", codigoCurso, fechaBusqueda)));
     }
+
+
+    @GetMapping("/{examenId}/estado")
+public ExamenEstadoDto getEstado(@PathVariable UUID examenId) {
+
+    boolean asistenciaCargada = asistenciaService.existsByCursoId(examenId);
+    boolean notasCargadas = notasService.existsByCursoId(examenId);
+
+    return new ExamenEstadoDto(
+        examenId,
+        asistenciaCargada,
+        notasCargadas
+    );
+}
+
 }

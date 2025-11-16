@@ -21,4 +21,6 @@ public interface AsistenciaRepository extends JpaRepository<Asistencia, UUID> {
             + "from Asistencia a join com.g5311.libretadigital.model.User u on a.alumnoId = u.auth0Id "
             + "where a.cursoId = :cursoId")
     List<AsistenciaResponse> findAsistenciaResponsesByCursoId(@Param("cursoId") UUID cursoId);
+
+     boolean existsByCursoId(UUID cursoId);
 }

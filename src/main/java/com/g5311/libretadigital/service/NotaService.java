@@ -53,6 +53,10 @@ public class NotaService {
         return notaRepository.findNotaResponsesByCursoId(cursoId);
     }
 
+    public boolean existsByCursoId(UUID cursoId) {
+        return notaRepository.existsByCursoId(cursoId);
+    }
+
     // public List<NotaResponse> obtenerNotasDeAlumnoEnCurso(UUID cursoId, String
     // alumnoAuth0Id) {
 

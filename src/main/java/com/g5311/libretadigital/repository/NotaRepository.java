@@ -36,4 +36,7 @@ public interface NotaRepository extends JpaRepository<Nota, UUID> {
         @Query("SELECT n FROM Nota n WHERE n.fecha <= :limite AND n.id NOT IN (SELECT r.nota.id FROM com.g5311.libretadigital.model.NotaTsa r)")
         List<Nota> findNotasParaSellar(@Param("limite") LocalDate limite);
 
+
+        boolean existsByCursoId(UUID cursoId);
+
 }

@@ -51,6 +51,10 @@ public class AsistenciaService {
         return asistenciaRepository.findAsistenciaResponsesByCursoId(cursoId);
     }
 
+      public boolean existsByCursoId(UUID cursoId) {
+        return asistenciaRepository.existsByCursoId(cursoId);
+    }
+
     /**
      * Actualiza una asistencia existente, buscándola por (cursoId, alumnoId,
      * fecha).

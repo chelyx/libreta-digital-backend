@@ -3,6 +3,7 @@ package com.g5311.libretadigital.controller;
 import com.g5311.libretadigital.model.Nota;
 import com.g5311.libretadigital.model.dto.NotaBFA;
 import com.g5311.libretadigital.model.dto.NotaBulkDto;
+import com.g5311.libretadigital.model.dto.NotaDto;
 import com.g5311.libretadigital.model.dto.NotaResponse;
 import com.g5311.libretadigital.service.BfaTsaService;
 import com.g5311.libretadigital.service.NotaService;
@@ -53,9 +54,10 @@ public class NotaController {
     }
 
     // Obtener las notas de un alumno en TODOS sus cursos
-    @GetMapping("/{auth0Id}") //TODO: VOLVER A PONER "/ME" y tomar el usuario del jwt. Lo cambie solo para la demo rápida.
-    public List<NotaResponse> getNotasPorAlumno(@AuthenticationPrincipal Jwt jwt,@PathVariable String auth0Id) {
-        //String auth0Id = jwt.getSubject();
+    @GetMapping("/{auth0Id}") // TODO: VOLVER A PONER "/ME" y tomar el usuario del jwt. Lo cambie solo para la
+                              // demo rápida.
+    public List<NotaResponse> getNotasPorAlumno(@AuthenticationPrincipal Jwt jwt, @PathVariable String auth0Id) {
+        // String auth0Id = jwt.getSubject();
         return notaService.obtenerNotasPorAlumno(auth0Id);
     }
 
@@ -63,12 +65,18 @@ public class NotaController {
     public List<Nota> guardarNotasEnBulk(
             @AuthenticationPrincipal Jwt jwt,
             @PathVariable UUID cursoId,
-            @RequestBody List<Map<String, Object>> notasData) {
+            @RequestBody List<NotaDto> notasData) {
         List<Nota> notas = notasData.stream().map(data -> {
             Nota n = new Nota();
-            n.setAlumnoAuth0Id((String) data.get("alumnoId"));
-            n.setDescripcion((String) data.get("descripcion"));
-            n.setValor(((Number) data.get("valor")).doubleValue());
+            n.setAlumnoAuth0Id(data.getAlumnoId());
+            n.setDescripcion((String) data.getDescripcion());
+            if (data.getValor() != null) {
+                n.setValor(data.getValor());
+                n.setPresente(true);
+            } else {
+                n.setValor(null);
+                n.setPresente(false);
+            }
             return n;
         }).toList();
 
@@ -122,7 +130,7 @@ public class NotaController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("❌ Error: " + e.getMessage());
         }
-        
+
     }
 
     // @GetMapping("/notas/{id}/json")

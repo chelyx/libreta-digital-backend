@@ -27,7 +27,7 @@ public class Nota {
     @Column(name = "descripcion", nullable = false)
     private String descripcion; // Ej: "Parcial 1", "TP 2", "Final"
 
-    @Column(name = "valor", nullable = false)
+    @Column(name = "valor")
     private Double valor; // Ej: 8.5
 
     @Column(name = "fecha", nullable = false)
