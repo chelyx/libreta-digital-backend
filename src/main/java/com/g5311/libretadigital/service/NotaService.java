@@ -3,11 +3,14 @@ package com.g5311.libretadigital.service;
 import com.g5311.libretadigital.model.Nota;
 import com.g5311.libretadigital.model.dto.NotaBFA;
 import com.g5311.libretadigital.model.dto.NotaBulkDto;
+import com.g5311.libretadigital.model.dto.NotaDto;
 import com.g5311.libretadigital.model.dto.NotaResponse;
 import com.g5311.libretadigital.repository.NotaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -63,13 +66,24 @@ public class NotaService {
     // return notaRepository.findByCursoIdAndAlumnoAuth0Id(cursoId, alumnoAuth0Id);
     // }
 
-    public List<Nota> guardarNotasEnBulk(UUID cursoId, List<Nota> notas) {
-        List<Nota> notasAGuardar = notas.stream()
-                .map(n -> {
-                    n.setCursoId(cursoId);
-                    return n;
-                })
-                .collect(Collectors.toList());
+    public List<Nota> guardarNotasEnBulk(UUID cursoId, List<NotaDto> notas) {
+       
+        List<Nota> notasAGuardar = new ArrayList<>();
+        for (NotaDto data : notas) {
+            Nota n = notaRepository.findByCursoIdAndAlumnoAuth0Id(cursoId, data.getAlumnoId())
+                    .orElse(new Nota());
+            n.setCursoId(cursoId);
+            n.setAlumnoAuth0Id(data.getAlumnoId());
+            n.setDescripcion((String) data.getDescripcion());
+            if (data.getValor() != null) {
+                n.setValor(data.getValor());
+                n.setPresente(true);
+            } else {
+                n.setValor(null);
+                n.setPresente(false);
+            }
+            notasAGuardar.add(n);
+        }
 
         return notaRepository.saveAll(notasAGuardar);
     }

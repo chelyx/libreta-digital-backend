@@ -1,13 +1,15 @@
 package com.g5311.libretadigital.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import com.g5311.libretadigital.model.Asistencia;
+import com.g5311.libretadigital.model.Curso;
 import com.g5311.libretadigital.model.dto.AsistenciaAlumnoDto;
 import com.g5311.libretadigital.model.dto.AsistenciaResponse;
 import com.g5311.libretadigital.repository.AsistenciaRepository;
+import com.g5311.libretadigital.repository.CursoRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,37 +23,69 @@ public class AsistenciaService {
     @Autowired
     private AsistenciaRepository asistenciaRepository;
 
-    public Asistencia registrarAsistencia(UUID cursoId, String alumnoId, LocalDate fecha, boolean presente) {
-        // Verificar si ya existe una asistencia para ese día
-        Optional<Asistencia> existente = asistenciaRepository.findByCursoIdAndAlumnoIdAndFecha(cursoId, alumnoId,
-                fecha);
+    @Autowired
+    private CursoRepository cursoRepository;
 
-        if (existente.isPresent()) {
-            Asistencia a = existente.get();
-            a.setPresente(presente); // actualizar
-            return asistenciaRepository.save(a);
+    public Asistencia registrarAsistencia(UUID cursoId, String alumnoId, LocalDate fecha, boolean presente) {
+        // 1) Validar que el alumno pertenece al curso
+        boolean pertenece = cursoRepository.existsByIdAndAlumnos_Auth0Id(cursoId, alumnoId);
+        if (!pertenece) {
+            // throw new RuntimeException("El alumno " + dto.getAlumnoId() + " no pertenece
+            // al curso");
         }
 
-        Asistencia nueva = new Asistencia();
-        nueva.setCursoId(cursoId);
-        nueva.setAlumnoId(alumnoId);
-        nueva.setFecha(fecha);
-        nueva.setPresente(presente);
+        // 2) Verificar si ya existe una asistencia para ese día
+        Asistencia asistencia = asistenciaRepository.findByCursoIdAndAlumnoIdAndFecha(cursoId, alumnoId,
+                fecha).orElse(new Asistencia()); // si no existe, crear nueva
 
-        return asistenciaRepository.save(nueva);
+        asistencia.setCursoId(cursoId);
+        asistencia.setAlumnoId(alumnoId);
+        asistencia.setPresente(presente);
+        asistencia.setFecha(LocalDate.now());
+
+        return asistenciaRepository.save(asistencia);
     }
 
-    public void registrarAsistenciasMasivas(UUID cursoId, List<AsistenciaAlumnoDto> lista) {
-        for (AsistenciaAlumnoDto asistencia : lista) {
-            registrarAsistencia(cursoId, asistencia.getAlumnoId(), asistencia.getFecha(), asistencia.isPresente());
+    public List<String> registrarAsistenciasMasivas(UUID cursoId, List<AsistenciaAlumnoDto> lista, String auth0Id) {
+        Curso curso = cursoRepository.findById(cursoId)
+                .orElseThrow(() -> new RuntimeException("Curso no encontrado"));
+
+        // 🔐 Validación del docente
+        if (!curso.getDocenteAuth0Id().equals(auth0Id)) {
+            throw new AccessDeniedException("No sos el docente asignado a este curso");
         }
+        List<Asistencia> entidades = new ArrayList<>();
+        List<String> alumnosNoPertenecen = new ArrayList<>();
+        for (AsistenciaAlumnoDto asistenciaDto : lista) {
+            // 1) Validar que el alumno pertenece al curso
+            boolean pertenece = cursoRepository.existsByIdAndAlumnos_Auth0Id(cursoId, asistenciaDto.getAlumnoId());
+            if (!pertenece) {
+                alumnosNoPertenecen.add(asistenciaDto.getAlumnoId());
+                continue; // saltar este alumno
+            }
+
+            // 2) Verificar si ya existe una asistencia para ese día
+            Asistencia asistencia = asistenciaRepository
+                    .findByCursoIdAndAlumnoIdAndFecha(cursoId, asistenciaDto.getAlumnoId(),
+                            asistenciaDto.getFecha())
+                    .orElse(new Asistencia()); // si no existe, crear nueva
+
+            asistencia.setCursoId(cursoId);
+            asistencia.setAlumnoId(asistenciaDto.getAlumnoId());
+            asistencia.setPresente(asistenciaDto.isPresente());
+            asistencia.setFecha(asistenciaDto.getFecha());
+            entidades.add(asistencia);
+        }
+        asistenciaRepository.saveAll(entidades);
+
+        return alumnosNoPertenecen;
     }
 
     public List<AsistenciaResponse> obtenerAsistenciasPorCurso(UUID cursoId) {
         return asistenciaRepository.findAsistenciaResponsesByCursoId(cursoId);
     }
 
-      public boolean existsByCursoId(UUID cursoId) {
+    public boolean existsByCursoId(UUID cursoId) {
         return asistenciaRepository.existsByCursoId(cursoId);
     }
 

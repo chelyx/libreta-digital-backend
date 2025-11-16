@@ -39,7 +39,6 @@ public class Curso {
     private Boolean esFinal;
 
     @Column(name = "Fecha", nullable = true)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate fecha;
 
     public UUID getId() {

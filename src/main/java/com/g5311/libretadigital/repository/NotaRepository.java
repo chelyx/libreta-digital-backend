@@ -1,5 +1,6 @@
 package com.g5311.libretadigital.repository;
 
+import com.g5311.libretadigital.model.Asistencia;
 import com.g5311.libretadigital.model.Nota;
 import com.g5311.libretadigital.model.dto.NotaResponse;
 
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface NotaRepository extends JpaRepository<Nota, UUID> {
@@ -38,5 +40,7 @@ public interface NotaRepository extends JpaRepository<Nota, UUID> {
 
 
         boolean existsByCursoId(UUID cursoId);
+
+        Optional<Nota> findByCursoIdAndAlumnoAuth0Id(UUID cursoId, String alumnoId);
 
 }

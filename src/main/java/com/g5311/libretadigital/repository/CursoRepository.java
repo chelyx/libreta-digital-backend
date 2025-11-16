@@ -18,6 +18,7 @@ public interface CursoRepository extends JpaRepository<Curso, UUID> {
     Optional<Curso> findByCodigoIgnoreCase(String codigo);
 
     boolean existsByCodigoIgnoreCase(String codigo);
-
     Optional<Curso> findByCodigoAndFecha(String codigo, LocalDate fecha);
+
+     boolean existsByIdAndAlumnos_Auth0Id(UUID cursoId, String alumnoId);
 }

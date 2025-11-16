@@ -1,10 +1,12 @@
 package com.g5311.libretadigital.controller;
 
 import com.g5311.libretadigital.model.Asistencia;
+import com.g5311.libretadigital.model.Curso;
 import com.g5311.libretadigital.model.dto.AsistenciaAlumnoDto;
 import com.g5311.libretadigital.model.dto.AsistenciaBulkRequest;
 import com.g5311.libretadigital.model.dto.AsistenciaResponse;
 import com.g5311.libretadigital.service.AsistenciaService;
+import com.g5311.libretadigital.service.CursoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,14 +42,15 @@ public class AsistenciaController {
 
     @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
     @PostMapping("/guardar")
-    public ResponseEntity<?> registrarAsistenciasCurso(
+    public List<String> registrarAsistenciasCurso(
             @AuthenticationPrincipal Jwt jwt,
             @RequestBody AsistenciaBulkRequest request) {
-        // TODO: validar que jwt.getSubject() == profesor del curso
 
-        asistenciaService.registrarAsistenciasMasivas(request.getCursoId(), request.getAsistencias());
+        return asistenciaService.registrarAsistenciasMasivas(request.getCursoId(), request.getAsistencias(),
+                jwt.getSubject());
 
-        return ResponseEntity.ok(Map.of("status", "Asistencias registradas correctamente"));
+        // return ResponseEntity.ok(Map.of("status", "Asistencias registradas
+        // correctamente"));
     }
 
     @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")

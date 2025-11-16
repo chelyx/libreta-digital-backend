@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CursoService {
@@ -68,7 +69,6 @@ public class CursoService {
         return cursoRepository.findByCodigoAndFecha(codigo, fecha);
     }
 
-
     // --- Mapper básico. Reemplaza por MapStruct si lo usas en el proyecto ---
     public CursoDto toDto(Curso c) {
         CursoDto dto = new CursoDto();
@@ -82,8 +82,8 @@ public class CursoService {
     public List<CursoDto> toDtoList(List<Curso> cursos) {
         return cursos.stream().map(this::toDto).toList();
     }
-    // public Date convertirAFecha(String fechaStr) throws ParseException {
-    // SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    // return sdf.parse(fechaStr);
-    // }
+
+    public boolean alumnoRegistradoEnCurso(UUID cursoId, String alumnoId) {
+        return cursoRepository.existsByIdAndAlumnos_Auth0Id(cursoId, alumnoId);
+    }
 }

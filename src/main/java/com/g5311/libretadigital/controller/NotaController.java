@@ -66,21 +66,9 @@ public class NotaController {
             @AuthenticationPrincipal Jwt jwt,
             @PathVariable UUID cursoId,
             @RequestBody List<NotaDto> notasData) {
-        List<Nota> notas = notasData.stream().map(data -> {
-            Nota n = new Nota();
-            n.setAlumnoAuth0Id(data.getAlumnoId());
-            n.setDescripcion((String) data.getDescripcion());
-            if (data.getValor() != null) {
-                n.setValor(data.getValor());
-                n.setPresente(true);
-            } else {
-                n.setValor(null);
-                n.setPresente(false);
-            }
-            return n;
-        }).toList();
+       
 
-        return notaService.guardarNotasEnBulk(cursoId, notas);
+        return notaService.guardarNotasEnBulk(cursoId, notasData);
     }
 
     @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")

@@ -65,7 +65,7 @@ public class DataInitializer {
                 // // 👨‍🎓 Alumnos
                 User a1 = new User();
                 a1.setAuth0Id("auth0|alum1");
-                a1.setNombre("Juan Pérez");
+                a1.setNombre("Juan Gomez");
                 a1.setEmail("juan@utn.edu.ar");
                 a1.setRol("ALUMNO");
                 a1.setLegajo("1685551");
@@ -125,7 +125,7 @@ public class DataInitializer {
                 Curso curso2 = new Curso();
                 curso2.setNombre("Bases de Datos");
                 curso2.setCodigo("BD2024");
-                curso2.setDocenteAuth0Id(prof2.getAuth0Id());
+                curso2.setDocenteAuth0Id(prof1.getAuth0Id());
                 curso2.setFecha(fechaHoy);
                 curso2.setEsFinal(true);
                 curso2.setAlumnos(Set.of(a1, a2));

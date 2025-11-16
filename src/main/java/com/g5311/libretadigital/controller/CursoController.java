@@ -37,7 +37,6 @@ public class CursoController {
     @Autowired
     private NotaService notasService;
 
-
     @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
     @GetMapping("/profesor/{auth0Id}")
     public List<Curso> obtenerCursosPorProfesor(@PathVariable String auth0Id) {
@@ -62,7 +61,7 @@ public class CursoController {
     @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
     @PostMapping("/todos")
     public ResponseEntity<Curso> crearMiCurso(@AuthenticationPrincipal Jwt jwt,
-                                              @RequestBody CursoDto dto) throws ParseException {
+            @RequestBody CursoDto dto) throws ParseException {
         String docenteAuth0Id = jwt.getSubject();
         Curso creado = cursoService.crearCurso(dto, docenteAuth0Id);
         // 201 + Location (si tenés getId en Curso)
@@ -82,7 +81,7 @@ public class CursoController {
             resultado = cursoService.findAll();
         } else { // PROFESOR
             String docenteAuth0Id = jwt.getSubject(); // sub del token de Auth0
-            resultado =cursoService.obtenerCursosPorDocente(docenteAuth0Id);
+            resultado = cursoService.obtenerCursosPorDocente(docenteAuth0Id);
         }
         return ResponseEntity.ok(resultado);
     }
@@ -95,7 +94,7 @@ public class CursoController {
                 .anyMatch(a -> a.getAuthority().equals(rolEsperado));
     }
 
-    //POST indicando el docente en el body
+    // POST indicando el docente en el body
     @PreAuthorize("hasRole('PROFESOR')")
     @PostMapping
     public ResponseEntity<Curso> crearCurso(@RequestBody CursoDto dto) throws ParseException {
@@ -119,21 +118,20 @@ public class CursoController {
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        String.format("No se encontró curso con código '%s' y fecha '%s'", codigoCurso, fechaBusqueda)));
+                        String.format("No se encontró curso con código '%s' y fecha '%s'", codigoCurso,
+                                fechaBusqueda)));
     }
 
-
     @GetMapping("/{examenId}/estado")
-public ExamenEstadoDto getEstado(@PathVariable UUID examenId) {
+    public ExamenEstadoDto getEstado(@PathVariable UUID examenId) {
 
-    boolean asistenciaCargada = asistenciaService.existsByCursoId(examenId);
-    boolean notasCargadas = notasService.existsByCursoId(examenId);
+        boolean asistenciaCargada = asistenciaService.existsByCursoId(examenId);
+        boolean notasCargadas = notasService.existsByCursoId(examenId);
 
-    return new ExamenEstadoDto(
-        examenId,
-        asistenciaCargada,
-        notasCargadas
-    );
-}
+        return new ExamenEstadoDto(
+                examenId,
+                asistenciaCargada,
+                notasCargadas);
+    }
 
 }
