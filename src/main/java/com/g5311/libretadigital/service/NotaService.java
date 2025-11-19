@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 public class NotaService {
     @Autowired
     private NotaRepository notaRepository;
-    @Autowired
-    private TsaService tsaService;
 
     public Nota guardarNota(UUID cursoId, String alumnoAuth0Id, String descripcion, Double valor) {
         Nota nota = new Nota();

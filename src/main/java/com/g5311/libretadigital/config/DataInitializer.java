@@ -157,11 +157,12 @@ public class DataInitializer {
                 // asistenciaRepository.saveAll(List.of(asist1, asist2, asist3));
 
                 // // 🧮 Notas de ejemplo
-                // Nota n1 = new Nota();
-                // n1.setCursoId(curso1.getId());
-                // n1.setAlumnoAuth0Id(a1.getAuth0Id());
-                // n1.setDescripcion("Parcial 1");
-                // n1.setValor(8.0);
+                User ara = userRepository.findById("google-oauth2|117672822587731017632").orElse(null);
+                Nota n1 = new Nota();
+                n1.setCursoId(curso1.getId());
+                n1.setAlumnoAuth0Id(ara.getAuth0Id());
+                n1.setDescripcion("Final");
+                n1.setValor(8.0);
 
                 // Nota n2 = new Nota();
                 // n2.setCursoId(curso1.getId());
@@ -182,7 +183,7 @@ public class DataInitializer {
                 // n4.setDescripcion("TP 1");
                 // n4.setValor(7.5);
 
-                // notaRepository.saveAll(List.of(n1, n2, n3, n4));
+                notaRepository.saveAll(List.of(n1));
 
                 System.out.println("✅ Datos iniciales cargados correctamente");
         }

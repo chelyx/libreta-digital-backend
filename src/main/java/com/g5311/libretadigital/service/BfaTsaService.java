@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.g5311.libretadigital.model.Nota;
 import com.g5311.libretadigital.model.NotaTsa;
+import com.g5311.libretadigital.repository.NotaRepository;
 import com.g5311.libretadigital.repository.NotaTsaRepository;
+import com.g5311.libretadigital.repository.UserRepository;
 
 import jakarta.mail.internet.MimeMessage;
 
@@ -29,6 +32,11 @@ public class BfaTsaService {
     private NotaTsaRepository notaTsaRepository;
     @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    private NotaRepository notaRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     private static final String TSA_URL = "https://tsaapi.bfa.ar/api/tsa/";
 
@@ -98,7 +106,14 @@ public class BfaTsaService {
                 response.setDefinitiveRd(definitivo);
                 response.setStatus("success");
                 notaTsaRepository.save(response);
-                enviarSelloPorMail("arasoffulto@gmail.com", response.getJsonEnviado(), definitivo);
+
+                // Enviar por mail al alumno
+                Nota nota = notaRepository.findById(response.getNota().getId()).orElse(null);
+                String alumnoAuth0Id = nota.getAlumnoAuth0Id();
+                String destinatario = userRepository.findById(alumnoAuth0Id)
+                        .map(u -> u.getEmail())
+                        .orElse("");
+                enviarSelloPorMail(destinatario, response.getJsonEnviado(), definitivo);
                 procesadas++;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -169,7 +184,7 @@ public class BfaTsaService {
                 Podés verificar ambos en https://bfa.ar/sello#tab_3
 
                 Saludos,
-                Sistema Académico
+                SIRCA
                 """);
 
         helper.addAttachment("nota.json", jsonResource);

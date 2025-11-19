@@ -35,7 +35,7 @@ public class TsaService2 {
    
 
     public int generarNotaRequest() throws Exception {
-        LocalDate limite = LocalDate.now().minusDays(1);
+        LocalDate limite = LocalDate.now();//.minusDays(1);
         List<Nota> notas = notaRepository.findNotasParaSellar(limite);
 
         for (Nota nota : notas) {
