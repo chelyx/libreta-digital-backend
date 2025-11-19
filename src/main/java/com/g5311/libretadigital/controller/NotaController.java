@@ -12,10 +12,14 @@ import com.g5311.libretadigital.service.TsaService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -33,6 +37,9 @@ public class NotaController {
 
     @Autowired
     private BfaTsaService bfaTsaService;
+
+    @Autowired
+    private TaskScheduler scheduler;
 
     // Cargar una nota
     @PostMapping("/curso/{cursoId}")
@@ -54,7 +61,7 @@ public class NotaController {
     }
 
     // Obtener las notas de un alumno en TODOS sus cursos
-    @GetMapping("/me") 
+    @GetMapping("/me")
     public List<NotaResponse> getNotasPorAlumno(@AuthenticationPrincipal Jwt jwt) {
         String auth0Id = jwt.getSubject();
         return notaService.obtenerNotasPorAlumno(auth0Id);
@@ -65,7 +72,6 @@ public class NotaController {
             @AuthenticationPrincipal Jwt jwt,
             @PathVariable UUID cursoId,
             @RequestBody List<NotaDto> notasData) {
-       
 
         return notaService.guardarNotasEnBulk(cursoId, notasData);
     }
@@ -96,16 +102,22 @@ public class NotaController {
     }
 
     @PostMapping("/sellar-temp")
-    public ResponseEntity<String> sellarNotas() {
+    public ResponseEntity<Map<String, String>> sellarNotas() {
         try {
             int cantidad = tsaService.generarNotaRequest();
             System.out.println("Notas registradas para TSA: " + cantidad);
             int cantidad2 = bfaTsaService.primerSelloABFA();
             System.out.println("Notas selladas en BFA: " + cantidad2);
-            return ResponseEntity.ok("✅ " + cantidad + " notas selladas (registradas para TSA)");
+
+            scheduler.schedule(
+                    () -> bfaTsaService.generarRecibosDefinitivos(),
+                    Instant.now().plus(Duration.ofMinutes(4)));
+
+            return ResponseEntity.ok(Map.of("message", "Las notas se enviaron a sellar correctamente"));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().body("❌ Error: " + e.getMessage());
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("error", "Error al sellar las notas: " + e.getMessage()));
         }
     }
 
