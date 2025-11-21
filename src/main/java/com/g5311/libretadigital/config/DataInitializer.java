@@ -60,7 +60,7 @@ public class DataInitializer {
 
                 // 👩‍🏫 Profesores (los mismos que ya venías usando)
                 User prof1 = userRepository.findById("auth0|68bc93d0f21d782f04f36998").orElse(null);
-                User prof2 = userRepository.findById("google-oauth2|117509478967819287002").orElse(null);
+                User andrea = userRepository.findById("google-oauth2|117509478967819287002").orElse(null);
 
                 // 👨‍🎓 Alumnos DEMO (incluye los 5 nombres del grupo)
                 User yasmin = userRepository.findById("google-oauth2|110308643967461901799").orElse(null);
@@ -210,7 +210,7 @@ public class DataInitializer {
                 Curso c2 = new Curso();
                 c2.setNombre("Inteligencia Artificial");
                 c2.setCodigo("K3024");
-                c2.setDocenteAuth0Id(prof2 != null ? prof2.getAuth0Id() : null);
+                c2.setDocenteAuth0Id(andrea != null ? andrea.getAuth0Id() : null);
                 c2.setFecha(hoy.minusDays(25));
                 c2.setEsFinal(false);
                 c2.setAlumnos(alumnosSet);
@@ -226,7 +226,7 @@ public class DataInitializer {
                 Curso c4 = new Curso();
                 c4.setNombre("Gestión de la Transformación Organizacional");
                 c4.setCodigo("K3026");
-                c4.setDocenteAuth0Id(prof2 != null ? prof2.getAuth0Id() : null);
+                c4.setDocenteAuth0Id(andrea != null ? andrea.getAuth0Id() : null);
                 c4.setFecha(hoy.minusDays(15));
                 c4.setEsFinal(false);
                 c4.setAlumnos(alumnosSet);
@@ -242,7 +242,7 @@ public class DataInitializer {
                 Curso c6 = new Curso();
                 c6.setNombre("Simulación");
                 c6.setCodigo("K3028");
-                c6.setDocenteAuth0Id(prof2 != null ? prof2.getAuth0Id() : null);
+                c6.setDocenteAuth0Id(andrea != null ? andrea.getAuth0Id() : null);
                 c6.setFecha(hoy.minusDays(5));
                 c6.setEsFinal(false);
                 c6.setAlumnos(alumnosSet);

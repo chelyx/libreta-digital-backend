@@ -4,9 +4,14 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Entity
 @Table(name = "notas")
@@ -35,6 +40,29 @@ public class Nota {
 
     @Column(name = "presente", nullable = false)
     private boolean presente;
+
+    @Column(name = "version_hash")
+    private String versionHash;
+
+    @PrePersist
+    @PreUpdate
+    private void autoVersionHash() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+
+            Map<String, Object> valores = new HashMap<>();
+            valores.put("valor", valor);
+            valores.put("alumnoAuth0Id", alumnoAuth0Id);
+            valores.put("cursoId", cursoId);
+            valores.put("fecha", fecha.toString());
+
+            String json = mapper.writeValueAsString(valores);
+            this.versionHash = DigestUtils.sha256Hex(json);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error generando versionHash", e);
+        }
+    }
 
     // --- Getters y Setters ---
     public UUID getId() {
@@ -91,5 +119,13 @@ public class Nota {
 
     public void setPresente(boolean presente) {
         this.presente = presente;
+    }
+
+    public String getVersionHash() {
+        return versionHash;
+    }
+
+    public void setVersionHash(String versionHash) {
+        this.versionHash = versionHash;
     }
 }

@@ -50,10 +50,10 @@ public class AsistenciaService {
         Curso curso = cursoRepository.findById(cursoId)
                 .orElseThrow(() -> new RuntimeException("Curso no encontrado"));
 
-        // 🔐 Validación del docente
-        if (!curso.getDocenteAuth0Id().equals(auth0Id)) {
-            throw new AccessDeniedException("No sos el docente asignado a este curso");
-        }
+        // Validación del docente // LOS BEDELES TAMBIÉN PUEDEN REGISTRAR ASISTENCIAS   
+        // if (!curso.getDocenteAuth0Id().equals(auth0Id)) {
+        // throw new AccessDeniedException("No sos el docente asignado a este curso");
+        // }
         List<Asistencia> entidades = new ArrayList<>();
         List<String> alumnosNoPertenecen = new ArrayList<>();
         for (AsistenciaAlumnoDto asistenciaDto : lista) {

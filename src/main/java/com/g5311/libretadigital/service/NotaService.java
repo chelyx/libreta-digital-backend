@@ -1,11 +1,15 @@
 package com.g5311.libretadigital.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.g5311.libretadigital.model.Curso;
 import com.g5311.libretadigital.model.Nota;
-import com.g5311.libretadigital.model.dto.NotaBFA;
+import com.g5311.libretadigital.model.User;
 import com.g5311.libretadigital.model.dto.NotaBulkDto;
 import com.g5311.libretadigital.model.dto.NotaDto;
 import com.g5311.libretadigital.model.dto.NotaResponse;
+import com.g5311.libretadigital.repository.CursoRepository;
 import com.g5311.libretadigital.repository.NotaRepository;
+import com.g5311.libretadigital.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,15 @@ import java.util.stream.Collectors;
 public class NotaService {
     @Autowired
     private NotaRepository notaRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CursoRepository cursoRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     public Nota guardarNota(UUID cursoId, String alumnoAuth0Id, String descripcion, Double valor) {
         Nota nota = new Nota();
@@ -58,14 +71,26 @@ public class NotaService {
         return notaRepository.existsByCursoId(cursoId);
     }
 
-    // public List<NotaResponse> obtenerNotasDeAlumnoEnCurso(UUID cursoId, String
-    // alumnoAuth0Id) {
-
-    // return notaRepository.findByCursoIdAndAlumnoAuth0Id(cursoId, alumnoAuth0Id);
-    // }
+    public void enviarNotasPorMailCurso(List<Nota> notasData) {
+        for (Nota data : notasData) {
+            if (data.isPresente()) {
+                User alumno = userRepository.findById(data.getAlumnoAuth0Id()).orElse(null);
+                Curso curso = cursoRepository.findById(data.getCursoId()).orElse(null);
+                try {
+                    emailService.enviarNotaPorMail(
+                            alumno.getNombre(),
+                            data,
+                            alumno.getEmail(),
+                            curso.getNombre());
+                } catch (Exception e) {
+                    System.out.println("Error enviando email a " + alumno.getEmail() + ": " + e.getMessage());
+                }
+            }
+        }
+    }
 
     public List<Nota> guardarNotasEnBulk(UUID cursoId, List<NotaDto> notas) {
-       
+
         List<Nota> notasAGuardar = new ArrayList<>();
         for (NotaDto data : notas) {
             Nota n = notaRepository.findByCursoIdAndAlumnoAuth0Id(cursoId, data.getAlumnoId())
@@ -86,27 +111,8 @@ public class NotaService {
         return notaRepository.saveAll(notasAGuardar);
     }
 
-    public void registrarNotaTSA(NotaBFA nota) {
-        // try {
-        // // 1️⃣ Generar hash (sin exponer datos personales)
-        // String rutaPdf = "nota_" + nota.getLegajoAlumno() + ".pdf";
-        // PdfGenerator.generarPdfNota(rutaPdf, nota.getFecha().toString(),
-        // nota.getLegajoAlumno(),
-        // nota.getMateria(), nota.getNota());
-        // String hash = HashUtil.sha256(rutaPdf);
-
-        // // 2️⃣ Enviar a TSA de BFA
-        // var result = tsaService.registrarHashEnTsa(hash);
-
-        // // 3️⃣ Guardar en tu base de datos el hash y los datos devueltos
-        // System.out.println("Nota registrada en la blockchain BFA:");
-        // System.out.println(result);
-        // } catch (Exception e) {
-        // throw new RuntimeException("Error al registrar la nota en BFA TSA", e);
-        // }
-    }
-
     public List<NotaResponse> obtenerNotasPorAlumno(String alumnoAuth0Id) {
         return notaRepository.findNotaResponseByAlumnoId(alumnoAuth0Id);
     }
+
 }

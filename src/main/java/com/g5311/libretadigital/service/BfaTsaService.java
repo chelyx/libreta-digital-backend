@@ -11,9 +11,11 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.g5311.libretadigital.model.Nota;
 import com.g5311.libretadigital.model.NotaTsa;
+import com.g5311.libretadigital.model.User;
 import com.g5311.libretadigital.repository.NotaRepository;
 import com.g5311.libretadigital.repository.NotaTsaRepository;
 import com.g5311.libretadigital.repository.UserRepository;
+import com.g5311.libretadigital.utils.EmailTemplates;
 
 import jakarta.mail.internet.MimeMessage;
 
@@ -24,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class BfaTsaService {
@@ -31,7 +34,7 @@ public class BfaTsaService {
     @Autowired
     private NotaTsaRepository notaTsaRepository;
     @Autowired
-    private JavaMailSender mailSender;
+    private EmailService emailService;
 
     @Autowired
     private NotaRepository notaRepository;
@@ -110,10 +113,9 @@ public class BfaTsaService {
                 // Enviar por mail al alumno
                 Nota nota = notaRepository.findById(response.getNota().getId()).orElse(null);
                 String alumnoAuth0Id = nota.getAlumnoAuth0Id();
-                String destinatario = userRepository.findById(alumnoAuth0Id)
-                        .map(u -> u.getEmail())
-                        .orElse("");
-                enviarSelloPorMail(destinatario, response.getJsonEnviado(), definitivo);
+                User destinatario = userRepository.findById(alumnoAuth0Id).orElseThrow( () -> new RuntimeException("No se encontró el usuario con id: " + alumnoAuth0Id));
+
+               emailService.enviarSelloPorMail(destinatario, response.getJsonEnviado(), definitivo, response.getId());
                 procesadas++;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -159,37 +161,4 @@ public class BfaTsaService {
         return definitiveRd.toString();
     }
 
-    public void enviarSelloPorMail(String destinatario, String jsonOriginal, String definitiveRd)
-            throws Exception {
-        // Convertir JSON a bytes
-        byte[] jsonBytes = jsonOriginal.getBytes(StandardCharsets.UTF_8);
-        ByteArrayResource jsonResource = new ByteArrayResource(jsonBytes);
-
-        // Convertir a bytes
-        ByteArrayResource rdResource = new ByteArrayResource(definitiveRd.getBytes(StandardCharsets.UTF_8));
-
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
-        helper.setTo(destinatario);
-        helper.setSubject("Sello de Tiempo BFA - Nota sellada");
-        helper.setText("""
-                Hola,
-
-                Adjuntamos la nota sellada con su correspondiente sello de tiempo (BFA).
-                Archivos incluidos:
-                - nota.json → contenido original sellado
-                - sello_bfa_definitivo.rd → recibo de tiempo oficial
-
-                Podés verificar ambos en https://bfa.ar/sello#tab_3
-
-                Saludos,
-                SIRCA
-                """);
-
-        helper.addAttachment("nota.json", jsonResource);
-        helper.addAttachment("sello_bfa_definitivo.rd", rdResource);
-
-        mailSender.send(message);
-    }
 }

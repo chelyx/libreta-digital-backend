@@ -1,7 +1,6 @@
 package com.g5311.libretadigital.controller;
 
 import com.g5311.libretadigital.model.Nota;
-import com.g5311.libretadigital.model.dto.NotaBFA;
 import com.g5311.libretadigital.model.dto.NotaBulkDto;
 import com.g5311.libretadigital.model.dto.NotaDto;
 import com.g5311.libretadigital.model.dto.NotaResponse;
@@ -73,7 +72,12 @@ public class NotaController {
             @PathVariable UUID cursoId,
             @RequestBody List<NotaDto> notasData) {
 
-        return notaService.guardarNotasEnBulk(cursoId, notasData);
+        List<Nota> notasGuardadas = notaService.guardarNotasEnBulk(cursoId, notasData);
+        scheduler.schedule(
+                () -> notaService.enviarNotasPorMailCurso(notasGuardadas),
+                Instant.now().plus(Duration.ofMinutes(1)));
+
+        return notasGuardadas;
     }
 
     @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
@@ -94,11 +98,6 @@ public class NotaController {
             @RequestBody NotaBulkDto notasData) {
 
         return notaService.updateNotasBulk(notasData);
-    }
-
-    @PostMapping("/registrar")
-    public void registrarNotaBFA(@RequestBody NotaBFA entity) {
-        notaService.registrarNotaTSA(entity);
     }
 
     @PostMapping("/sellar-temp")
@@ -132,21 +131,9 @@ public class NotaController {
 
     }
 
-    // @GetMapping("/notas/{id}/json")
-    // public ResponseEntity<String> obtenerJsonOriginal(@PathVariable UUID id) {
-    // String record = tsaService.obtenerJsonOriginal(id);
-    // // .orElseThrow(() -> new RuntimeException("JSON no encontrado"));
-    // return ResponseEntity.ok()
-    // .contentType(MediaType.APPLICATION_JSON)
-    // .body(record);
-    // }
-
     @GetMapping("/test-mail")
     public ResponseEntity<String> test() throws Exception {
-        String json = "{\"alumno\": 1234, \"nota\": 10}";
-        String dummyRd = "MHgtZmFrZS1iYXNlNjQ="; // simulación de Base64
 
-        bfaTsaService.enviarSelloPorMail("arasoffulto@gmail.com", json, dummyRd);
         return ResponseEntity.ok("Mail enviado correctamente");
     }
 }
