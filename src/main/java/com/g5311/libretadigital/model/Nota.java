@@ -2,16 +2,13 @@ package com.g5311.libretadigital.model;
 
 import jakarta.persistence.*;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
 import java.util.UUID;
+import java.util.zip.CRC32;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.annotations.GenericGenerator;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Entity
 @Table(name = "notas")
@@ -47,21 +44,12 @@ public class Nota {
     @PrePersist
     @PreUpdate
     private void autoVersionHash() {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-
-            Map<String, Object> valores = new HashMap<>();
-            valores.put("valor", valor);
-            valores.put("alumnoAuth0Id", alumnoAuth0Id);
-            valores.put("cursoId", cursoId);
-            valores.put("fecha", fecha.toString());
-
-            String json = mapper.writeValueAsString(valores);
-            this.versionHash = DigestUtils.sha256Hex(json);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Error generando versionHash", e);
-        }
+        String texto = cursoId.toString() + "-" + alumnoAuth0Id + "-"
+                + (valor == null ? "A" : valor) + "-" + fecha.toString();
+        CRC32 crc = new CRC32();
+        crc.update(texto.getBytes(StandardCharsets.UTF_8));
+        long value = crc.getValue();
+        this.versionHash = Long.toHexString(value);
     }
 
     // --- Getters y Setters ---
