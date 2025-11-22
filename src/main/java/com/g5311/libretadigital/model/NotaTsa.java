@@ -1,7 +1,11 @@
 package com.g5311.libretadigital.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @Table(name = "nota_tsa")
@@ -27,7 +31,7 @@ public class NotaTsa {
     private String hash;
 
     @Column(name = "fecha_envio")
-    private LocalDateTime fechaEnvio = LocalDateTime.now();
+    private LocalDateTime fechaEnvio = LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
 
     @Lob
     @Column(name = "temporary_rd")

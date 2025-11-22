@@ -1,5 +1,7 @@
 package com.g5311.libretadigital.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -8,6 +10,7 @@ public class CursoDto {
     private String docenteAuth0Id; // opcional si tomás el docente del JWT
     private String nombre; // si tu entidad lo usa
     private String codigo; // si tu entidad lo usa
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate fecha;
 
     public CursoDto() {

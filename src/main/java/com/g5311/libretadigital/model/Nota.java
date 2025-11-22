@@ -1,9 +1,14 @@
 package com.g5311.libretadigital.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.util.UUID;
 import java.util.zip.CRC32;
@@ -33,7 +38,7 @@ public class Nota {
     private Double valor; // Ej: 8.5
 
     @Column(name = "fecha", nullable = false)
-    private LocalDate fecha = LocalDate.now();
+    private LocalDate fecha =  LocalDate.now(ZoneId.of("America/Argentina/Buenos_Aires"));
 
     @Column(name = "presente", nullable = false)
     private boolean presente;

@@ -1,5 +1,7 @@
 package com.g5311.libretadigital.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 
 public class AsistenciaAlumnoDto {

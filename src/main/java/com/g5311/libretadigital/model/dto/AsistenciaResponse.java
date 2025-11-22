@@ -1,11 +1,14 @@
 package com.g5311.libretadigital.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
 public class AsistenciaResponse {
     private UUID cursoId;
     private String nombreCurso;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate fecha;
     private String auth0Id;
     private String nombre;

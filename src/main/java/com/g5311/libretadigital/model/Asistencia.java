@@ -1,5 +1,6 @@
 package com.g5311.libretadigital.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;

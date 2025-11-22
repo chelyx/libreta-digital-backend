@@ -1,5 +1,7 @@
 package com.g5311.libretadigital.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
@@ -9,6 +11,7 @@ public class NotaResponse {
     private UUID id;
     private UUID cursoId;
     private String nombreCurso;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate fecha;
     private String alumnoNombre;
     private String descripcion;
