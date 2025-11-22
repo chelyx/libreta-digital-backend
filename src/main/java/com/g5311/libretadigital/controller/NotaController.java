@@ -16,9 +16,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -131,9 +139,23 @@ public class NotaController {
 
     }
 
-    @GetMapping("/test-mail")
-    public ResponseEntity<String> test() throws Exception {
+    @PostMapping("/upload-acta")
+    public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file) throws IOException {
 
-        return ResponseEntity.ok("Mail enviado correctamente");
+        String uploadsDir = "uploads/actas/";
+        File dir = new File(uploadsDir);
+        if (!dir.exists())
+            dir.mkdirs();
+
+        String filename = UUID.randomUUID() + "-" + file.getOriginalFilename();
+        Path path = Paths.get(uploadsDir + filename);
+
+        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("url", path.toString());
+        response.put("filename", filename);
+        return ResponseEntity.ok(response);
     }
+
 }
