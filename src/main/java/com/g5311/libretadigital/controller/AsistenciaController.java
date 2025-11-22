@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +35,9 @@ public class AsistenciaController {
             @AuthenticationPrincipal Jwt jwt,
             @RequestParam UUID cursoId,
             @RequestParam Boolean presente) {
-        String alumnoId = jwt.getSubject(); // auth0_id
-        LocalDate fechaHoy = LocalDate.now();
+        String alumnoId = jwt.getSubject(); // auth0_i
+        ZoneId zoneUTC3 = ZoneId.of("America/Argentina/Buenos_Aires");
+        LocalDate fechaHoy = LocalDate.now(zoneUTC3);
 
         return asistenciaService.registrarAsistencia(cursoId, alumnoId, fechaHoy, presente);
     }
@@ -61,6 +63,15 @@ public class AsistenciaController {
         List<AsistenciaResponse> asistencias = asistenciaService.obtenerAsistenciasPorCurso(cursoId);
 
         return ResponseEntity.ok(asistencias);
+    }
+
+    // obtener las asistencias del alumno logueado en TODOS sus cursos
+    @GetMapping("/me")
+    public List<AsistenciaResponse> obtenerMisAsistencias(@AuthenticationPrincipal Jwt jwt
+      //      ,  @RequestParam("alumnoID") String auth0Id
+    ) {
+        String auth0Id = jwt.getSubject(); // "auth0|xxxx"
+        return asistenciaService.obtenerAsistenciasPorAlumno(auth0Id);
     }
 
     @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")

@@ -5,14 +5,16 @@ import java.util.UUID;
 
 public class AsistenciaResponse {
     private UUID cursoId;
+    private String nombreCurso;
     private LocalDate fecha;
     private String auth0Id;
     private String nombre;
     private boolean presente;
 
     // Constructor for JPQL constructor expression
-    public AsistenciaResponse(UUID cursoId, LocalDate fecha, String auth0Id, String nombre, boolean presente) {
+    public AsistenciaResponse(UUID cursoId, String nombreCurso , LocalDate fecha, String auth0Id, String nombre, boolean presente) {
         this.cursoId = cursoId;
+        this.nombreCurso = nombreCurso;
         this.fecha = fecha;
         this.auth0Id = auth0Id;
         this.nombre = nombre;
@@ -27,6 +29,10 @@ public class AsistenciaResponse {
     public void setCursoId(UUID cursoId) {
         this.cursoId = cursoId;
     }
+
+    public String getNombreCurso() {return nombreCurso;}
+
+    public void setNombreCurso(String nombreCurso) {this.nombreCurso = nombreCurso;}
 
     public LocalDate getFecha() {
         return fecha;

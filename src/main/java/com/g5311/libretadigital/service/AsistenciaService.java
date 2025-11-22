@@ -89,6 +89,11 @@ public class AsistenciaService {
         return asistenciaRepository.existsByCursoId(cursoId);
     }
 
+
+    public List<AsistenciaResponse> obtenerAsistenciasPorAlumno(String alumnoAuth0Id) {
+        return asistenciaRepository.findAsistenciaResponsesByAlumnoId(alumnoAuth0Id);
+    }
+
     /**
      * Actualiza una asistencia existente, buscándola por (cursoId, alumnoId,
      * fecha).

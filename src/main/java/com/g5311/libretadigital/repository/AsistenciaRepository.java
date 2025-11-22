@@ -17,10 +17,21 @@ public interface AsistenciaRepository extends JpaRepository<Asistencia, UUID> {
 
     List<Asistencia> findByCursoId(UUID cursoId);
 
-    @Query("select new com.g5311.libretadigital.model.dto.AsistenciaResponse(a.cursoId, a.fecha, u.auth0Id, u.nombre, a.presente) "
-            + "from Asistencia a join com.g5311.libretadigital.model.User u on a.alumnoId = u.auth0Id "
-            + "where a.cursoId = :cursoId")
+    @Query("select new com.g5311.libretadigital.model.dto.AsistenciaResponse(" +
+            "a.cursoId, c.nombre, a.fecha, u.auth0Id, u.nombre, a.presente) " +
+            "from com.g5311.libretadigital.model.Asistencia a " +
+            "join com.g5311.libretadigital.model.User u on a.alumnoId = u.auth0Id " +
+            "join com.g5311.libretadigital.model.Curso c on a.cursoId = c.id " +
+            "where a.cursoId = :cursoId")
     List<AsistenciaResponse> findAsistenciaResponsesByCursoId(@Param("cursoId") UUID cursoId);
+
+    @Query("select new com.g5311.libretadigital.model.dto.AsistenciaResponse(" +
+            "a.cursoId, c.nombre, a.fecha, u.auth0Id, u.nombre, a.presente) " +
+            "from com.g5311.libretadigital.model.Asistencia a " +
+            "join com.g5311.libretadigital.model.User u on a.alumnoId = u.auth0Id " +
+            "join com.g5311.libretadigital.model.Curso c on a.cursoId = c.id " +
+            "where a.alumnoId = :alumnoAuth0Id")
+    List<AsistenciaResponse> findAsistenciaResponsesByAlumnoId(@Param("alumnoAuth0Id") String alumnoAuth0Id);
 
      boolean existsByCursoId(UUID cursoId);
 }
