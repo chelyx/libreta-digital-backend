@@ -9,6 +9,7 @@ import com.g5311.libretadigital.service.NotaService;
 import com.g5311.libretadigital.service.TsaService2;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
@@ -20,12 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,10 +111,36 @@ public class NotaController {
         return notaService.updateNotasBulk(notasData);
     }
 
+
+    @PostMapping("/sellar-this")
+    public ResponseEntity<Map<String, String>> sellarListaDeNotas(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestBody List<UUID> notasData) {
+
+       try {
+            List<Nota> notas = notaService.findAllById(notasData);
+            int cantidad = tsaService.generarNotaRequest(notas);
+            System.out.println("Notas registradas para TSA: " + cantidad);
+            int cantidad2 = bfaTsaService.primerSelloABFA();
+            System.out.println("Notas selladas en BFA: " + cantidad2);
+
+            scheduler.schedule(
+                    () -> bfaTsaService.generarRecibosDefinitivos(),
+                    Instant.now().plus(Duration.ofMinutes(4)));
+
+            return ResponseEntity.ok(Map.of("message", "Las notas se enviaron a sellar correctamente"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("error", "Error al sellar las notas: " + e.getMessage()));
+        }
+    }
+
     @PostMapping("/sellar-temp")
     public ResponseEntity<Map<String, String>> sellarNotas() {
         try {
-            int cantidad = tsaService.generarNotaRequest();
+            List<Nota> notas = notaService.findNotasParaSellar();
+            int cantidad = tsaService.generarNotaRequest(notas);
             System.out.println("Notas registradas para TSA: " + cantidad);
             int cantidad2 = bfaTsaService.primerSelloABFA();
             System.out.println("Notas selladas en BFA: " + cantidad2);
@@ -156,6 +185,30 @@ public class NotaController {
         response.put("url", path.toString());
         response.put("filename", filename);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{notaId}/json")
+    public ResponseEntity<byte[]> descargarJson(@PathVariable UUID notaId) {
+        String contenido = bfaTsaService.getJsonByNotaId(notaId);
+        byte[] bytes = contenido.getBytes(StandardCharsets.UTF_8);
+        String nameFile = notaId.toString() + ".json";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + nameFile)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(bytes);
+    }
+
+    @GetMapping("/{notaId}/rd")
+    public ResponseEntity<byte[]> descargarDefinitiveRd(@PathVariable UUID notaId) {
+        String contenido = bfaTsaService.getRdByNotaId(notaId);
+        byte[] bytes = contenido.getBytes(StandardCharsets.UTF_8);
+        String nameFile = notaId.toString() + "_sello.rd";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + nameFile)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(bytes);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.g5311.libretadigital.repository;
 
 import com.g5311.libretadigital.model.Asistencia;
+import com.g5311.libretadigital.model.Curso;
 import com.g5311.libretadigital.model.Nota;
 import com.g5311.libretadigital.model.dto.NotaResponse;
 
@@ -25,9 +26,22 @@ public interface NotaRepository extends JpaRepository<Nota, UUID> {
         // List<NotaResponse> findByCursoIdAndAlumnoAuth0Id(UUID cursoId, String
         // alumnoAuth0Id);
 
-        @Query("select new com.g5311.libretadigital.model.dto.NotaResponse(a.id,a.cursoId, c.nombre, a.fecha, a.valor, a.descripcion, a.presente) "
-                        + " from Nota a join com.g5311.libretadigital.model.Curso c on a.cursoId = c.id "
-                        + "where a.alumnoAuth0Id = :alumnoAuth0Id")
+        @Query("""
+                                select new com.g5311.libretadigital.model.dto.NotaResponse(
+                                        a.id,
+                                        a.cursoId,
+                                        c.nombre,
+                                        a.fecha,
+                                        a.valor,
+                                        a.descripcion,
+                                        a.presente,
+                                        case when nt.id is null then false else true end
+                                )
+                                from Nota a
+                                join com.g5311.libretadigital.model.Curso c on a.cursoId = c.id
+                                left join com.g5311.libretadigital.model.NotaTsa nt on a.id = nt.nota.id
+                                where a.alumnoAuth0Id = :alumnoAuth0Id
+                        """)
         List<NotaResponse> findNotaResponseByAlumnoId(String alumnoAuth0Id);
 
         @Query("select new com.g5311.libretadigital.model.dto.NotaResponse(a.id,a.cursoId, a.fecha, u.nombre, a.valor, a.descripcion, a.presente) "
@@ -38,9 +52,10 @@ public interface NotaRepository extends JpaRepository<Nota, UUID> {
         @Query("SELECT n FROM Nota n WHERE n.fecha <= :limite AND n.id NOT IN (SELECT r.nota.id FROM com.g5311.libretadigital.model.NotaTsa r)")
         List<Nota> findNotasParaSellar(@Param("limite") LocalDate limite);
 
-
         boolean existsByCursoId(UUID cursoId);
 
         Optional<Nota> findByCursoIdAndAlumnoAuth0Id(UUID cursoId, String alumnoId);
+
+        List<Nota> findAllByIdIn(List<UUID> ids);
 
 }

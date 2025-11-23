@@ -14,6 +14,7 @@ import com.g5311.libretadigital.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -113,6 +114,16 @@ public class NotaService {
 
     public List<NotaResponse> obtenerNotasPorAlumno(String alumnoAuth0Id) {
         return notaRepository.findNotaResponseByAlumnoId(alumnoAuth0Id);
+    }
+
+    public List<Nota> findNotasParaSellar(){
+        LocalDate limite = LocalDate.now();//.minusDays(1);
+        return notaRepository.findNotasParaSellar(limite);
+    }
+
+    public List<Nota> findAllById(List<UUID> notas){
+       
+        return notaRepository.findAllByIdIn(notas);
     }
 
 }

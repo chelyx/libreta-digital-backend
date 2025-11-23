@@ -32,7 +32,7 @@ public class EmailService {
             String to,
             String subject,
             String body,
-            Map<String, byte[]> attachments // nombre → contenido
+            Map<String, ByteArrayResource> attachments // nombre → contenido
     ) throws Exception {
 
         MimeMessage message = mailSender.createMimeMessage();
@@ -43,21 +43,22 @@ public class EmailService {
         helper.setText(body);
 
         if (attachments != null) {
-            for (Map.Entry<String, byte[]> att : attachments.entrySet()) {
-                helper.addAttachment(att.getKey(), new ByteArrayResource(att.getValue()));
+            for (Map.Entry<String, ByteArrayResource> att : attachments.entrySet()) {
+                helper.addAttachment(att.getKey(), att.getValue());
             }
         }
 
         mailSender.send(message);
     }
 
-    public void enviarSelloPorMail(User destinatario, String jsonOriginal, String definitiveRd, Long notaId)
+    public void enviarSelloPorMail(User destinatario, ByteArrayResource jsonOriginal, ByteArrayResource definitiveRd,
+            Long notaId)
             throws Exception {
-        String nameFile = destinatario.getLegajo() + "_" + notaId.toString();
+        String nameFile = notaId.toString();
 
-        Map<String, byte[]> adjuntos = new HashMap<>();
-        adjuntos.put(nameFile + ".json", jsonOriginal.getBytes(StandardCharsets.UTF_8));
-        adjuntos.put(nameFile + "_sello.rd", definitiveRd.getBytes(StandardCharsets.UTF_8));
+        Map<String, ByteArrayResource> adjuntos = new HashMap<>();
+        adjuntos.put(nameFile + ".json", jsonOriginal);
+        adjuntos.put(nameFile + "_sello.rd", definitiveRd);
 
         String body = applyVariables(
                 EmailTemplates.BFA_SELLO,

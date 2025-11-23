@@ -105,8 +105,8 @@ public class BfaTsaService {
 
         for (NotaTsa response : pendientes) {
             try {
-                String definitivo = solicitarRecibo(response.getTemporaryRd(), response.getHash());
-                response.setDefinitiveRd(definitivo);
+                String definitiveRd = solicitarRecibo(response.getTemporaryRd(), response.getHash());
+                response.setDefinitiveRd(definitiveRd);
                 response.setStatus("success");
                 notaTsaRepository.save(response);
 
@@ -115,7 +115,14 @@ public class BfaTsaService {
                 String alumnoAuth0Id = nota.getAlumnoAuth0Id();
                 User destinatario = userRepository.findById(alumnoAuth0Id).orElseThrow( () -> new RuntimeException("No se encontró el usuario con id: " + alumnoAuth0Id));
 
-               emailService.enviarSelloPorMail(destinatario, response.getJsonEnviado(), definitivo, response.getId());
+                 // Convertir JSON a bytes
+                byte[] jsonBytes =  response.getJsonEnviado().getBytes(StandardCharsets.UTF_8);
+                ByteArrayResource jsonResource = new ByteArrayResource(jsonBytes);
+
+                // Convertir a bytes
+                ByteArrayResource rdResource = new ByteArrayResource(definitiveRd.getBytes(StandardCharsets.UTF_8));
+
+                emailService.enviarSelloPorMail(destinatario,jsonResource, rdResource, response.getId());
                 procesadas++;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -160,5 +167,19 @@ public class BfaTsaService {
 
         return definitiveRd.toString();
     }
+
+
+    public String getJsonByNotaId(UUID notaId) {
+        NotaTsa nota = notaTsaRepository.findByNotaId(notaId);
+
+        return nota.getJsonEnviado();
+    }
+
+    public String getRdByNotaId(UUID notaId) {
+        NotaTsa nota = notaTsaRepository.findByNotaId(notaId);
+
+        return nota.getDefinitiveRd();
+    }
+
 
 }

@@ -34,25 +34,24 @@ public class TsaService2 {
     private ObjectMapper objectMapper;
    
 
-    public int generarNotaRequest() throws Exception {
-        LocalDate limite = LocalDate.now();//.minusDays(1);
-        List<Nota> notas = notaRepository.findNotasParaSellar(limite);
-
+    public int generarNotaRequest(List<Nota> notas ) throws Exception {
         for (Nota nota : notas) {
-            // 1️⃣ Generar JSON
-            String json = generarJsonNota(nota);
+            if(nota.getValor() != null) {
+                // 1️⃣ Generar JSON
+                String json = generarJsonNota(nota);
 
-            // 2️⃣ Calcular hash
-            String hash = calcularHash(json);
+                // 2️⃣ Calcular hash
+                String hash = calcularHash(json);
 
-            // 3️⃣ Guardar en la tabla request
-            NotaTsa request = new NotaTsa();
-            request.setNota(nota);
-            request.setJsonEnviado(json);
-            request.setHash(hash);
-            request.setStatus("pending");
+                // 3️⃣ Guardar en la tabla request
+                NotaTsa request = new NotaTsa();
+                request.setNota(nota);
+                request.setJsonEnviado(json);
+                request.setHash(hash);
+                request.setStatus("pending");
 
-            requestRepository.save(request);
+                requestRepository.save(request);
+            }
         }
 
         return notas.size();

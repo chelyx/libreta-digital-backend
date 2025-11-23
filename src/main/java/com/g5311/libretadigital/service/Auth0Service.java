@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -72,6 +73,7 @@ public class Auth0Service {
         return response.getBody();
     }
 
+    @Scheduled(cron = "0 */10 * * * *")
     public void syncUsersFromAuth0() {
         String token = getManagementToken();
         List<Map<String, Object>> auth0Users = getUsers(token);

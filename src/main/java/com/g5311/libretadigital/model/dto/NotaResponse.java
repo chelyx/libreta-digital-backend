@@ -11,19 +11,19 @@ public class NotaResponse {
     private UUID id;
     private UUID cursoId;
     private String nombreCurso;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate fecha;
     private String alumnoNombre;
     private String descripcion;
     private Double valor;
     private boolean presente;
+    private boolean selladoBFA;
 
     // 👇 Constructor usado por el JPQL
     public NotaResponse() {
     }
 
-    public NotaResponse(UUID id, UUID cursoId, String nombreCurso,LocalDate fecha, Double valor,
-            String descripcion, boolean presente) {
+    public NotaResponse(UUID id, UUID cursoId, String nombreCurso, LocalDate fecha, Double valor,
+            String descripcion, boolean presente, boolean selladoBFA) {
         this.id = id;
         this.cursoId = cursoId;
         this.nombreCurso = nombreCurso;
@@ -31,6 +31,7 @@ public class NotaResponse {
         this.valor = valor;
         this.descripcion = descripcion;
         this.presente = presente;
+        this.selladoBFA = selladoBFA;
     }
 
     public NotaResponse(UUID id, UUID cursoId, LocalDate fecha, String nombre, Double valor,
@@ -101,9 +102,20 @@ public class NotaResponse {
         this.presente = presente;
     }
 
-    public String getNombreCurso() {return nombreCurso;
+    public String getNombreCurso() {
+        return nombreCurso;
     }
 
-    public void setNombreCurso(String nombreCurso) {this.nombreCurso = nombreCurso;
+    public void setNombreCurso(String nombreCurso) {
+        this.nombreCurso = nombreCurso;
     }
+
+    public boolean getSelladoBFA() {
+        return selladoBFA;
+    }
+
+    public void setSelladoBFA(boolean sellado) {
+        this.selladoBFA = sellado;
+    }
+
 }

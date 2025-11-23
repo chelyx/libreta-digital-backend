@@ -38,9 +38,9 @@ public class DataInitializer {
         private Auth0Service auth0Service;
 
         public DataInitializer(CursoRepository cursoRepository,
-                               UserRepository userRepository,
-                               NotaRepository notaRepository,
-                               AsistenciaRepository asistenciaRepository) {
+                        UserRepository userRepository,
+                        NotaRepository notaRepository,
+                        AsistenciaRepository asistenciaRepository) {
                 this.cursoRepository = cursoRepository;
                 this.userRepository = userRepository;
                 this.notaRepository = notaRepository;
@@ -53,10 +53,13 @@ public class DataInitializer {
                 auth0Service.syncUsersFromAuth0();
 
                 // Si ya hay cursos cargados, no volvemos a inicializar nada
-                /*if (cursoRepository.count() > 0) {
-                        System.out.println("➡️ Datos iniciales ya cargados, se omite inicialización.");
-                        return;
-                }*/
+                /*
+                 * if (cursoRepository.count() > 0) {
+                 * System.out.println("➡️ Datos iniciales ya cargados, se omite inicialización."
+                 * );
+                 * return;
+                 * }
+                 */
 
                 // 👩‍🏫 Profesores (los mismos que ya venías usando)
                 User prof1 = userRepository.findById("auth0|68bc93d0f21d782f04f36998").orElse(null);
@@ -184,11 +187,10 @@ public class DataInitializer {
                 User araceli = userRepository.findById("google-oauth2|117672822587731017632").orElse(null);
 
                 List<User> alumnosDemo = List.of(
-                        yasmin, araceli, ezequiel, cecilia, maximiliano,
-                        a1, a2, a3, a4, a5,
-                        a6, a7, a8, a9, a10,
-                        a11, a12, a13, a14, a15
-                );
+                                yasmin, araceli, ezequiel, cecilia, maximiliano,
+                                a1, a2, a3, a4, a5,
+                                a6, a7, a8, a9, a10,
+                                a11, a12, a13, a14, a15);
 
                 userRepository.saveAll(alumnosDemo);
 
@@ -252,7 +254,7 @@ public class DataInitializer {
                 c7.setCodigo("K3029");
                 c7.setDocenteAuth0Id(prof1 != null ? prof1.getAuth0Id() : null);
                 c7.setFecha(hoy);
-                c7.setEsFinal(false);
+                c7.setEsFinal(true);
                 c7.setAlumnos(alumnosSet);
 
                 cursoRepository.saveAll(List.of(c1, c2, c3, c4, c5, c6, c7));
@@ -274,9 +276,11 @@ public class DataInitializer {
                                 n.setAlumnoAuth0Id(alumno.getAuth0Id());
                                 n.setFecha(curso.getFecha());
                                 // valores tipo 6–10 para que quede prolijo
-                                double valor = 6.0 + (i % 5); // 6,7,8,9,10,6,7,...
+                                double valor = 6.0 + (int) (Math.random() * 4); // si usamos el i tiene siempre la misma
+                                                                                // nota el alumno
                                 n.setValor(valor);
-                                n.setDescripcion("Parcial 1 - " + curso.getNombre());
+                                n.setDescripcion("Final");
+                                n.setPresente(true);
                                 notas.add(n);
                                 i++;
                         }
@@ -291,7 +295,11 @@ public class DataInitializer {
                 LocalDate base = hoy.minusDays(3);
                 List<LocalDate> fechasAsistencia = List.of(base, base.plusDays(1), base.plusDays(2));
 
-                for (Curso curso : cursos) {
+                List<Curso> cursosNoFinales = cursos.stream()
+                                .filter(c -> !c.getEsFinal())
+                                .toList();
+                // se supone que los finales no tienen mil asistencias
+                for (Curso curso : cursosNoFinales) {
                         for (LocalDate fecha : fechasAsistencia) {
                                 int i = 0;
                                 for (User alumno : alumnosDemo) {
@@ -313,4 +321,5 @@ public class DataInitializer {
 
                 System.out.println("✅ Datos iniciales de alumnos, cursos, notas y asistencias cargados correctamente");
         }
+
 }
