@@ -21,4 +21,7 @@ public interface CursoRepository extends JpaRepository<Curso, UUID> {
     Optional<Curso> findByCodigoAndFecha(String codigo, LocalDate fecha);
 
      boolean existsByIdAndAlumnos_Auth0Id(UUID cursoId, String alumnoId);
+
+    List<Curso> findByDocenteAuth0IdAndFecha(String docenteAuth0Id, LocalDate fecha);
+
 }

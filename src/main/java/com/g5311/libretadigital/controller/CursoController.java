@@ -10,6 +10,7 @@ import com.g5311.libretadigital.model.dto.CursoDto;
 import com.g5311.libretadigital.model.dto.ExamenEstadoDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -120,6 +121,18 @@ public class CursoController {
                         HttpStatus.NOT_FOUND,
                         String.format("No se encontró curso con código '%s' y fecha '%s'", codigoCurso,
                                 fechaBusqueda)));
+    }
+
+    @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
+    @GetMapping("/busqueda/docente-fecha")
+    public ResponseEntity<List<Curso>> getCursosPorDocenteYFecha(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestParam("fecha") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaBusqueda) {
+
+        String docenteAuth0Id = jwt.getSubject();
+
+        List<Curso> cursos = cursoService.obtenerCursosPorDocenteYFecha(docenteAuth0Id, fechaBusqueda);
+        return ResponseEntity.ok(cursos);
     }
 
     @GetMapping("/{examenId}/estado")

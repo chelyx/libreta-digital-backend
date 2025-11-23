@@ -37,6 +37,10 @@ public class CursoService {
         return cursoRepository.findByDocenteAuth0Id(docenteAuth0Id);
     }
 
+    public List<Curso> obtenerCursosPorDocenteYFecha(String docenteAuth0Id, LocalDate fecha) {
+        return cursoRepository.findByDocenteAuth0IdAndFecha(docenteAuth0Id, fecha);
+    }
+
     @Transactional
     public Curso crearCurso(CursoDto dto, String docenteAuth0IdFromJwtIfAny) throws ParseException {
         Curso c = new Curso();
