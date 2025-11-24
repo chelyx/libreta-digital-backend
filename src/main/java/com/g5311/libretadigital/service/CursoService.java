@@ -37,6 +37,10 @@ public class CursoService {
         return cursoRepository.findByDocenteAuth0Id(docenteAuth0Id);
     }
 
+    public List<Curso> obtenerCursosPorDocenteYFecha(String docenteAuth0Id, LocalDate fecha) {
+        return cursoRepository.findByDocenteAuth0IdAndFecha(docenteAuth0Id, fecha);
+    }
+
     @Transactional
     public Curso crearCurso(CursoDto dto, String docenteAuth0IdFromJwtIfAny) throws ParseException {
         Curso c = new Curso();
@@ -67,6 +71,10 @@ public class CursoService {
 
     public Optional<Curso> findByCodigoAndFecha(String codigo, LocalDate fecha) {
         return cursoRepository.findByCodigoAndFecha(codigo, fecha);
+    }
+
+    public List<Curso> findAllByFecha(LocalDate fecha) {
+        return cursoRepository.findByFecha(fecha);
     }
 
     // --- Mapper básico. Reemplaza por MapStruct si lo usas en el proyecto ---
