@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.text.StringSubstitutor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,8 @@ import com.sendgrid.helpers.mail.objects.Email;
 @Service
 public class EmailService {
 
-    private final String SENDGRID_API_KEY = System.getenv("SENDGRID_API_KEY");
+    @Value("${sendgrid.api.key}")
+    private String sendGridApiKey;
 
     public String applyVariables(String template, Map<String, String> values) {
         return new StringSubstitutor(values).replace(template);
@@ -55,7 +57,7 @@ public class EmailService {
             }
         }
 
-        SendGrid sg = new SendGrid(SENDGRID_API_KEY);
+        SendGrid sg = new SendGrid(sendGridApiKey);
         Request request = new Request();
         request.setMethod(Method.POST);
         request.setEndpoint("mail/send");
