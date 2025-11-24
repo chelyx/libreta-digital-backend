@@ -73,6 +73,10 @@ public class CursoService {
         return cursoRepository.findByCodigoAndFecha(codigo, fecha);
     }
 
+    public List<Curso> findAllByFecha(LocalDate fecha) {
+        return cursoRepository.findByFecha(fecha);
+    }
+
     // --- Mapper básico. Reemplaza por MapStruct si lo usas en el proyecto ---
     public CursoDto toDto(Curso c) {
         CursoDto dto = new CursoDto();

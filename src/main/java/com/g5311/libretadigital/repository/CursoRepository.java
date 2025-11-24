@@ -24,4 +24,5 @@ public interface CursoRepository extends JpaRepository<Curso, UUID> {
 
     List<Curso> findByDocenteAuth0IdAndFecha(String docenteAuth0Id, LocalDate fecha);
 
+    List<Curso> findByFecha(LocalDate fecha);
 }

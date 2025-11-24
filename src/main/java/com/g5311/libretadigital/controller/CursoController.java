@@ -129,10 +129,17 @@ public class CursoController {
             @AuthenticationPrincipal Jwt jwt,
             @RequestParam("fecha") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fechaBusqueda) {
 
-        String docenteAuth0Id = jwt.getSubject();
+        boolean esBedel = tieneRol("ROLE_BEDEL");
+        List<Curso> resultado;
 
-        List<Curso> cursos = cursoService.obtenerCursosPorDocenteYFecha(docenteAuth0Id, fechaBusqueda);
-        return ResponseEntity.ok(cursos);
+        if (esBedel) {
+            resultado = cursoService.findAllByFecha(fechaBusqueda);
+        } else { // PROFESOR
+            String docenteAuth0Id = jwt.getSubject();
+            resultado = cursoService.obtenerCursosPorDocenteYFecha(docenteAuth0Id, fechaBusqueda);
+        }
+
+        return ResponseEntity.ok(resultado);
     }
 
     @GetMapping("/{examenId}/estado")
