@@ -6,14 +6,18 @@ import org.springframework.stereotype.Service;
 
 import com.g5311.libretadigital.model.Asistencia;
 import com.g5311.libretadigital.model.Curso;
+import com.g5311.libretadigital.model.dto.AlumnoAsistenciaDto;
 import com.g5311.libretadigital.model.dto.AsistenciaAlumnoDto;
 import com.g5311.libretadigital.model.dto.AsistenciaResponse;
+import com.g5311.libretadigital.model.dto.HistorialAsistenciaDto;
 import com.g5311.libretadigital.repository.AsistenciaRepository;
 import com.g5311.libretadigital.repository.CursoRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -129,4 +133,42 @@ public class AsistenciaService {
         }
         return actualizadas;
     }
+
+    public HistorialAsistenciaDto agruparAsistencias(List<AsistenciaResponse> asistencias) {
+    // 1) Obtener fechas únicas
+        List<String> fechas = asistencias.stream()
+                .map(a -> a.getFecha().toString())
+                .distinct()
+                .sorted()
+                .toList();
+
+        // 2) Agrupar por alumno (auth0Id)
+        Map<String, AlumnoAsistenciaDto> alumnosMap = new HashMap<>();
+
+        for (AsistenciaResponse a : asistencias) {
+            AlumnoAsistenciaDto alumno = alumnosMap.computeIfAbsent(
+                    a.getAuth0Id(),
+                    id -> {
+                        AlumnoAsistenciaDto dto = new AlumnoAsistenciaDto();
+                        dto.setAuth0Id(id);
+                        dto.setNombre(a.getNombre());
+                        dto.setAsistencias(new HashMap<>());
+                        return dto;
+                    }
+            );
+
+            // convertir boolean → P/A
+            String estado = a.isPresente() ? "P" : "A";
+
+            alumno.getAsistencias().put(a.getFecha().toString(), estado);
+        }
+
+        // 3) Crear respuesta final
+        HistorialAsistenciaDto dto = new HistorialAsistenciaDto();
+        dto.setFechas(fechas);
+        dto.setAlumnos(new ArrayList<>(alumnosMap.values()));
+
+        return dto;
+    }
+
 }

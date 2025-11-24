@@ -8,7 +8,6 @@ import java.util.UUID;
 public class AsistenciaResponse {
     private UUID cursoId;
     private String nombreCurso;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate fecha;
     private String auth0Id;
     private String nombre;

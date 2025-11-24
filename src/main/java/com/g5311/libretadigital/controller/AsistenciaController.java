@@ -5,6 +5,7 @@ import com.g5311.libretadigital.model.Curso;
 import com.g5311.libretadigital.model.dto.AsistenciaAlumnoDto;
 import com.g5311.libretadigital.model.dto.AsistenciaBulkRequest;
 import com.g5311.libretadigital.model.dto.AsistenciaResponse;
+import com.g5311.libretadigital.model.dto.HistorialAsistenciaDto;
 import com.g5311.libretadigital.service.AsistenciaService;
 import com.g5311.libretadigital.service.CursoService;
 
@@ -65,10 +66,21 @@ public class AsistenciaController {
         return ResponseEntity.ok(asistencias);
     }
 
+    @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
+    @GetMapping("/historial/{cursoId}")
+    public HistorialAsistenciaDto getHistorial(@AuthenticationPrincipal Jwt jwt, @PathVariable UUID cursoId) {
+
+        List<AsistenciaResponse> asistencias = asistenciaService.obtenerAsistenciasPorCurso(cursoId);
+
+        HistorialAsistenciaDto historial = asistenciaService.agruparAsistencias(asistencias);
+
+        return historial;
+    }
+
     // obtener las asistencias del alumno logueado en TODOS sus cursos
     @GetMapping("/me")
     public List<AsistenciaResponse> obtenerMisAsistencias(@AuthenticationPrincipal Jwt jwt
-      //      ,  @RequestParam("alumnoID") String auth0Id
+    // , @RequestParam("alumnoID") String auth0Id
     ) {
         String auth0Id = jwt.getSubject(); // "auth0|xxxx"
         return asistenciaService.obtenerAsistenciasPorAlumno(auth0Id);

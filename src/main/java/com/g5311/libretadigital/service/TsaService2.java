@@ -6,12 +6,8 @@ import com.g5311.libretadigital.model.NotaTsa;
 import com.g5311.libretadigital.repository.NotaRepository;
 import com.g5311.libretadigital.repository.NotaTsaRepository;
 
-import jakarta.mail.internet.MimeMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -32,11 +28,10 @@ public class TsaService2 {
     private NotaTsaRepository requestRepository;
     @Autowired
     private ObjectMapper objectMapper;
-   
 
-    public int generarNotaRequest(List<Nota> notas ) throws Exception {
+    public int generarNotaRequest(List<Nota> notas) throws Exception {
         for (Nota nota : notas) {
-            if(nota.getValor() != null) {
+            if (nota.getValor() != null) {
                 // 1️⃣ Generar JSON
                 String json = generarJsonNota(nota);
 

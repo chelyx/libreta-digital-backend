@@ -1,59 +1,78 @@
 package com.g5311.libretadigital.service;
 
-import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.text.StringSubstitutor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.g5311.libretadigital.model.Nota;
 import com.g5311.libretadigital.model.User;
 import com.g5311.libretadigital.utils.EmailTemplates;
-
-import jakarta.mail.internet.MimeMessage;
+import com.sendgrid.*;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Attachments;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.helpers.mail.objects.Email;
 
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final String SENDGRID_API_KEY = System.getenv("SENDGRID_API_KEY");
 
     public String applyVariables(String template, Map<String, String> values) {
         return new StringSubstitutor(values).replace(template);
     }
 
+    /**
+     * Reemplazo del viejo envío por SMTP → ahora SendGrid vía API
+     */
     public void sendEmail(
             String to,
             String subject,
             String body,
-            Map<String, ByteArrayResource> attachments // nombre → contenido
-    ) throws Exception {
+            Map<String, ByteArrayResource> attachments) throws Exception {
 
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        Email from = new Email("notasalumno@gmail.com"); // podés usar uno verificado en SendGrid
+        Email recipient = new Email(to);
 
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(body);
+        Content content = new Content("text/html", body);
+        Mail mail = new Mail(from, subject, recipient, content);
 
+        // 📎 Adjuntos (respetando los ByteArrayResource originales)
         if (attachments != null) {
             for (Map.Entry<String, ByteArrayResource> att : attachments.entrySet()) {
-                helper.addAttachment(att.getKey(), att.getValue());
+                Attachments a = new Attachments();
+                a.setContent(Base64.getEncoder().encodeToString(att.getValue().getByteArray()));
+                a.setFilename(att.getKey());
+                a.setType("application/octet-stream"); // genérico pero seguro
+                a.setDisposition("attachment");
+
+                mail.addAttachments(a);
             }
         }
 
-        mailSender.send(message);
+        SendGrid sg = new SendGrid(SENDGRID_API_KEY);
+        Request request = new Request();
+        request.setMethod(Method.POST);
+        request.setEndpoint("mail/send");
+        request.setBody(mail.build());
+
+        Response response = sg.api(request);
+
+        System.out.println("SendGrid status: " + response.getStatusCode());
+        System.out.println("SendGrid body: " + response.getBody());
     }
 
-    public void enviarSelloPorMail(User destinatario, ByteArrayResource jsonOriginal, ByteArrayResource definitiveRd,
-            Long notaId)
-            throws Exception {
+    /**
+     * Igual que antes — cambia solo el backend del envío
+     */
+    public void enviarSelloPorMail(User destinatario, ByteArrayResource jsonOriginal,
+            ByteArrayResource definitiveRd, Long notaId) throws Exception {
+
         String nameFile = notaId.toString();
 
         Map<String, ByteArrayResource> adjuntos = new HashMap<>();
@@ -66,6 +85,7 @@ public class EmailService {
                         "nombre", destinatario.getNombre(),
                         "json", nameFile + ".json",
                         "rd", nameFile + "_sello.rd"));
+
         sendEmail(
                 destinatario.getEmail(),
                 "Nueva nota sellada con BFA",
@@ -74,6 +94,7 @@ public class EmailService {
     }
 
     public void enviarNotaPorMail(String name, Nota nota, String email, String curso) throws Exception {
+
         String body = applyVariables(
                 EmailTemplates.NOTA_ALUMNO,
                 Map.of(
@@ -82,6 +103,7 @@ public class EmailService {
                         "fecha", nota.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                         "nota", nota.getValor().toString(),
                         "version", nota.getVersionHash()));
+
         sendEmail(
                 email,
                 "Nueva nota cargada en SIRCA",

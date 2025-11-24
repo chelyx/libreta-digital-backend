@@ -3,8 +3,6 @@ package com.g5311.libretadigital.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,8 +14,6 @@ import com.g5311.libretadigital.repository.NotaRepository;
 import com.g5311.libretadigital.repository.NotaTsaRepository;
 import com.g5311.libretadigital.repository.UserRepository;
 import com.g5311.libretadigital.utils.EmailTemplates;
-
-import jakarta.mail.internet.MimeMessage;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -113,16 +109,17 @@ public class BfaTsaService {
                 // Enviar por mail al alumno
                 Nota nota = notaRepository.findById(response.getNota().getId()).orElse(null);
                 String alumnoAuth0Id = nota.getAlumnoAuth0Id();
-                User destinatario = userRepository.findById(alumnoAuth0Id).orElseThrow( () -> new RuntimeException("No se encontró el usuario con id: " + alumnoAuth0Id));
+                User destinatario = userRepository.findById(alumnoAuth0Id)
+                        .orElseThrow(() -> new RuntimeException("No se encontró el usuario con id: " + alumnoAuth0Id));
 
-                 // Convertir JSON a bytes
-                byte[] jsonBytes =  response.getJsonEnviado().getBytes(StandardCharsets.UTF_8);
+                // Convertir JSON a bytes
+                byte[] jsonBytes = response.getJsonEnviado().getBytes(StandardCharsets.UTF_8);
                 ByteArrayResource jsonResource = new ByteArrayResource(jsonBytes);
 
                 // Convertir a bytes
                 ByteArrayResource rdResource = new ByteArrayResource(definitiveRd.getBytes(StandardCharsets.UTF_8));
 
-                emailService.enviarSelloPorMail(destinatario,jsonResource, rdResource, response.getId());
+                emailService.enviarSelloPorMail(destinatario, jsonResource, rdResource, response.getId());
                 procesadas++;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -168,7 +165,6 @@ public class BfaTsaService {
         return definitiveRd.toString();
     }
 
-
     public String getJsonByNotaId(UUID notaId) {
         NotaTsa nota = notaTsaRepository.findByNotaId(notaId);
 
@@ -180,6 +176,5 @@ public class BfaTsaService {
 
         return nota.getDefinitiveRd();
     }
-
 
 }
