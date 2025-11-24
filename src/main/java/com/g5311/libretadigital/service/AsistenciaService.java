@@ -171,4 +171,34 @@ public class AsistenciaService {
         return dto;
     }
 
+    public void guardarHistorial(HistorialAsistenciaDto historial, UUID cursoId) {
+
+        for (AlumnoAsistenciaDto alumno : historial.getAlumnos()) {
+
+            for (Map.Entry<String, String> entry : alumno.getAsistencias().entrySet()) {
+
+                String fechaStr = entry.getKey();
+                String valor = entry.getValue(); // "P" o "A"
+
+                LocalDate fecha = LocalDate.parse(fechaStr);
+                boolean presente = valor.equals("P");
+
+                var existente = asistenciaRepository
+                        .findByCursoIdAndAlumnoIdAndFecha(cursoId, alumno.getAuth0Id(), fecha)
+                        .orElseGet(() -> {
+                            Asistencia nueva = new Asistencia();
+                            nueva.setCursoId(cursoId);
+                            nueva.setAlumnoId(alumno.getAuth0Id());
+                            nueva.setFecha(fecha);
+                            return nueva;
+                        });
+
+                // actualizar valor
+                existente.setPresente(presente);
+
+                asistenciaRepository.save(existente);
+            }
+        }
+    }
+
 }

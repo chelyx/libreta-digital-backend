@@ -113,4 +113,11 @@ public class AsistenciaController {
                 "items", result));
     }
 
+    @PreAuthorize("hasRole('PROFESOR') or hasRole('BEDEL')")
+    @PostMapping("/{cursoId}/guardar-historial")
+    public ResponseEntity<?> guardar( @AuthenticationPrincipal Jwt jwt,@RequestBody HistorialAsistenciaDto historial, @PathVariable UUID cursoId) {
+        asistenciaService.guardarHistorial(historial, cursoId);
+        return ResponseEntity.ok().body("{\"mensaje\":\"Asistencias guardadas\"}");
+    }
+
 }
