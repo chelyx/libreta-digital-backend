@@ -192,6 +192,10 @@ public class DataInitializer {
                                 a6, a7, a8, a9, a10,
                                 a11, a12, a13, a14, a15);
 
+                List<User> alumnosPiolas = List.of(
+                        yasmin, ezequiel, cecilia, maximiliano,
+                        a1, a2, a3, a4, a5, a6, a7);
+
                 userRepository.saveAll(alumnosDemo);
 
                 // Fechas de ejemplo
@@ -199,6 +203,8 @@ public class DataInitializer {
 
                 // Usamos el mismo set de ~20 alumnos para todos los cursos
                 Set<User> alumnosSet = new HashSet<>(alumnosDemo);
+
+                Set<User> losPiolas = new HashSet<>(alumnosPiolas);
 
                 // 📘 Cursos (uno por materia / códigos K3023+)
                 Curso c1 = new Curso();
@@ -255,7 +261,7 @@ public class DataInitializer {
                 c7.setDocenteAuth0Id(prof1 != null ? prof1.getAuth0Id() : null);
                 c7.setFecha(hoy);
                 c7.setEsFinal(true);
-                c7.setAlumnos(alumnosSet);
+                c7.setAlumnos(losPiolas);
 
                 cursoRepository.saveAll(List.of(c1, c2, c3, c4, c5, c6, c7));
 
