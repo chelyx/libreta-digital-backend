@@ -30,7 +30,7 @@ public interface AsistenciaRepository extends JpaRepository<Asistencia, UUID> {
             "from com.g5311.libretadigital.model.Asistencia a " +
             "join com.g5311.libretadigital.model.User u on a.alumnoId = u.auth0Id " +
             "join com.g5311.libretadigital.model.Curso c on a.cursoId = c.id " +
-            "where a.alumnoId = :alumnoAuth0Id")
+            "where a.alumnoId = :alumnoAuth0Id and c.esFinal = FALSE")
     List<AsistenciaResponse> findAsistenciaResponsesByAlumnoId(@Param("alumnoAuth0Id") String alumnoAuth0Id);
 
      boolean existsByCursoId(UUID cursoId);
