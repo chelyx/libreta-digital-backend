@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -289,14 +290,16 @@ public class DataInitializer {
                 cursoRepository.saveAll(List.of(c1, c2, c3, c4, c5, c6, c7, c8));
 
                 // ✅ En este punto los cursos ya tienen ID asignado
-                List<Curso> cursos = List.of(c1, c2, c3, c4, c5, c6, c7);
-
+                List<Curso> cursos = List.of(c1, c2, c3, c4, c5, c6, c7, c8);
+                List<Curso> cursosNoFinales = cursos.stream()
+                                .filter(c -> !c.getEsFinal())
+                                .toList();
                 // ============================
                 // 📌 Notas de ejemplo (NotaDto-like)
                 // ============================
                 List<Nota> notas = new ArrayList<>();
 
-                for (Curso curso : cursos) {
+                for (Curso curso : cursosNoFinales) {
                         int i = 0;
                         for (User alumno : alumnosDemo) {
                                 Nota n = new Nota();
@@ -322,11 +325,9 @@ public class DataInitializer {
                 // ============================
                 List<Asistencia> asistencias = new ArrayList<>();
                 LocalDate base = hoy.minusDays(3);
-                List<LocalDate> fechasAsistencia = List.of(base, base.plusDays(1), base.plusDays(2));
+                List<LocalDate> fechasAsistencia = List.of(base, base.plusDays(1), base.plusDays(2), base.minusDays(1));
 
-                List<Curso> cursosNoFinales = cursos.stream()
-                                .filter(c -> !c.getEsFinal())
-                                .toList();
+                
                 // se supone que los finales no tienen mil asistencias
                 for (Curso curso : cursosNoFinales) {
                         for (LocalDate fecha : fechasAsistencia) {
@@ -338,7 +339,7 @@ public class DataInitializer {
                                         asis.setAlumnoId(alumno.getAuth0Id()); // se mapea contra User.auth0Id
                                         asis.setFecha(fecha);
                                         // patrón simple para mezclar presentes/ausentes
-                                        boolean presente = ((i + fecha.getDayOfMonth()) % 4) != 0;
+                                        boolean presente = new Random().nextBoolean();
                                         asis.setPresente(presente);
                                         asistencias.add(asis);
                                         i++;
