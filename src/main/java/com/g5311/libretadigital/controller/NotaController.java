@@ -8,7 +8,9 @@ import com.g5311.libretadigital.service.BfaTsaService;
 import com.g5311.libretadigital.service.NotaService;
 import com.g5311.libretadigital.service.TsaService2;
 
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -168,15 +170,15 @@ public class NotaController {
 
     }
 
-    @PostMapping("/upload-acta")
-    public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping("/{cursoId}/upload-acta")
+    public ResponseEntity<Map<String, String>> upload(@PathVariable UUID cursoId, @RequestParam("file") MultipartFile file) throws IOException {
 
         String uploadsDir = "uploads/actas/";
         File dir = new File(uploadsDir);
         if (!dir.exists())
             dir.mkdirs();
 
-        String filename = UUID.randomUUID() + "-" + file.getOriginalFilename();
+        String filename = cursoId.toString() + ".jpg";
         Path path = Paths.get(uploadsDir + filename);
 
         Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
