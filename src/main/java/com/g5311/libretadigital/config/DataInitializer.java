@@ -278,7 +278,15 @@ public class DataInitializer {
                 c7.setEsFinal(true);
                 c7.setAlumnos(losPiolas);
 
-                cursoRepository.saveAll(List.of(c1, c2, c3, c4, c5, c6, c7));
+                Curso c8 = new Curso();
+                c8.setNombre("Teoria de Control");
+                c8.setCodigo("K4028");
+                c8.setDocenteAuth0Id(prof1 != null ? prof1.getAuth0Id() : null);
+                c8.setFecha(hoy);
+                c8.setEsFinal(true);
+                c8.setAlumnos(losPiolas);
+
+                cursoRepository.saveAll(List.of(c1, c2, c3, c4, c5, c6, c7, c8));
 
                 // ✅ En este punto los cursos ya tienen ID asignado
                 List<Curso> cursos = List.of(c1, c2, c3, c4, c5, c6, c7);
