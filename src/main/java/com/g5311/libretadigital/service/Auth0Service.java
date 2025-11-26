@@ -1,8 +1,10 @@
 package com.g5311.libretadigital.service;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -84,8 +86,18 @@ public class Auth0Service {
             String picture = (String) user.get("picture");
             String name = (String) user.get("name");
 
-            usuarioService.createIfNotExists(auth0Id, email, picture, name);
+            usuarioService.createIfNotExists(auth0Id, email, picture, normalizarNombre(name));
         }
+    }
+
+    private String normalizarNombre(String nombre) {
+        if (nombre == null || nombre.isBlank())
+            return nombre;
+
+        return Arrays.stream(nombre.toLowerCase().split(" "))
+                .filter(s -> !s.isBlank())
+                .map(s -> Character.toUpperCase(s.charAt(0)) + s.substring(1))
+                .collect(Collectors.joining(" "));
     }
 
     private List<Map<String, Object>> getUsers(String token) {

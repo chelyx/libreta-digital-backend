@@ -1,6 +1,8 @@
 package com.g5311.libretadigital.service;
 
 import com.g5311.libretadigital.model.Curso;
+import com.g5311.libretadigital.model.User;
+import com.g5311.libretadigital.model.dto.AlumnoAsistenciaDto;
 import com.g5311.libretadigital.model.dto.CursoDto;
 import com.g5311.libretadigital.repository.CursoRepository;
 import com.g5311.libretadigital.repository.UserRepository;
@@ -13,7 +15,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,7 +38,19 @@ public class CursoService {
     }
 
     public List<Curso> obtenerCursosPorDocente(String docenteAuth0Id) {
-        return cursoRepository.findByDocenteAuth0Id(docenteAuth0Id);
+
+        List<Curso> cursos = cursoRepository.findByDocenteAuth0Id(docenteAuth0Id);
+
+        for (Curso curso : cursos) {
+            // Ordena los alumnos por nombre
+            List<User> alumnosOrdenados = curso.getAlumnos()
+                    .stream()
+                    .sorted(Comparator.comparing(User::getNombre, String.CASE_INSENSITIVE_ORDER))
+                    .toList();
+
+            curso.setAlumnos(new LinkedHashSet<>(alumnosOrdenados));
+        }
+        return cursos;
     }
 
     public List<Curso> obtenerCursosPorDocenteYFecha(String docenteAuth0Id, LocalDate fecha) {

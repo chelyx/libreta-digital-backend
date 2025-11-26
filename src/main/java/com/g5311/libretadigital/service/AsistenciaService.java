@@ -15,6 +15,7 @@ import com.g5311.libretadigital.repository.CursoRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -164,9 +165,14 @@ public class AsistenciaService {
         }
 
         // 3) Crear respuesta final
+         List<AlumnoAsistenciaDto> alumnosOrdenados = alumnosMap.values().stream()
+            .sorted(Comparator.comparing(AlumnoAsistenciaDto::getNombre,
+                    String.CASE_INSENSITIVE_ORDER))
+            .toList();
+
         HistorialAsistenciaDto dto = new HistorialAsistenciaDto();
         dto.setFechas(fechas);
-        dto.setAlumnos(new ArrayList<>(alumnosMap.values()));
+        dto.setAlumnos(alumnosOrdenados);
 
         return dto;
     }

@@ -85,6 +85,7 @@ public class DataInitializer {
                 a1.setEmail("juan.gomez@frba.utn.edu.ar");
                 a1.setRol("ALUMNO");
                 a1.setLegajo("1700001");
+                a1.setPicture("https://avatar.iran.liara.run/username?username=JG&rounded=true");
 
                 User a2 = new User();
                 a2.setAuth0Id("auth0|alum_demo02");
@@ -92,6 +93,7 @@ public class DataInitializer {
                 a2.setEmail("maria.lopez@frba.utn.edu.ar");
                 a2.setRol("ALUMNO");
                 a2.setLegajo("1700002");
+                a2.setPicture("https://avatar.iran.liara.run/username?username=ML&rounded=true");
 
                 User a3 = new User();
                 a3.setAuth0Id("auth0|alum_demo03");
@@ -99,6 +101,7 @@ public class DataInitializer {
                 a3.setEmail("sofia.martinez@frba.utn.edu.ar");
                 a3.setRol("ALUMNO");
                 a3.setLegajo("1700003");
+                a3.setPicture("https://avatar.iran.liara.run/username?username=SM&rounded=true");
 
                 User a4 = new User();
                 a4.setAuth0Id("auth0|alum_demo04");
@@ -106,6 +109,7 @@ public class DataInitializer {
                 a4.setEmail("lucas.fernandez@frba.utn.edu.ar");
                 a4.setRol("ALUMNO");
                 a4.setLegajo("1700004");
+                a4.setPicture("https://avatar.iran.liara.run/username?username=LF&rounded=true");
 
                 User a5 = new User();
                 a5.setAuth0Id("auth0|alum_demo05");
@@ -113,6 +117,7 @@ public class DataInitializer {
                 a5.setEmail("carolina.diaz@frba.utn.edu.ar");
                 a5.setRol("ALUMNO");
                 a5.setLegajo("1700005");
+                a5.setPicture("https://avatar.iran.liara.run/username?username=CD&rounded=true");
 
                 User a6 = new User();
                 a6.setAuth0Id("auth0|alum_demo06");
@@ -120,6 +125,7 @@ public class DataInitializer {
                 a6.setEmail("martin.perez@frba.utn.edu.ar");
                 a6.setRol("ALUMNO");
                 a6.setLegajo("1700006");
+                a6.setPicture("https://avatar.iran.liara.run/username?username=MP&rounded=true");
 
                 User a7 = new User();
                 a7.setAuth0Id("auth0|alum_demo07");
@@ -127,6 +133,7 @@ public class DataInitializer {
                 a7.setEmail("laura.sanchez@frba.utn.edu.ar");
                 a7.setRol("ALUMNO");
                 a7.setLegajo("1700007");
+                a7.setPicture("https://avatar.iran.liara.run/username?username=LS&rounded=true");
 
                 User a8 = new User();
                 a8.setAuth0Id("auth0|alum_demo08");
@@ -134,6 +141,7 @@ public class DataInitializer {
                 a8.setEmail("diego.romero@frba.utn.edu.ar");
                 a8.setRol("ALUMNO");
                 a8.setLegajo("1700008");
+                a8.setPicture("https://avatar.iran.liara.run/username?username=DR&rounded=true");
 
                 User a9 = new User();
                 a9.setAuth0Id("auth0|alum_demo09");
@@ -141,6 +149,7 @@ public class DataInitializer {
                 a9.setEmail("valentina.herrera@frba.utn.edu.ar");
                 a9.setRol("ALUMNO");
                 a9.setLegajo("1700009");
+                a9.setPicture("https://avatar.iran.liara.run/username?username=VH&rounded=true");
 
                 User a10 = new User();
                 a10.setAuth0Id("auth0|alum_demo10");
@@ -148,6 +157,7 @@ public class DataInitializer {
                 a10.setEmail("nicolas.ruiz@frba.utn.edu.ar");
                 a10.setRol("ALUMNO");
                 a10.setLegajo("1700010");
+                a10.setPicture("https://avatar.iran.liara.run/username?username=NR&rounded=true");
 
                 User a11 = new User();
                 a11.setAuth0Id("auth0|alum_demo11");
@@ -155,6 +165,7 @@ public class DataInitializer {
                 a11.setEmail("camila.torres@frba.utn.edu.ar");
                 a11.setRol("ALUMNO");
                 a11.setLegajo("1700011");
+                a11.setPicture("https://avatar.iran.liara.run/username?username=CT&rounded=true");
 
                 User a12 = new User();
                 a12.setAuth0Id("auth0|alum_demo12");
@@ -162,6 +173,7 @@ public class DataInitializer {
                 a12.setEmail("federico.alvarez@frba.utn.edu.ar");
                 a12.setRol("ALUMNO");
                 a12.setLegajo("1700012");
+                a12.setPicture("https://avatar.iran.liara.run/username?username=FA&rounded=true");
 
                 User a13 = new User();
                 a13.setAuth0Id("auth0|alum_demo13");
@@ -169,6 +181,7 @@ public class DataInitializer {
                 a13.setEmail("julieta.rios@frba.utn.edu.ar");
                 a13.setRol("ALUMNO");
                 a13.setLegajo("1700013");
+                a13.setPicture("https://avatar.iran.liara.run/username?username=JR&rounded=true");
 
                 User a14 = new User();
                 a14.setAuth0Id("auth0|alum_demo14");
@@ -176,6 +189,7 @@ public class DataInitializer {
                 a14.setEmail("agustin.blanco@frba.utn.edu.ar");
                 a14.setRol("ALUMNO");
                 a14.setLegajo("1700014");
+                a14.setPicture("https://avatar.iran.liara.run/username?username=AB&rounded=true");
 
                 User a15 = new User();
                 a15.setAuth0Id("auth0|alum_demo15");
@@ -183,6 +197,7 @@ public class DataInitializer {
                 a15.setEmail("rocio.castro@frba.utn.edu.ar");
                 a15.setRol("ALUMNO");
                 a15.setLegajo("1700015");
+                a15.setPicture("https://avatar.iran.liara.run/username?username=RC&rounded=true");
 
                 User araceli = userRepository.findById("google-oauth2|117672822587731017632").orElse(null);
 
@@ -193,8 +208,8 @@ public class DataInitializer {
                                 a11, a12, a13, a14, a15);
 
                 List<User> alumnosPiolas = List.of(
-                        yasmin, ezequiel, cecilia, maximiliano,
-                        a1, a2, a3, a4, a5, a6, a7);
+                                yasmin, ezequiel, cecilia, maximiliano,
+                                a1, a2, a3, a4, a5, a6, a7);
 
                 userRepository.saveAll(alumnosDemo);
 

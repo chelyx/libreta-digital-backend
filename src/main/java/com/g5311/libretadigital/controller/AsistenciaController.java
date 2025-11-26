@@ -37,9 +37,9 @@ public class AsistenciaController {
             @RequestParam UUID cursoId,
             @RequestParam Boolean presente) {
         String alumnoId = jwt.getSubject(); // auth0_i
-        ZoneId zoneUTC3 = ZoneId.of("America/Argentina/Buenos_Aires");
-        LocalDate fechaHoy = LocalDate.now(zoneUTC3);
-
+        // ZoneId zoneUTC3 = ZoneId.of("America/Argentina/Buenos_Aires");
+        // LocalDate fechaHoy = LocalDate.now(zoneUTC3);
+        LocalDate fechaHoy = LocalDate.now();
         return asistenciaService.registrarAsistencia(cursoId, alumnoId, fechaHoy, presente);
     }
 
