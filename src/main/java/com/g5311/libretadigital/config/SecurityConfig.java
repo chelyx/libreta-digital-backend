@@ -31,7 +31,7 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers("/api/public/**").permitAll()
                                                 .requestMatchers("/h2-console/**").permitAll()
-                                                .requestMatchers("/uploads/actas/**").permitAll()
+                                                .requestMatchers("/actas/**").permitAll()
                                                 .requestMatchers("/api/codes/validate/**").hasRole("PROFESOR")
                                                 .anyRequest().authenticated())
                                 .csrf(csrf -> csrf
