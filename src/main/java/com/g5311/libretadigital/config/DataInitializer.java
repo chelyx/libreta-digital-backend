@@ -210,7 +210,7 @@ public class DataInitializer {
 
                 List<User> alumnosPiolas = List.of(
                                 yasmin, ezequiel, cecilia, maximiliano,
-                                a1, a2, a3, a4, a5, a6, a7);
+                                araceli);
 
                 userRepository.saveAll(alumnosDemo);
 
@@ -327,7 +327,6 @@ public class DataInitializer {
                 LocalDate base = hoy.minusDays(3);
                 List<LocalDate> fechasAsistencia = List.of(base, base.plusDays(1), base.plusDays(2), base.minusDays(1));
 
-                
                 // se supone que los finales no tienen mil asistencias
                 for (Curso curso : cursosNoFinales) {
                         for (LocalDate fecha : fechasAsistencia) {
